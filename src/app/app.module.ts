@@ -8,13 +8,16 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
+import { UserComponent } from './user/user.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     ListCardComponent,
     CardComponent,
-    BoardComponent
+    BoardComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
