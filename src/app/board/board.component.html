@@ -1,5 +1,6 @@
-<div *ngFor="let list of listCards">
-  <div>Id: {{list.listId}}</div>
-  <div>Name: {{list.listName}}</div>
-  Card: <app-list-card [id]="list.listId"></app-list-card>
+<div cdkDropListGroup>
+  <div class="example-container" *ngFor="let list of listCards">
+    <h2>Name: {{list.listName}}</h2>
+    <app-list-card [id]="list.listId"></app-list-card>
+  </div>
 </div>

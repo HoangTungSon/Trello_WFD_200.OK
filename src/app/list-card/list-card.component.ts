@@ -17,6 +17,8 @@ export class ListCardComponent implements OnInit {
 
   cards: ICard[] = [];
 
+  card: ICard;
+
   constructor(
     private listService: ListCardService,
     private cardService: CardService,
@@ -24,7 +26,6 @@ export class ListCardComponent implements OnInit {
   ) {
   }
 
-  listCards: IListCard[] = [];
 
   ngOnInit() {
     this.cardService.getCardByList(10, this.id).subscribe(
@@ -37,4 +38,26 @@ export class ListCardComponent implements OnInit {
     );
   }
 
+  drop(event: CdkDragDrop<ICard[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      console.log('still at same container');
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      // this.cardService.getCardById(id).subscribe(
+      //   next => {
+      //     this.card = next;
+      //     this.card.listSet.listId = this.id;
+      //     console.log(this.card.listSet.listId);
+      //     console.log('card Id: ' + id);
+      //     this.cardService.updateCard(this.card).subscribe();
+      //     console.log('success');
+      //   }, error => {
+      //     console.log('fail to transfer');
+      //   });
+    }
+  }
 }
