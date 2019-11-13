@@ -9,7 +9,7 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
 import { CardComponent } from './card/card.component';
 import { BoardComponent } from './board/board.component';
 import { UserComponent } from './user/user.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
@@ -29,7 +29,8 @@ import { RegisterComponent } from './register/register.component';
     DragDropModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
