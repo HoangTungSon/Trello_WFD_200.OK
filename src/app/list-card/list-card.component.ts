@@ -47,17 +47,22 @@ export class ListCardComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      // this.cardService.getCardById(id).subscribe(
-      //   next => {
-      //     this.card = next;
-      //     this.card.listSet.listId = this.id;
-      //     console.log(this.card.listSet.listId);
-      //     console.log('card Id: ' + id);
-      //     this.cardService.updateCard(this.card).subscribe();
-      //     console.log('success');
-      //   }, error => {
-      //     console.log('fail to transfer');
-      //   });
+      console.log('change container');
+    }
+  }
+
+  change(event: CdkDragDrop<ICard>, id: number) {
+    if (event.previousContainer !== event.container) {
+      this.cardService.getCardById(id).subscribe(
+        next => {
+          this.card = next;
+          this.card.listSet.listId = event.container.data.listSet.listId;
+          this.cardService.updateCard(this.card).subscribe(success => {
+            console.log('success update');
+          });
+          console.log('success drop');
+        }
+      );
     }
   }
 }
