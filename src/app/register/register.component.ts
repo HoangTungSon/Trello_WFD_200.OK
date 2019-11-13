@@ -21,6 +21,9 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form);
+    if (this.form.password !== this.form.cpassword) {
+      return alert('mat khau k trung nhau');
+    }
 
     this.signupInfo = new SignUpInfo(
       this.form.userName,
