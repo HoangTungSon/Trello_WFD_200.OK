@@ -24,12 +24,12 @@ export class CardService {
     );
   }
 
-  createCard(listCard: ICard): Observable<ICard> {
-    return this.httpClient.post<ICard>(this.URL, listCard);
+  createCard(card: ICard): Observable<ICard> {
+    return this.httpClient.post<ICard>(this.URL, card);
   }
 
-  updateCard(listCard: ICard): Observable<ICard> {
-    return this.httpClient.put<ICard>(`${this.URL}/${listCard.cardId}`, listCard);
+  updateCard(card: ICard): Observable<ICard> {
+    return this.httpClient.put<ICard>(`${this.URL}/${card.cardId}`, card);
   }
 
   deleteCard(id: number): Observable<any> {
