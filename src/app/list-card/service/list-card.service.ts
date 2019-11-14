@@ -28,8 +28,8 @@ export class ListCardService {
     return this.httpClient.post<IListCard>(this.URL, listCard);
   }
 
-  updateListCard(listCard: IListCard): Observable<IListCard> {
-    return this.httpClient.put<IListCard>(`${this.URL}/${listCard.listId}`, listCard);
+  updateListCard(listCard: IListCard, id: number): Observable<IListCard> {
+    return this.httpClient.put<IListCard>(`${this.URL}/${id}`, listCard);
   }
 
   deleteListCard(id: number): Observable<any> {

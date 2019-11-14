@@ -1,10 +1,6 @@
-<!--<div *ngFor="let card of cards">-->
-<!--  <div>Id: {{card.cardId}}</div>-->
-<!--  <div>Title: {{card.title}}</div>-->
-<!--  <div>Description: {{card.description}}</div>-->
-<!--</div>-->
-
 <div cdkDropList [cdkDropListData]="cards" class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let item of cards" cdkDrag (cdkDragDropped)="change($event, item.cardId)">Id: {{item.cardId}} + {{item.title}}
+  <div class="example-box" *ngFor="let item of cards" cdkDrag (cdkDragDropped)="change($event, item.cardId)">
+    Id: {{item.cardId}} + {{item.title}}
     + {{item.listSet.listId}}</div>
+  <button type="button" class="btn btn-light" (click)="createCard(listSet.boardSet.boardId)">+</button>
 </div>
