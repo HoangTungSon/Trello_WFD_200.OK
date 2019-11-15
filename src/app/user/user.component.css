@@ -1,7 +1,5 @@
 .container{
   margin-top: 20px;
-  border: solid 1px black;
-  width: 100%;
 }
 
 .right-body{
@@ -35,7 +33,8 @@
   background-image: none;
   background-size: cover;
   background-position: center center;
-  background-color: lightgray;
+  background-color: darkgray;
+  text-align: center;
 }
 
 .card-body h6{

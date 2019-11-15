@@ -11,9 +11,9 @@
           <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
-      <div class="card col-3" style="width: 17rem;" (click)="createBoard()">
+      <div class="card col-3 mo" style="width: 17rem;" data-toggle="modal" data-target="#exampleModal">
         <div class="card-body create">
-          <h6>Create board</h6>
+          <h6 style="color: #e3f2fd">+</h6>
         </div>
       </div>
     </div>
@@ -28,12 +28,31 @@
           <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
-      <div class="card col-3" style="width: 17rem;" (click)="createBoard()">
+      <div class="card col-3" style="width: 17rem;" data-toggle="modal" data-target="#exampleModal">
         <div class="card-body create">
-          <h6>Create board</h6>
+          <h6 style="color: #e3f2fd">+</h6>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="createBoard()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
