@@ -69,7 +69,7 @@ export class BoardComponent implements OnInit {
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
@@ -97,7 +97,7 @@ export class BoardComponent implements OnInit {
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
   }
