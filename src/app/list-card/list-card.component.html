@@ -1,4 +1,4 @@
-<div cdkDropList [cdkDropListData]="cards" class="example-list" (cdkDropListDropped)="drop($event)">
+<div cdkDropList [cdkDropListData]="cards" class="example-list-card" (cdkDropListDropped)="drop($event)">
   <div class="example-box-card" *ngFor="let item of cards" cdkDrag (cdkDragDropped)="change($event, item.cardId)">
     Id: {{item.cardId}} + {{item.title}}
     + {{item.listSet.listId}}</div>

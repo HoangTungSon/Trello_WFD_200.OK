@@ -1,15 +1,18 @@
 <app-login-taskbar></app-login-taskbar>
 <form [formGroup]="listForm" class="formList">
   <div cdkDropListGroup>
-      <div  class="example-list" >
-        <div class="example-container" *ngFor="let list of listCards" cdkDrag>
-          <input type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
-                 (keydown.enter)="changeNameList(list.listId)">
-          <input type="button" class="btn btn-outline-dark" (click)="deleteListCard(list.listId)" value="-">
-              <app-list-card [id]="list.listId"></app-list-card>
-          </div>
-        <button type="button" class="btn btn-outline-dark" (click)="createList()">+</button>
+    <div class="example-list">
+      <div class="example-container" *ngFor="let list of listCards">
+        <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
+               (keydown.enter)="changeNameList(list.listId)">
+        <input id="listDeleteButton" type="button" class="btn btn-outline-dark" (click)="deleteListCard(list.listId)"
+               value="---">
+        <app-list-card [id]="list.listId"></app-list-card>
       </div>
+      <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">+</button>
     </div>
+  </div>
 </form>
+
+
 
