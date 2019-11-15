@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChildren} from '@angular/core';
 import {BoardService} from './service/board.service';
 import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
+import {CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
@@ -32,6 +33,8 @@ export class BoardComponent implements OnInit {
     private router: Router,
   ) {
   }
+
+  @ViewChildren(CdkDropListGroup, null) group: CdkDropListGroup<CdkDropList>;
 
   ngOnInit() {
     this.listForm = this.fb.group({
@@ -109,5 +112,23 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('fail to change');
     });
+  }
+
+  changeListId(lists: IListCard[]) {
+    let mid = 0;
+    for (let i = 0; i < lists.length; i++) {
+      for (let j = i + 1; j < lists.length; j++) {
+        if (lists[i].listId > lists[j].listId) {
+          mid = lists[i].listId;
+          lists[i].listId = lists[j].listId;
+          lists[j].listId = mid;
+        }
+      }
+    }
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
+    this.changeListId(this.listCards);
   }
 }
