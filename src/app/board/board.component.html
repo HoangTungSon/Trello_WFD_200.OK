@@ -2,8 +2,8 @@
   <div cdkDropListGroup>
     <div class="example-container" *ngFor="let list of listCards">
       <h4>
-        <input type="text" formControlName="listName" value="{{list.listName}}" (keydown.enter)="changeNameList(list.listId)">
-        <input type="button" class="btn btn-outline-dark" (click)="deleteList(list.listId)" value="-">
+        <input type="text" formControlName="listName" value="{{list.listName + list.listId}}" (keydown.enter)="changeNameList(list.listId)">
+        <input type="button" class="btn btn-outline-dark" (click)="deleteListCard(list.listId)" value="-">
       </h4>
       <app-list-card [id]="list.listId"></app-list-card>
     </div>

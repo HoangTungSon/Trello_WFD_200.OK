@@ -54,7 +54,6 @@ export class BoardComponent implements OnInit {
   }
 
   createList() {
-    const id = +this.route.snapshot.paramMap.get('id');
     this.listForm = this.fb.group({
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
@@ -69,12 +68,12 @@ export class BoardComponent implements OnInit {
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
 
-  deleteListUrl(id: number) {
+  deleteList(id: number) {
     this.listCardService.deleteListCard(id).subscribe(right => {
       console.log('success delete list card');
     }, wrong => {
@@ -82,22 +81,22 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  deleteList(id: number) {
+  deleteListCard(id: number) {
     this.cardService.getCardByList(1000, id).subscribe(next => {
       this.cards = next;
       for (const card of this.cards) {
         this.cardService.deleteCard(card.cardId).subscribe(success => {
           console.log('success delete cards');
-          this.deleteListUrl(id);
+          this.deleteList(id);
         });
       }
     }, error => {
-      this.deleteListUrl(id);
+      this.deleteList(id);
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
   }
