@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthLoginInfo} from '../auth/auth-login-info';
 import {AuthService} from '../auth/auth.service';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {FormControl, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
-  loginForm = new  FormGroup({
+  loginForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl('')
   });
@@ -24,7 +25,12 @@ export class LoginComponent implements OnInit {
   display = false;
 
   private loginInfo: AuthLoginInfo;
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
+
+  constructor(
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private router: Router) {
+  }
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
@@ -33,15 +39,18 @@ export class LoginComponent implements OnInit {
       console.log(this.isLoggedIn);
     }
     this.form = {
+      id: this.tokenStorage.getId(),
+      email: this.tokenStorage.getEmail(),
       username: this.tokenStorage.getUsername(),
       token: this.tokenStorage.getToken(),
-      role : [] = this.tokenStorage.getAuthorities()
+      role: [] = this.tokenStorage.getAuthorities()
     };
 
     console.log(this.form);
   }
+
   onSubmit() {
-    const {username , password} = this.loginForm.value;
+    const {username, password} = this.loginForm.value;
 
     const loginFormAuth = new AuthLoginInfo(username, password);
     console.log(username);
@@ -50,6 +59,8 @@ export class LoginComponent implements OnInit {
     this.authService.attemptAuth(loginFormAuth).subscribe(
       data => {
 
+        this.tokenStorage.saveId(data.id);
+        this.tokenStorage.saveEmail(data.email);
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.roles);
@@ -57,7 +68,7 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
-        this.reloadPage();
+        this.router.navigate(['/user/' + data.id + '/time']);
       },
       error => {
         console.log(error);

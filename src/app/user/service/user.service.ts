@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {IBoard} from '../../board/iboard';
 import {map} from 'rxjs/operators';
 import {IUser} from '../iuser';
 
