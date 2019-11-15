@@ -1,17 +1,8 @@
 .container{
   margin-top: 20px;
+  border: solid 1px black;
+  width: 100%;
 }
-
-.left-body{
-  float: left;
-  width: 20%;
-  height: 400px;
-}
-
-.left-body h5{
-  color: dodgerblue;
-}
-
 
 .right-body{
   float: left;

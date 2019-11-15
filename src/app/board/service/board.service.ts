@@ -28,8 +28,8 @@ export class BoardService {
     return this.httpClient.post<IBoard>(this.URL, board);
   }
 
-  updateBoard(board: IBoard): Observable<IBoard> {
-    return this.httpClient.put<IBoard>(`${this.URL}/${board.boardId}`, board);
+  updateBoard(board: IBoard, id: number): Observable<IBoard> {
+    return this.httpClient.put<IBoard>(`${this.URL}/${id}`, board);
   }
 
   deleteBoard(id: number): Observable<any> {

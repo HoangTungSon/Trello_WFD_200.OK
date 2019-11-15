@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {AuthService} from '../auth/auth.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from '../user/service/user.service';
+import {IUser} from '../user/iuser';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -24,4 +26,7 @@ export class LoginTaskbarComponent implements OnInit {
     console.log(this.tokenStorage.getUsername());
   }
 
+  onClick() {
+    this.router.navigate(['/user/' + this.tokenStorage.getId() + '/board']);
+  }
 }

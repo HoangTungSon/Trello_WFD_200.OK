@@ -62,9 +62,9 @@ export class BoardComponent implements OnInit {
     this.listCardService.createListCard(value)
       .subscribe(
         next => {
-          console.log('success to create a list');
+          console.log('success to create a list card');
         }, error => {
-          console.log('fail to create card');
+          console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
