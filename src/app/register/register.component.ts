@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SignUpInfo} from '../auth/sign-up-info';
 import {AuthService} from '../auth/auth.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -9,26 +10,34 @@ import {AuthService} from '../auth/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  form: any = {};
+  form = new FormGroup({
+    username: new FormControl('', [ Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(3)])
+  });
   signupInfo: SignUpInfo;
   isSignedUp = false;
   isSignUpFailed = false;
   errorMessage = '';
 
+  isNotSignUp = 'Wrong username or password !!!';
+  displaySignUp = false;
+
   constructor(private authService: AuthService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.form = new FormGroup({
+      username: new FormControl('', [ Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(3)])
+    });
+  }
 
   onSubmit() {
-    console.log(this.form);
-    if (this.form.password !== this.form.cpassword) {
-      return alert('mat khau k trung nhau');
-    }
 
-    this.signupInfo = new SignUpInfo(
-      this.form.userName,
-      this.form.email,
-      this.form.password);
+    const {username, email , password} = this.form.value;
+
+    this.signupInfo = new SignUpInfo(username, email, password);
 
     this.authService.signUp(this.signupInfo).subscribe(
       data => {
@@ -37,9 +46,9 @@ export class RegisterComponent implements OnInit {
         this.isSignUpFailed = false;
       },
       error => {
-        console.log(error);
         this.errorMessage = error.error.message;
         this.isSignUpFailed = true;
+        this.displaySignUp = true;
       }
     );
   }
