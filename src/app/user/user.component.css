@@ -44,8 +44,11 @@
   background-image: none;
   background-size: cover;
   background-position: center center;
+  background-color: lightgray;
 }
 
 .card-body h6{
   color: white;
 }
+
+

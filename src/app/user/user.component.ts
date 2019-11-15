@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from './service/user.service';
 import {BoardService} from '../board/service/board.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {IBoard} from '../board/iboard';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IUser} from './iuser';
 
 @Component({
   selector: 'app-user',
