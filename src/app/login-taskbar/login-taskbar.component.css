@@ -1,0 +1,23 @@
+.dropdown-menu{
+  margin-left: 10px;
+  color: slategray;
+}
+
+.dropdown-menu a{
+  margin-top: 10px;
+  margin-left: 5px;
+  color: dodgerblue;
+
+}
+
+.dropdown-menu p{
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.dropdown-menu input{
+  margin-top: 10px;
+  margin-left: 5px;
+  width: 200px;
+  height: 25px;
+}

@@ -12,6 +12,10 @@ import { UserComponent } from './user/user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { HomeTaskbarComponent } from './home-taskbar/home-taskbar.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { LoginTaskbarComponent } from './login-taskbar/login-taskbar.component';
 
 
 @NgModule({
@@ -22,7 +26,11 @@ import { RegisterComponent } from './register/register.component';
     BoardComponent,
     UserComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent,
+    HomeTaskbarComponent,
+    HomePageComponent,
+    LoginTaskbarComponent
   ],
   imports: [
     BrowserModule,
