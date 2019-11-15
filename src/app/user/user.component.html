@@ -4,12 +4,14 @@
   <div class="board-page-recently">
     <h6 class="board-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</h6>
     <div class="board-page-recently-body row">
-      <div class="card col-3" style="width: 18rem;" *ngFor="let board of listBoardByTime">
-        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')" [routerLink]="['/board',board.boardId,'list']">
+      <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoardByTime">
+        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
-      <div class="card col-3" style="width: 18rem;)">
+      <div class="card col-3" style="width: 17rem;" (click)="createBoard()">
         <div class="card-body create">
           <h6>Create board</h6>
         </div>
@@ -19,12 +21,14 @@
   <div class="board-page-personal">
     <h6 class="board-page-header-personal"><i class="far fa-user"></i> Personal Boards</h6>
     <div class="board-page-personal-body row">
-      <div class="card col-3" style="width: 18rem;" *ngFor="let board of listBoard">
-        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')" [routerLink]="['/board',board.boardId,'list']">
+      <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoard">
+        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
-      <div class="card col-3" style="width: 18rem;">
+      <div class="card col-3" style="width: 17rem;" (click)="createBoard()">
         <div class="card-body create">
           <h6>Create board</h6>
         </div>
