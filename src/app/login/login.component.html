@@ -1,5 +1,6 @@
-<div class="container">
+<app-home-taskbar></app-home-taskbar>
 
+<div class="container">
   <form class="form-signin" [formGroup]="loginForm">
 
     <h2 class="form-signin-heading">Please sign in</h2>
@@ -26,10 +27,12 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
+
     <button class="btn btn-lg btn-primary btn-block" type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">Sign in</button>
     <div class="alert alert-danger" role="alert" *ngIf="display">
         {{isNotLogin}}
     </div>
+
   </form>
 
 </div>

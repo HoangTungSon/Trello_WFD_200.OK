@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/user"><i class="fas fa-home"></i></button>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div style="margin-left: 5px">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-clipboard-list"></i> Boards
+    </a>
+    <div class="dropdown-menu">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <p class="user-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</p>
+      <p class="user-page-header-personal"><i class="far fa-user"></i> Personal Boards</p>
+      <p class="user-page-header-group"><i class="fas fa-users"></i> Group Boards</p>
+      <a class="dropdown-item" href="#">Create new board</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+  </div>
+  <div style="margin-left: 5px">
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+    </form>
+  </div>
+  <div class="ml-auto">
+<!--    <button type="button" class="btn btn-outline-primary" routerLink="/register">Register</button>-->
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" routerLink="/profile"><i class="fas fa-user"></i></button>
+  </div>
+</nav>

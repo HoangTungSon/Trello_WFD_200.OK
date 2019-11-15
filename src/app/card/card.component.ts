@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CardService} from './service/card.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ICard} from './icard';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {IListCard} from '../list-card/ilist-card';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -11,30 +11,41 @@ import {IListCard} from '../list-card/ilist-card';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private cardService: CardService) {
+  @Input() id: number;
+
+  constructor(
+    private cardService: CardService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
   }
 
-  cards: ICard[] = [];
+  card: ICard = {
+    cardId: null,
+    title: '',
+    description: '',
+    listSet: {
+      listId: this.id
+    }
+  };
+
+  cardForm: FormGroup;
 
   ngOnInit() {
-    this.cardService.getCard().subscribe(
-      next => {
-        this.cards = next;
-        console.log('success');
-      }, error => {
-        console.log('error');
-      }
-    );
+    this.cardForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(10)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+    });
   }
 
-  drop(event: CdkDragDrop<ICard[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
+  onSubmit() {
+    this.cardService.createCard(this.card)
+      .subscribe(
+        next => {
+          this.router.navigate(['/board/82/list']);
+          console.log('success to create a card');
+        }, error => {
+          console.log('fail to create card');
+        });
   }
 }

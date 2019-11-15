@@ -35,4 +35,16 @@ export class BoardService {
   deleteBoard(id: number): Observable<any> {
     return this.httpClient.delete(`${this.URL}/${id}`);
   }
+
+  getListBoardByUser(count = 10, id: number): Observable<IBoard[]> {
+    return this.httpClient.get<IBoard[]>(this.URL + '/user/' + id).pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
+  }
+
+  getListBoardByTime(count = 10, id: number): Observable<IBoard[]> {
+    return this.httpClient.get<IBoard[]>(this.URL + '/user/' + id + '/time').pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
+  }
 }

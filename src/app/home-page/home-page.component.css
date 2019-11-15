@@ -1,0 +1,17 @@
+.image {
+  background-image: url("../../assets/img/pexels-photo-326055.jpeg");
+  height:38.2em; background-size:cover;
+  width:auto;
+  background-position:50% 50%;
+}
+
+.container{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 200px;
+}
+
+h1 {
+  color: #e3f2fd;
+}

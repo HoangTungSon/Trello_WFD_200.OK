@@ -1,0 +1,51 @@
+.container{
+  margin-top: 20px;
+}
+
+.left-body{
+  float: left;
+  width: 20%;
+  height: 400px;
+}
+
+.left-body h5{
+  color: dodgerblue;
+}
+
+
+.right-body{
+  float: left;
+  width: 80%;
+}
+
+.board-page-recently{
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.board-page-personal{
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.board-page-group{
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.card{
+  margin-top: 10px;
+  margin-left: 5px;
+  height: 100px;
+  border: none;
+}
+
+.card-body{
+  background-image: none;
+  background-size: cover;
+  background-position: center center;
+}
+
+.card-body h6{
+  color: white;
+}

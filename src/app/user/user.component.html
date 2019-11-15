@@ -1,34 +1,22 @@
+<app-login-taskbar></app-login-taskbar>
+
 <div class="container">
   <div class="board-page-recently">
     <h6 class="board-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</h6>
     <div class="board-page-recently-body row">
-      <div class="card col-3" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <!--      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-        </div>
-      </div>
-      <div class="card col-3" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <!--      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+      <div class="card col-3" style="width: 18rem;" *ngFor="let board of listBoardByTime">
+        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')" [routerLink]=['/board',board.boardId,'list']>
+          <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
     </div>
   </div>
   <div class="board-page-personal">
     <h6 class="board-page-header-personal"><i class="far fa-user"></i> Personal Boards</h6>
-    <div class="board-page-recently-body row">
-      <div class="card col-3" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <!--      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-        </div>
-      </div>
-      <div class="card col-3" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <!--      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+    <div class="board-page-personal-body row">
+      <div class="card col-3" style="width: 18rem;" *ngFor="let board of listBoard">
+        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')" [routerLink]=['/board',board.boardId,'list']>
+          <h6>Name: {{board.boardName}}</h6>
         </div>
       </div>
     </div>
