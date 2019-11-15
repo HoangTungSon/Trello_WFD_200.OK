@@ -5,7 +5,7 @@ const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';
 const EMAIL_KEY = 'AuthEmail';
-const ID_KEY = 'AuthID';
+const USERID_KEY = 'AuthID';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +23,12 @@ export class TokenStorageService {
 
 
   public saveId(id: string) {
-    window.sessionStorage.removeItem(ID_KEY);
-    window.sessionStorage.setItem(ID_KEY, id);
+    window.sessionStorage.removeItem(USERID_KEY);
+    window.sessionStorage.setItem(USERID_KEY, id);
   }
 
   public getId(): string {
-    return sessionStorage.getItem(ID_KEY);
+    return sessionStorage.getItem(USERID_KEY);
   }
 
   public saveEmail(email: string) {

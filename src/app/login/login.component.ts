@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
       console.log(this.isLoggedIn);
     }
     this.form = {
-      id: this.tokenStorage.getId(),
+      userId: this.tokenStorage.getId(),
       email: this.tokenStorage.getEmail(),
       username: this.tokenStorage.getUsername(),
       token: this.tokenStorage.getToken(),
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
     this.authService.attemptAuth(loginFormAuth).subscribe(
       data => {
 
-        this.tokenStorage.saveId(data.id);
+        this.tokenStorage.saveId(data.userId);
         this.tokenStorage.saveEmail(data.email);
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
-        this.router.navigate(['/user/' + data.id + '/time']);
+        this.router.navigate(['/user/' + data.userId + '/time']);
       },
       error => {
         console.log(error);
