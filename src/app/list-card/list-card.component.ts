@@ -100,7 +100,6 @@ export class ListCardComponent implements OnInit {
     this.cardService.createCard(value)
       .subscribe(
         next => {
-          window.location.reload();
           console.log('success to create a card');
         }, error => {
           console.log('fail to create card');
