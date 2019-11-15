@@ -5,17 +5,34 @@
 
     <h2 class="form-signin-heading">Please sign in</h2>
 
-    <label for="inputEmail" formControlName="username" class="sr-only">UserName</label>
-    <input type="email" id="inputEmail" formControlName="username" class="form-control" placeholder="UserName" required autofocus>
+    <div class="form-group row">
+      <label for="inputEmail" formControlName="username" class="sr-only">UserName</label>
+      <input type="email" id="inputEmail" formControlName="username" class="form-control" placeholder="UserName" required autofocus>
+      <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched">
+        Invalid username!
+      </div>
+    </div>
 
+
+    <div class="form-group row">
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" formControlName="password" class="form-control" placeholder="Password" required>
+      <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+        Invalid password!
+      </div>
+    </div>
+
     <div class="checkbox">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <a href="http://localhost:4200/user/119/time"><button class="btn btn-lg btn-primary btn-block" type="button" (click)="onSubmit()">Sign in</button></a>
+
+    <button class="btn btn-lg btn-primary btn-block" type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">Sign in</button>
+    <div class="alert alert-danger" role="alert" *ngIf="display">
+        {{isNotLogin}}
+    </div>
+
   </form>
 
 </div>

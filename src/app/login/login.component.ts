@@ -3,7 +3,6 @@ import {AuthLoginInfo} from '../auth/auth-login-info';
 import {AuthService} from '../auth/auth.service';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {IRole} from '../irole';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +10,6 @@ import {IRole} from '../irole';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   form: any = {};
   isLoggedIn = false;
   isLoginFailed = false;
@@ -21,8 +19,11 @@ export class LoginComponent implements OnInit {
     username: new FormControl(''),
     password: new FormControl('')
   });
-  private loginInfo: AuthLoginInfo;
 
+  isNotLogin = 'Wrong username or password !!!';
+  display = false;
+
+  private loginInfo: AuthLoginInfo;
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
@@ -42,9 +43,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     const {username , password} = this.loginForm.value;
 
-    const loginFormAuth = new AuthLoginInfo(
-      username,
-      password);
+    const loginFormAuth = new AuthLoginInfo(username, password);
     console.log(username);
     console.log(this.roles);
 
@@ -64,6 +63,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         this.errorMessage = error.error.message;
         this.isLoginFailed = true;
+        this.display = true;
       }
     );
   }
