@@ -44,3 +44,31 @@
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.drop-box {
+  cursor: pointer;
+  background: #F8F8F8;
+  border: 5px dashed #DDD;
+  text-align: center;
+  padding: 40px;
+}
+
+.drag-over-title {
+  display: none;
+}
+
+.drop-box.dragover {
+  opacity: 0.6;
+}
+
+.drop-box.dragover .drag-over-title {
+  display: block;
+}
+
+.drop-box.dragover .drag-in-title {
+  display: none;
+}
+
+input[type='file'] {
+  display: none;
+}

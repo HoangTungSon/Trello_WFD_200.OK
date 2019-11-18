@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   listBoardByTime: IBoard[] = [];
   iUsers: IUser[] = [];
   inputBoard = new FormControl();
+  userId = this.tokenStorage.getId();
 
   constructor(
     private userservice: UserService,
@@ -74,16 +75,23 @@ export class UserComponent implements OnInit {
       console.log('fail to create board');
     });
 
-    const userId = this.tokenStorage.getId();
-
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
-        this.router.navigate(['/user/' + userId + '/board']).then(r => console.log('success navigate'));
-      }.bind(this), 500);
-    });
+    this.refreshPage();
   }
 
   updateBoard(board, id) {
     this.boardservice.updateBoard(board, id).subscribe();
+  }
+
+  deleteBoard(id) {
+    this.boardservice.deleteBoard(id).subscribe();
+    this.refreshPage();
+  }
+
+  refreshPage() {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
+    });
   }
 }
