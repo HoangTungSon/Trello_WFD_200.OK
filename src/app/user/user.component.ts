@@ -3,7 +3,7 @@ import {UserService} from './service/user.service';
 import {BoardService} from '../board/service/board.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IBoard} from '../board/iboard';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl} from '@angular/forms';
 import {IUser} from './iuser';
 import {TokenStorageService} from '../auth/token-storage.service';
 
@@ -30,10 +30,6 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    // this.boardForm = this.fb.group({
-    //   boardName: ['new board', [Validators.required, Validators.minLength(10)]],
-    //   iUsers: [this.iUsers, [Validators.required, Validators.minLength(10)]]
-    // });
 
     this.boardservice.getListBoardByUser(10, id).subscribe(
       next => {
@@ -60,26 +56,6 @@ export class UserComponent implements OnInit {
       }
     );
   }
-
-  // createBoard() {
-  //   this.boardForm = this.fb.group({
-  //     boardName: ['new board', [Validators.required, Validators.minLength(10)]],
-  //     iUsers: [this.iUsers, [Validators.required, Validators.minLength(10)]]
-  //   });
-  //   const {value} = this.boardForm;
-  //   this.boardservice.createBoard(value)
-  //     .subscribe(
-  //       next => {
-  //         console.log('success to create a board');
-  //       }, error => {
-  //         console.log('fail to create board');
-  //       });
-  //   this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-  //     setTimeout(function() {
-  //       this.router.navigate(['/user/' + this.iUsers.userId + '/board']).then(r => console.log('success navigate'));
-  //     }.bind(this), 500);
-  //   });
-  // }
 
   createBoard() {
     if (this.inputBoard.value == null) {
