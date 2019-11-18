@@ -1,3 +1,5 @@
+import {IUser} from '../user/iuser';
+
 export interface IBoard {
   boardId: number;
   boardName: string;

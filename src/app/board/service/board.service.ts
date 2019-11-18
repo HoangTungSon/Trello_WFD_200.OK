@@ -24,7 +24,7 @@ export class BoardService {
     );
   }
 
-  createBoard(board: IBoard): Observable<IBoard> {
+  createBoard(board: Partial<IBoard>): Observable<IBoard> {
     return this.httpClient.post<IBoard>(this.URL, board);
   }
 
