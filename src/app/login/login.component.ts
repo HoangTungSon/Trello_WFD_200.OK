@@ -3,7 +3,7 @@ import {AuthLoginInfo} from '../auth/auth-login-info';
 import {AuthService} from '../auth/auth.service';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
+  returnUrl: string;
   roles: string[] = [];
   loginForm = new FormGroup({
     username: new FormControl(''),
@@ -29,10 +30,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
+    private route: ActivatedRoute,
     private router: Router) {
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/login';
+
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getAuthorities();
@@ -68,7 +72,7 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
-        this.router.navigate(['/user/' + data.userId + '/board']);
+        this.router.navigate(['/user/' + data.userId + '/board']).then(r => console.log('user navigate'));
       },
       error => {
         console.log(error);

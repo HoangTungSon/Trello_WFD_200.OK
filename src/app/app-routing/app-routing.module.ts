@@ -7,25 +7,34 @@ import {UserComponent} from '../user/user.component';
 import {RegisterComponent} from '../register/register.component';
 import {ProfileComponent} from '../profile/profile.component';
 import {HomePageComponent} from '../home-page/home-page.component';
+import {CanActivateTeam} from '../active/CanActivateTeam';
+import {NotActivateTeam} from '../active/NotActivateTeam';
 
 const routes: Routes = [{
   path: 'board/:id/list',
-  component: BoardComponent
+  component: BoardComponent,
+  canActivate: [CanActivateTeam],
 }, {
   path: 'login',
-  component: LoginComponent
+  component: LoginComponent,
+  canActivate: [NotActivateTeam],
 }, {
   path: 'list/:id',
-  component: ListCardComponent
+  component: ListCardComponent,
+  canActivate: [CanActivateTeam],
 }, {
   path: 'user/:id/board',
-  component: UserComponent
+  component: UserComponent,
+  canActivate: [CanActivateTeam],
 }, {
   path: 'register',
-  component: RegisterComponent
+  component: RegisterComponent,
+  canActivate: [NotActivateTeam],
+
 }, {
   path: 'profile',
-  component: ProfileComponent
+  component: ProfileComponent,
+  canActivate: [CanActivateTeam],
 }, {
   path: '',
   component: HomePageComponent

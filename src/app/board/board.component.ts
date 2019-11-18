@@ -127,7 +127,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<IListCard[]>) {
     moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
     this.changeListId(this.listCards);
   }
