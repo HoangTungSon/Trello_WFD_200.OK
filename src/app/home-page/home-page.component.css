@@ -1,17 +1,23 @@
 .image {
-  background-image: url("../../assets/img/pexels-photo-326055.jpeg");
-  height:38.2em; background-size:cover;
+  background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
+  height:38.2em;
+  background-size:cover;
   width:auto;
   background-position:50% 50%;
 }
 
-.container{
+.welcome{
   height: 100%;
   display: flex;
   justify-content: center;
-  padding: 200px;
+  padding: 230px;
+  text-align: center;
 }
 
 h1 {
+  color: #e3f2fd;
+}
+
+h3 {
   color: #e3f2fd;
 }
