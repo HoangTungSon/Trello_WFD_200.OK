@@ -1,15 +1,15 @@
 <div cdkDropList [cdkDropListData]="cards" class="example-list-card" (cdkDropListDropped)="drop($event)">
   <div class="example-box-card" *ngFor="let item of cards" cdkDrag (cdkDragDropped)="change($event, item.cardId)">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Id: {{item.cardId}} + {{item.title}}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+      (click)="setOpenCart(item)"
+    >Id: {{item.cardId}} + {{item.title}}
       + {{item.listSet.listId}}</button>
   </div>
   <div>  <button type="button" class="btn btn-light" (click)="createCard(listSet.boardSet.boardId)">+</button>
   </div>
 </div>
 
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="currentCard" class="modal fade" id ="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -22,11 +22,11 @@
         <form>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Title:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <input type="text" class="form-control" id="recipient-name" value="{{currentCard.title}}">
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Description:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <textarea class="form-control" id="message-text" value="{{currentCard.description}}"></textarea>
           </div>
         </form>
       </div>
@@ -37,3 +37,4 @@
     </div>
   </div>
 </div>
+

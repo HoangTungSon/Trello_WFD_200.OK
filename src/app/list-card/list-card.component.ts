@@ -21,6 +21,7 @@ export class ListCardComponent implements OnInit {
   listId: number;
 
   card: ICard;
+  currentCard: ICard;
 
   listSet: IListCard;
 
@@ -123,4 +124,9 @@ export class ListCardComponent implements OnInit {
       }
     }
   }
+
+  setOpenCart(item: ICard) {
+    this.currentCard = item;
+  }
+
 }
