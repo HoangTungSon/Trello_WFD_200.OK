@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IBoard} from '../board/iboard';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {IUser} from './iuser';
+import {TokenStorageService} from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-user',
@@ -15,7 +16,7 @@ export class UserComponent implements OnInit {
 
   listBoard: IBoard[] = [];
   listBoardByTime: IBoard[] = [];
-  iUsers: IUser;
+  iUsers: IUser[] = [];
   inputBoard = new FormControl();
 
   constructor(
@@ -23,7 +24,8 @@ export class UserComponent implements OnInit {
     private boardservice: BoardService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private tokenStorage: TokenStorageService
   ) { }
 
   ngOnInit() {
@@ -53,7 +55,7 @@ export class UserComponent implements OnInit {
 
     this.userservice.getUserById(id).subscribe(
       next => {
-        this.iUsers = next;
+        this.iUsers.push(next);
         console.log('success fetch the user');
       }
     );
@@ -96,9 +98,11 @@ export class UserComponent implements OnInit {
       console.log('fail to create board');
     });
 
+    const userId = this.tokenStorage.getId();
+
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/user/' + this.iUsers.userId + '/board']).then(r => console.log('success navigate'));
+        this.router.navigate(['/user/' + userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
