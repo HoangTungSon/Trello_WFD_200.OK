@@ -38,7 +38,7 @@ import { LoginTaskbarComponent } from './login-taskbar/login-taskbar.component';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
