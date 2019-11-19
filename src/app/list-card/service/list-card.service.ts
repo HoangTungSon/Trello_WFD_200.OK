@@ -3,6 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {IListCard} from '../ilist-card';
+import {environment} from '../../../environments/environment.prod';
+
+const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class ListCardService {
   constructor(private httpClient: HttpClient) {
   }
 
-  URL = 'https://arcane-shelf-46327.herokuapp.com/lists';
+  URL = apiUrl + '/lists';
 
   getListCardById(id: number): Observable<IListCard> {
     return this.httpClient.get<IListCard>(`${this.URL}/${id}`);

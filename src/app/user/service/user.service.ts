@@ -3,6 +3,10 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IUser} from '../iuser';
+import {environment} from '../../../environments/environment.prod';
+
+
+const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +15,7 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  URL = 'https://arcane-shelf-46327.herokuapp.com/users';
+  URL = apiUrl + '/users';
 
   getUserById(id: number): Observable<IUser> {
     return this.httpClient.get<IUser>(`${this.URL}/${id}`);

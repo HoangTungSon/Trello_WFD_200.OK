@@ -3,6 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IBoard} from '../iboard';
+import {environment} from '../../../environments/environment.prod';
+
+const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class BoardService {
   constructor(private httpClient: HttpClient) {
   }
 
-  URL = 'https://arcane-shelf-46327.herokuapp.com/boards';
+  URL = apiUrl + '/boards';
 
   getBoardById(id: number): Observable<IBoard> {
     return this.httpClient.get<IBoard>(`${this.URL}/${id}`);

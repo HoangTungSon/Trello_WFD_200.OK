@@ -1,3 +1,117 @@
 <app-login-taskbar></app-login-taskbar>
 
-<p>profile works!</p>
+<div class="container">
+
+  <div class="row">
+    <div class="col-3">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
+        <a class="nav-link" id="v-pills-changePassword-tab" data-toggle="pill" href="#v-pills-changePassword" role="tab" aria-controls="v-pills-changePassword" aria-selected="false">Change Password</a>
+        <a class="nav-link" id="v-pills-logout-tab" data-toggle="pill" href="#v-pills-logout" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</a>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="tab-content" id="v-pills-tabContent" >
+        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+          <div class="panel panel-info" style="margin: 1em;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Name</h3>
+            </div>
+            <div class="panel-body">
+              {{info.username}}
+            </div>
+          </div>
+          <div class="panel panel-info" style="margin: 1em;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Email</h3>
+            </div>
+            <div class="panel-body">
+              {{info.email}}
+            </div>
+          </div>
+          <div class="panel panel-info" style="margin: 1em;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Last Password Change</h3>
+
+            </div>
+            <div class="panel-body">
+              4 days Ago
+            </div>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="v-pills-changePassword" role="tabpanel" aria-labelledby="v-pills-changePassword-tab">
+          <form action="/password" method="post" [formGroup]="passForm">
+            <div class="panel panel-info" style="margin: 1em;">
+              <div class="panel-heading">
+                <h3 class="panel-title"><label for="old_password" class="control-label panel-title">Old Password</label></h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" formControlName="oldPassword" name="oldPassword" id="old_password" >
+                    <div class="alert alert-danger" role="alert" *ngIf="passForm.get('oldPassword').invalid && passForm.get('oldPassword').touched">
+                      Invalid old password!
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="panel panel-info" style="margin: 1em;">
+              <div class="panel-heading">
+                <h3 class="panel-title"><label for="new_password" class="control-label panel-title">New Password</label></h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" name="newPassword" id="new_password" formControlName="newPassword" >
+                    <div class="alert alert-danger" role="alert" *ngIf="passForm.get('newPassword').invalid && passForm.get('newPassword').touched">
+                      Invalid new password!
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="panel panel-info" style="margin: 1em;">
+              <div class="panel-heading">
+                <h3 class="panel-title"><label for="confirm_password" class="control-label panel-title">Confirm password</label></h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" name="cPassword" id="confirm_password" formControlName="cPassword" >
+                    <div class="alert alert-danger" role="alert" *ngIf="passForm.get('cPassword').invalid && passForm.get('cPassword').touched">
+                      Invalid confirm password!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="panel panel-info border" style="margin: 1em;">
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="pull-left">
+                    <input type="submit" class="form-control btn btn-primary" name="submit" id="submit" (click)="onChange()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="v-pills-logout" role="tabpanel" aria-labelledby="v-pills-logout-tab"><p>Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud magna nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -4,7 +4,9 @@ import {AuthLoginInfo} from './auth-login-info';
 import {Observable} from 'rxjs';
 import {JwtResponse} from './jwt-response';
 import {SignUpInfo} from './sign-up-info';
+import {environment} from '../../environments/environment.prod';
 
+const apiUrl = environment.apiUrl;
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -13,8 +15,8 @@ const httpOptions = {
 })
 export class AuthService {
 
-  private loginUrl = 'https://arcane-shelf-46327.herokuapp.com/users/signin';
-  private signupUrl = 'https://arcane-shelf-46327.herokuapp.com/users/signup';
+  private loginUrl = apiUrl + '/users/signin';
+  private signupUrl = apiUrl + '/users/signup';
 
   constructor(private http: HttpClient) {
   }
