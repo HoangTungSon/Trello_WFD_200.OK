@@ -6,7 +6,6 @@ import {JwtResponse} from './jwt-response';
 import {SignUpInfo} from './sign-up-info';
 import {environment} from '../../environments/environment.prod';
 
-
 const apiUrl = environment.apiUrl;
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

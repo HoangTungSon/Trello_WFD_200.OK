@@ -32,7 +32,7 @@ const routes: Routes = [{
   canActivate: [NotActivateTeam],
 
 }, {
-  path: 'profile',
+  path: 'profile/:id',
   component: ProfileComponent,
   canActivate: [CanActivateTeam],
 }, {

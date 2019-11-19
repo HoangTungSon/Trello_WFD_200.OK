@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'https://arcane-shelf-46327.herokuapp.com'
 };
