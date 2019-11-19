@@ -24,6 +24,9 @@ export class BoardComponent implements OnInit {
 
   cards: ICard[] = [];
 
+
+  currentCard: ICard;
+
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -130,5 +133,9 @@ export class BoardComponent implements OnInit {
   drop(event: CdkDragDrop<IListCard[]>) {
     moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
     this.changeListId(this.listCards);
+  }
+
+  openCard(card: ICard) {
+    this.currentCard = card;
   }
 }
