@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ListCardService} from './service/list-card.service';
 import {IListCard} from './ilist-card';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -6,6 +6,7 @@ import {CardService} from '../card/service/card.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ICard} from '../card/icard';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BoardService} from '../board/service/board.service';
 
 @Component({
   selector: 'app-list-card',
@@ -15,19 +16,22 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class ListCardComponent implements OnInit {
 
   @Input() id: number;
+  @Output() selectCard = new EventEmitter<ICard>();
+
+  @Input() boardId: number;
 
   cards: ICard[] = [];
 
   listId: number;
 
   card: ICard;
-  currentCard: ICard;
 
   listSet: IListCard;
 
   cardForm: FormGroup;
 
   constructor(
+    private boardService: BoardService,
     private listService: ListCardService,
     private cardService: CardService,
     private route: ActivatedRoute,
@@ -83,6 +87,7 @@ export class ListCardComponent implements OnInit {
   }
 
   getListId(list: ICard[], card: ICard) {
+    console.log(list);
     for (const li of list) {
       if (card.listSet.listId !== li.listSet.listId) {
         this.listId = li.listSet.listId;
@@ -114,19 +119,21 @@ export class ListCardComponent implements OnInit {
 
   changeCardId(cards: ICard[]) {
     let mid = 0;
-    for (let i = 0; i < cards.length; i++) {
-      for (let j = i + 1; j < cards.length; j++) {
-        if (cards[i].cardId > cards[j].cardId) {
-          mid = cards[i].cardId;
-          cards[i].cardId = cards[j].cardId;
-          cards[j].cardId = mid;
+    if (cards !== null) {
+      for (let i = 0; i < cards.length; i++) {
+        for (let j = i + 1; j < cards.length; j++) {
+          if (cards[i].cardId > cards[j].cardId) {
+            mid = cards[i].cardId;
+            cards[i].cardId = cards[j].cardId;
+            cards[j].cardId = mid;
+          }
         }
       }
     }
   }
 
   setOpenCart(item: ICard) {
-    this.currentCard = item;
+    this.selectCard.emit(item);
   }
 
 }

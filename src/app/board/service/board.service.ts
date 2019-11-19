@@ -6,7 +6,6 @@ import {IBoard} from '../iboard';
 import {environment} from '../../../environments/environment.prod';
 
 const apiUrl = environment.apiUrl;
-
 @Injectable({
   providedIn: 'root'
 })
