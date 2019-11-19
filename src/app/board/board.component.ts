@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChildren} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BoardService} from './service/board.service';
 import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
-import {CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
@@ -24,8 +24,11 @@ export class BoardComponent implements OnInit {
 
   cards: ICard[] = [];
 
-
   currentCard: ICard;
+
+  cardForm: FormGroup;
+
+  listSet: IListCard;
 
   constructor(
     private boardService: BoardService,
@@ -36,8 +39,6 @@ export class BoardComponent implements OnInit {
     private router: Router,
   ) {
   }
-
-  @ViewChildren(CdkDropListGroup, null) group: CdkDropListGroup<CdkDropList>;
 
   ngOnInit() {
     this.listForm = this.fb.group({
@@ -61,7 +62,7 @@ export class BoardComponent implements OnInit {
 
   createList() {
     this.listForm = this.fb.group({
-      listName: ['new card', [Validators.required, Validators.minLength(10)]],
+      listName: ['new list', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
     });
     const {value} = this.listForm;
@@ -69,6 +70,7 @@ export class BoardComponent implements OnInit {
       .subscribe(
         next => {
           console.log('success to create a list card');
+          // this.createCard(next);
         }, error => {
           console.log('fail to create list card');
         });
@@ -78,6 +80,23 @@ export class BoardComponent implements OnInit {
       }.bind(this), 500);
     });
   }
+
+  //
+  // createCard(listSet) {
+  //   this.cardForm = this.fb.group({
+  //     title: ['new card', [Validators.required, Validators.minLength(10)]],
+  //     description: ['nothing', [Validators.required, Validators.minLength(10)]],
+  //     listSet: [listSet, [Validators.required, Validators.minLength(10)]],
+  //   });
+  //   const {value} = this.cardForm;
+  //   this.cardService.createCard(value)
+  //     .subscribe(
+  //       next => {
+  //         console.log('success to create a card');
+  //       }, error => {
+  //         console.log('fail to create card');
+  //       });
+  // }
 
   deleteList(id: number) {
     this.listCardService.deleteListCard(id).subscribe(right => {

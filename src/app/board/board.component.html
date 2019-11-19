@@ -4,10 +4,10 @@
     <div class="example-list">
         <div class="example-container" *ngFor="let list of listCards" cdkDrag>
           <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
-                 (keydown.enter)="changeNameList(list.listId)">
+                 (change) ="changeNameList(list.listId)">
           <input id="listDeleteButton" type="button" class="btn btn-outline-dark" (click)="deleteListCard(list.listId)"
                  value="---">
-          <app-list-card [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
+          <app-list-card [id]="list.listId" [boardId]="list.boardSet.boardId" (selectCard)="openCard($event)"></app-list-card>
         </div>
         <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">+</button>
     </div>
