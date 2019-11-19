@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ListCardService} from './service/list-card.service';
 import {IListCard} from './ilist-card';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -15,13 +15,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class ListCardComponent implements OnInit {
 
   @Input() id: number;
+  @Output() selectCard = new EventEmitter<ICard>();
 
   cards: ICard[] = [];
 
   listId: number;
 
   card: ICard;
-  currentCard: ICard;
 
   listSet: IListCard;
 
@@ -126,7 +126,7 @@ export class ListCardComponent implements OnInit {
   }
 
   setOpenCart(item: ICard) {
-    this.currentCard = item;
+    this.selectCard.emit(item);
   }
 
 }
