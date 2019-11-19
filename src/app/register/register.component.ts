@@ -13,7 +13,8 @@ export class RegisterComponent implements OnInit {
   form = new FormGroup({
     username: new FormControl('', [ Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(3)])
+    password: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    cpassword: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
   signupInfo: SignUpInfo;
   isSignedUp = false;
@@ -23,33 +24,42 @@ export class RegisterComponent implements OnInit {
   isNotSignUp = 'Wrong username or password !!!';
   displaySignUp = false;
 
+  message = 'The passwords do not match';
+  displayMessage = false;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.form = new FormGroup({
       username: new FormControl('', [ Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(3)])
+      password: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      cpassword: new FormControl('', [Validators.required, Validators.minLength(3)])
     });
   }
 
   onSubmit() {
 
-    const {username, email , password} = this.form.value;
-
+    const {username, email , password, cpassword} = this.form.value;
     this.signupInfo = new SignUpInfo(username, email, password);
 
-    this.authService.signUp(this.signupInfo).subscribe(
-      data => {
-        console.log(data);
-        this.isSignedUp = true;
-        this.isSignUpFailed = false;
-      },
-      error => {
-        this.errorMessage = error.error.message;
-        this.isSignUpFailed = true;
-        this.displaySignUp = true;
-      }
-    );
+    if ( password === cpassword) {
+      this.authService.signUp(this.signupInfo).subscribe(
+        data => {
+          console.log(data);
+          this.isSignedUp = true;
+          this.isSignUpFailed = false;
+        },
+        error => {
+          this.errorMessage = error.error.message;
+          this.isSignUpFailed = true;
+          this.displaySignUp = true;
+        }
+      );
+    } else {
+      this.displayMessage = true;
+    }
+
+
   }
 }
