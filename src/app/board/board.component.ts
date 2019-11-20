@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BoardService} from './service/board.service';
 import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {IUser} from '../user/iuser';
 
 @Component({
   selector: 'app-board',
@@ -15,6 +16,8 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+
+  board: IBoard;
 
   listCards: IListCard[] = [];
 
@@ -27,6 +30,10 @@ export class BoardComponent implements OnInit {
   currentCard: ICard;
 
   cardForm: FormGroup;
+
+  users: IUser[] = [];
+
+  members: IUser[] = [];
 
   constructor(
     private boardService: BoardService,
@@ -50,6 +57,13 @@ export class BoardComponent implements OnInit {
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
     });
     const id = +this.route.snapshot.paramMap.get('id');
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.board = next;
+      this.users = this.board.userSet;
+      console.log('success to get board');
+    }, error => {
+      console.log('fail to get board');
+    });
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -160,15 +174,20 @@ export class BoardComponent implements OnInit {
 
   submit() {
     const {value} = this.cardForm;
-    this.cardService.updateCard(value).subscribe( next => {
+    this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        setTimeout(function() {
+        setTimeout(function () {
           this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
         }.bind(this), 500);
       });
     }, error => {
       console.log('error update');
     });
+  }
+
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
   }
 }

@@ -1,8 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CardService} from './service/card.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ICard} from './icard';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from '../user/service/user.service';
+import {BoardService} from '../board/service/board.service';
+import {IUser} from '../user/iuser';
+import {IBoard} from '../board/iboard';
 
 @Component({
   selector: 'app-card',
@@ -11,41 +15,38 @@ import {Router} from '@angular/router';
 })
 export class CardComponent implements OnInit {
 
-  @Input() id: number;
+  board: IBoard;
+
+  users: IUser[];
+
+  members: IUser[] = [];
+
+  @Output() member = new EventEmitter<IUser[]>();
 
   constructor(
+    private boardService: BoardService,
+    private userService: UserService,
     private cardService: CardService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router
   ) {
   }
 
-  card: ICard = {
-    cardId: null,
-    title: '',
-    description: '',
-    listSet: {
-      listId: this.id
-    }
-  };
-
-  cardForm: FormGroup;
-
   ngOnInit() {
-    this.cardForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(10)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.board = next;
+      console.log('success to get board');
+      this.users = this.board.userSet;
+    }, error => {
+      console.log('fail to get board');
     });
   }
 
-  onSubmit() {
-    this.cardService.createCard(this.card)
-      .subscribe(
-        next => {
-          this.router.navigate(['/board/82/list']);
-          console.log('success to create a card');
-        }, error => {
-          console.log('fail to create card');
-        });
+  sendMember(user: IUser) {
+    this.members.push(user);
+    this.member.emit(this.members);
+    console.log('members after emit: ' + this.members);
   }
 }
