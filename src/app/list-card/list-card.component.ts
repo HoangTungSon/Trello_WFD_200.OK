@@ -35,7 +35,6 @@ export class ListCardComponent implements OnInit {
     private router: Router
   ) {
   }
-
   ngOnInit() {
     this.cardService.getCardByList(10, this.id).subscribe(
       next => {
@@ -111,7 +110,6 @@ export class ListCardComponent implements OnInit {
       }.bind(this), 500);
     });
   }
-
   changeCardId(cards: ICard[]) {
     let mid = 0;
     for (let i = 0; i < cards.length; i++) {
@@ -124,7 +122,6 @@ export class ListCardComponent implements OnInit {
       }
     }
   }
-
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
   }

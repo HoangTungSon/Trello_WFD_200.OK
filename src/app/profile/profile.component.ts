@@ -9,7 +9,6 @@ import {IUser} from '../user/iuser';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
   user: IUser;
 
   constructor(

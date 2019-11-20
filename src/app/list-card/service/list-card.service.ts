@@ -37,7 +37,7 @@ export class ListCardService {
   }
 
 
-  getListCardByBoard(count = 10, id: number): Observable<IListCard[]> {
+  getListCardByBoard(count = 10, id: string): Observable<IListCard[]> {
     return this.httpClient.get<IListCard[]>( this.URL + '/board/' + id).pipe(
       map(data => data.filter((todo, i) => i < count))
     );

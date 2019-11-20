@@ -4,7 +4,7 @@ import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
 import {IListCard} from '../list-card/ilist-card';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -27,6 +27,13 @@ export class BoardComponent implements OnInit {
 
   currentCard: ICard;
 
+  currentCardForm = new FormGroup({
+    title: new FormControl(''),
+    description: new FormControl(''),
+  });
+  private id: any;
+
+
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -44,7 +51,18 @@ export class BoardComponent implements OnInit {
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
     });
-    const id = +this.route.snapshot.paramMap.get('id');
+    const id1 = +this.route.snapshot.paramMap.get('id');
+    this.id = id1;
+
+    this.getListCard(id1);
+
+    this.boardService.getBoardById(id1).subscribe(next => {
+      this.boardSet = next;
+      console.log('success fetch the board');
+    });
+  }
+
+  getListCard(id) {
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -53,10 +71,6 @@ export class BoardComponent implements OnInit {
         console.log('error');
       }
     );
-    this.boardService.getBoardById(id).subscribe(next => {
-      this.boardSet = next;
-      console.log('success fetch the board');
-    });
   }
 
   createList() {
@@ -117,6 +131,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+
   changeListId(lists: IListCard[]) {
     let mid = 0;
     for (let i = 0; i < lists.length; i++) {
@@ -137,5 +152,34 @@ export class BoardComponent implements OnInit {
 
   openCard(card: ICard) {
     this.currentCard = card;
+  }
+
+  updateCurrnentCard(cardId: number , listId: number ) {
+    const {title, description } = this.currentCardForm.value;
+    if ( title === '' && description === '' ) {
+      return alert('ban chua thay doi gi');
+    }
+    console.log(cardId, listId, title, description);
+
+    const formCard: ICard = {
+      cardId,
+      title,
+      description,
+      listSet: {
+        listId
+      }
+    };
+
+    console.log(formCard);
+
+    this.cardService.updateCard(formCard).subscribe(
+      result => {
+        alert('thanh cong');
+        this.getListCard(this.id);
+      }, error => {
+        alert('loi update card');
+        console.log(error);
+      }
+    );
   }
 }
