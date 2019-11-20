@@ -78,6 +78,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+// -----------------------------List----------------------------------------
 
   createList() {
     this.listForm = this.fb.group({
@@ -121,7 +122,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -172,8 +173,15 @@ export class BoardComponent implements OnInit {
 
   }
 
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
+    this.currentCard.userSetCard = this.members;
+  }
+
   submit() {
     const {value} = this.cardForm;
+    value.userSetCard = this.members;
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
@@ -186,8 +194,4 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  addMember(users: IUser[]) {
-    console.log(users);
-    this.members = users;
-  }
 }

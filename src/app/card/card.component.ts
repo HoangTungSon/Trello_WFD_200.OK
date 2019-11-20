@@ -23,6 +23,10 @@ export class CardComponent implements OnInit {
 
   @Output() member = new EventEmitter<IUser[]>();
 
+  @Input() card: ICard;
+
+  memberCheck = false;
+
   constructor(
     private boardService: BoardService,
     private userService: UserService,
@@ -45,8 +49,26 @@ export class CardComponent implements OnInit {
   }
 
   sendMember(user: IUser) {
-    this.members.push(user);
+    this.members = this.card.userSetCard;
+    console.log('before pop' + this.members);
+    for (let i = 0; i < this.members.length; i++) {
+      if (this.members[i].email === user.email) {
+        const mid = this.members[i];
+        this.members[i] = this.members[this.members.length - 1];
+        this.members[this.members.length - 1] = this.members[i];
+        this.members.pop();
+        this.memberCheck = true;
+        break;
+      } else {
+        this.memberCheck = false;
+      }
+    }
+    if (!this.memberCheck) {
+      this.members.push(user);
+    }
     this.member.emit(this.members);
     console.log('members after emit: ' + this.members);
   }
+
+
 }

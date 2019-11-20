@@ -63,7 +63,7 @@
             <div class="cardForm">
               <div>
                 <label for="recipient-id" class="col-form-label">Member(s):</label>
-                <div *ngFor="let user of members">
+                <div *ngFor="let user of currentCard.userSetCard">
                   <button>{{user.username}}</button>
                 </div>
                 <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
@@ -96,5 +96,5 @@
   </div>
 </form>
 
-<app-card (member)="addMember($event)"></app-card>
+<app-card [card]="currentCard" (member)="addMember($event)"></app-card>
 
