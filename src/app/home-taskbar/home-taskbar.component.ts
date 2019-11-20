@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {TokenStorageService} from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-home-taskbar',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeTaskbarComponent implements OnInit {
 
-  constructor() { }
+  userId = this.tokenStorage.getId();
+
+  constructor(private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
   }
