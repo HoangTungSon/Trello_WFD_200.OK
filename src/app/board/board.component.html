@@ -1,21 +1,34 @@
 <app-login-taskbar></app-login-taskbar>
 <form [formGroup]="listForm" class="formList">
-  <div cdkDropListGroup>
-    <div class="example-list">
-        <div class="example-container" *ngFor="let list of listCards" cdkDrag>
-          <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
-                 (change) ="changeNameList(list.listId)">
-          <input id="listDeleteButton" type="button" class="btn btn-outline-dark" (click)="deleteListCard(list.listId)"
-                 value="---">
-          <app-list-card [id]="list.listId" [boardId]="list.boardSet.boardId" (selectCard)="openCard($event)"></app-list-card>
-        </div>
-        <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">+</button>
+  <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
+  <div class="example-container">
+    <div cdkDropListGroup>
+      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let list of listCards" cdkDrag>
+            <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
+                   (change)="changeNameList(list.listId)">
+            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right;"
+                   (click)="deleteListCard(list.listId)"
+                   value="---">
+          </div>
+      </div>
     </div>
+
+    <div cdkDropListGroup>
+        <div class="example-list">
+          <div class="example-box" *ngFor="let list of listCards">
+            <app-list-card [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
+          </div>
+        </div>
+    </div>
+    <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">Adding a new list
+    </button>
   </div>
+  </cdk-virtual-scroll-viewport>
 </form>
 
-
-<div *ngIf="currentCard" class="modal fade" id ="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="currentCard" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -43,3 +56,4 @@
     </div>
   </div>
 </div>
+

@@ -26,10 +26,6 @@ export class BoardComponent implements OnInit {
 
   currentCard: ICard;
 
-  cardForm: FormGroup;
-
-  listSet: IListCard;
-
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -60,6 +56,8 @@ export class BoardComponent implements OnInit {
     });
   }
 
+
+
   createList() {
     this.listForm = this.fb.group({
       listName: ['new list', [Validators.required, Validators.minLength(10)]],
@@ -80,23 +78,6 @@ export class BoardComponent implements OnInit {
       }.bind(this), 500);
     });
   }
-
-  //
-  // createCard(listSet) {
-  //   this.cardForm = this.fb.group({
-  //     title: ['new card', [Validators.required, Validators.minLength(10)]],
-  //     description: ['nothing', [Validators.required, Validators.minLength(10)]],
-  //     listSet: [listSet, [Validators.required, Validators.minLength(10)]],
-  //   });
-  //   const {value} = this.cardForm;
-  //   this.cardService.createCard(value)
-  //     .subscribe(
-  //       next => {
-  //         console.log('success to create a card');
-  //       }, error => {
-  //         console.log('fail to create card');
-  //       });
-  // }
 
   deleteList(id: number) {
     this.listCardService.deleteListCard(id).subscribe(right => {

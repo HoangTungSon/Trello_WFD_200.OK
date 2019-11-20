@@ -18,8 +18,6 @@ export class ListCardComponent implements OnInit {
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
 
-  @Input() boardId: number;
-
   cards: ICard[] = [];
 
   listId: number;

@@ -19,6 +19,7 @@ import {LoginTaskbarComponent} from './login-taskbar/login-taskbar.component';
 import {NotActivateTeam} from './active/NotActivateTeam';
 import {CanActivateTeam} from './active/CanActivateTeam';
 import {Permissions} from './active/Permissions';
+import {ScrollingModule} from "@angular/cdk/scrolling";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {Permissions} from './active/Permissions';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    ScrollingModule,
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]
