@@ -26,6 +26,8 @@ export class BoardComponent implements OnInit {
 
   currentCard: ICard;
 
+  cardForm: FormGroup;
+
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -37,6 +39,12 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cardForm = this.fb.group({
+      cardId: [''],
+      title: ['', [Validators.required, Validators.minLength(10)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      listSet: [''],
+    });
     this.listForm = this.fb.group({
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
@@ -57,7 +65,6 @@ export class BoardComponent implements OnInit {
   }
 
 
-
   createList() {
     this.listForm = this.fb.group({
       listName: ['new list', [Validators.required, Validators.minLength(10)]],
@@ -68,12 +75,11 @@ export class BoardComponent implements OnInit {
       .subscribe(
         next => {
           console.log('success to create a list card');
-          // this.createCard(next);
         }, error => {
           console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -135,7 +141,34 @@ export class BoardComponent implements OnInit {
     this.changeListId(this.listCards);
   }
 
+
+//  ---------------------------- Card --------------------------------
+
   openCard(card: ICard) {
     this.currentCard = card;
+
+    this.cardForm = this.fb.group({
+      cardId: [this.currentCard.cardId],
+      title: [this.currentCard.title, [Validators.required, Validators.minLength(10)]],
+      description: [this.currentCard.description, [Validators.required, Validators.minLength(10)]],
+      listSet: [this.currentCard.listSet],
+    });
+
+    this.cardForm.patchValue(this.currentCard);
+
+  }
+
+  submit() {
+    const {value} = this.cardForm;
+    this.cardService.updateCard(value).subscribe( next => {
+      console.log(next);
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        setTimeout(function() {
+          this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
+        }.bind(this), 500);
+      });
+    }, error => {
+      console.log('error update');
+    });
   }
 }

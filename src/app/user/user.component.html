@@ -19,8 +19,28 @@
       </div>
     </div>
   </div>
+
   <div class="board-page-personal">
-    <h6 class="board-page-header-personal"><i class="far fa-user"></i> Personal Boards</h6>
+    <h6 class="board-page-header-personal"><i class="fas fa-user"></i> Personal Boards</h6>
+    <div class="board-page-personal-body row">
+      <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoard">
+        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+          <h6>Name: {{board.boardName}}</h6>
+        </div>
+        <input type="button" value="delete" (click)="deleteBoard(board.boardId)">
+      </div>
+      <div class="card col-3" style="width: 17rem;" data-toggle="modal" data-target="#exampleModal">
+        <div class="card-body create">
+          <h6 style="color: #e3f2fd">+</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="board-page-personal">
+    <h6 class="board-page-header-personal"><i class="fas fa-user-friends"></i> Group Boards</h6>
     <div class="board-page-personal-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoard">
         <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')"
