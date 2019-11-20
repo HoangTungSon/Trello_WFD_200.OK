@@ -1,7 +1,6 @@
 .example-viewport {
   height: 690px;
   width: 100%;
-  border: 1px solid black;
 }
 
 .example-item {
@@ -76,4 +75,13 @@
 
 .example-list.cdk-drop-list-dragging .example-container:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/*-----------------------------card css----------------------------*/
+.form-control{
+  width: 500px;
+}
+.btn-info {
+  width: 200px;
+  margin-bottom: 10px;
 }

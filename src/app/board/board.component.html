@@ -1,4 +1,20 @@
 <app-login-taskbar></app-login-taskbar>
+
+
+<!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+<!--  <label class="btn btn-secondary active">-->
+<!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
+<!--  </label>-->
+<!--  <label class="btn btn-secondary">-->
+<!--    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
+<!--  </label>-->
+<!--  <label class="btn btn-secondary">-->
+<!--    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
+<!--  </label>-->
+<!--</div>-->
+
+<!---------------------------------lists--------------------------------->
+
 <form [formGroup]="listForm" class="formList">
   <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
     <div class="example-container">
@@ -7,17 +23,19 @@
           <div class="example-box" *ngFor="let list of listCards" cdkDrag>
             <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
                    (change)="changeNameList(list.listId)">
-            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right;"
+            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right"
                    (click)="deleteListCard(list.listId)"
                    value="---">
           </div>
         </div>
       </div>
 
+      <!----------------------------list cards--------------------------------->
+
       <div cdkDropListGroup>
         <div class="example-list">
           <div class="example-box" *ngFor="let list of listCards">
-            <app-list-card [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
+            <app-list-card [users]="this.users" [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
           </div>
         </div>
       </div>
@@ -27,30 +45,47 @@
   </cdk-virtual-scroll-viewport>
 </form>
 
+<!-------------------------modal form card------------------------------>
+
 <form [formGroup]="cardForm" (ngSubmit)="submit()">
-  <div *ngIf="currentCard" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+  <div *ngIf="currentCard" class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1"
        aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Card's Detail</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <div>
-              <label for="recipient-id" class="sr-only">Title:</label>
-              <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
+          <div class="col-md-7 row" style="float: left">
+            <div class="cardForm">
+              <div>
+                <label for="recipient-id" class="col-form-label">Member(s):</label>
+                <div *ngFor="let user of members">
+                  <button>{{user.username}}</button>
+                </div>
+                <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
+              </div>
+              <div>
+                <label for="recipient-name" class="col-form-label">Title:</label>
+                <input type="text" class="form-control" id="recipient-name" formControlName="title">
+              </div>
+              <div>
+                <label for="message-text" class="col-form-label"><i class="fas fa-list"></i> Description:</label>
+                <textarea class="form-control" id="message-text" formControlName="description"></textarea>
+              </div>
             </div>
-            <div>
-              <label for="recipient-name" class="col-form-label">Title:</label>
-              <input type="text" class="form-control" id="recipient-name" formControlName="title">
-            </div>
-            <div>
-              <label for="message-text" class="col-form-label">Description:</label>
-              <textarea class="form-control" id="message-text" formControlName="description"></textarea>
-            </div>
+          </div>
+          <div class="col-md-4 ml-auto row" style="float: right">
+            <div>ADD TO CARD</div>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#memberModal"><i class="fas fa-user"></i> Member</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#labelModal">Label</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#checkListModal">CheckList</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#dueDateModal">Due Date</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#attachmentModal">Attachment</button>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -60,4 +95,6 @@
     </div>
   </div>
 </form>
+
+<app-card (member)="addMember($event)"></app-card>
 
