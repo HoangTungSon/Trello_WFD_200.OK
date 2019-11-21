@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {AuthService} from '../auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from '../user/service/user.service';
-import {IUser} from '../user/iuser';
+import {ICard} from '../card/icard';
+import {CardService} from '../card/service/card.service';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -12,10 +12,13 @@ import {IUser} from '../user/iuser';
 })
 export class LoginTaskbarComponent implements OnInit {
 
-  constructor(    private authService: AuthService,
-                  private tokenStorage: TokenStorageService,
-                  private router: Router
-  ) { }
+  constructor(
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private router: Router,
+    private cardService: CardService
+  ) {
+  }
 
   ngOnInit() {
   }

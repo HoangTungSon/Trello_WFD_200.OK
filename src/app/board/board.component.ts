@@ -19,6 +19,10 @@ export class BoardComponent implements OnInit {
 
   board: IBoard;
 
+  cardChange1: ICard[];
+
+  cardChange2: ICard[];
+
   listCards: IListCard[] = [];
 
   listForm: FormGroup;
@@ -94,7 +98,7 @@ export class BoardComponent implements OnInit {
           console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function z() {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -137,11 +141,38 @@ export class BoardComponent implements OnInit {
       console.log('fail to change');
     });
   }
-
+// -----------change list id therefor have to change listSet in cards---------------------
   changeListId(lists: IListCard[]) {
     let mid = 0;
     for (let i = 0; i < lists.length; i++) {
       for (let j = i + 1; j < lists.length; j++) {
+
+        this.cardService.getCardByList(1000, lists[i].listId).subscribe(
+          next => {
+            this.cardChange1 = next;
+            console.log('get card 1 success');
+            for (const card of this.cardChange1) {
+              card.listSet.listId = lists[i].listId;
+              this.updateCard(card);
+            }
+          }, error => {
+            console.log('error to get card');
+          }
+        );
+
+        this.cardService.getCardByList(1000, lists[j].listId).subscribe(
+          next => {
+            this.cardChange2 = next;
+            console.log('get card 2 success');
+            for (const card of this.cardChange2) {
+              card.listSet.listId = lists[j].listId;
+              this.updateCard(card);
+            }
+          }, error => {
+            console.log('error to get card');
+          }
+        );
+
         if (lists[i].listId > lists[j].listId) {
           mid = lists[i].listId;
           lists[i].listId = lists[j].listId;
@@ -149,7 +180,18 @@ export class BoardComponent implements OnInit {
         }
       }
     }
+
+    for (const list of lists) {
+      this.listCardService.updateListCard(list, list.listId).subscribe(next => {
+        console.log('success to update list after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop list');
+      });
+    }
   }
+
+
 
   drop(event: CdkDragDrop<IListCard[]>) {
     moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
@@ -158,6 +200,13 @@ export class BoardComponent implements OnInit {
 
 
 //  ---------------------------- Card --------------------------------
+  updateCard(card) {
+    this.cardService.updateCard(card).subscribe(next => {
+      console.log('update card');
+    }, error => {
+      console.log('fail to update card');
+    });
+  }
 
   openCard(card: ICard) {
     this.currentCard = card;
@@ -170,7 +219,6 @@ export class BoardComponent implements OnInit {
     });
 
     this.cardForm.patchValue(this.currentCard);
-
   }
 
   addMember(users: IUser[]) {

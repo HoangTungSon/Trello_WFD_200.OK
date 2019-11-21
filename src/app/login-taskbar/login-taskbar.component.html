@@ -21,15 +21,16 @@
     </div>
   </div>
   <div style="margin-left: 5px">
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <div class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" >
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-    </form>
+    </div>
   </div>
   <div class="ml-auto">
     <button type="button" class="btn btn-outline-primary" (click)="onSubmit()" >Logout</button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i></button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',this.tokenStorage.getId()]"><i class="fas fa-user"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal" data-target="#findingModal" value="---"><i class="fas fa-info"></i></button>
   </div>
 </nav>
 

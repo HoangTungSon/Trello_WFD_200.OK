@@ -68,12 +68,12 @@ export class ListCardComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      this.changeCardId(event.container.data);
       console.log('change container');
     }
   }
 
   change(event: CdkDragDrop<ICard[]>, id: number) {
+    this.changeCardId(event.container.data);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
@@ -132,10 +132,17 @@ export class ListCardComponent implements OnInit {
         }
       }
     }
+    for (const card of cards) {
+      this.cardService.updateCard(card).subscribe(next => {
+        console.log('success to update card after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop card');
+      });
+    }
   }
 
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
   }
-
 }
