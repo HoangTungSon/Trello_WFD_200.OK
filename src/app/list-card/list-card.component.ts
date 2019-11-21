@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ICard} from '../card/icard';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BoardService} from '../board/service/board.service';
+import {IUser} from '../user/iuser';
+import {UserService} from '../user/service/user.service';
 
 @Component({
   selector: 'app-list-card',
@@ -15,10 +17,9 @@ import {BoardService} from '../board/service/board.service';
 })
 export class ListCardComponent implements OnInit {
 
+  @Input() users: IUser[];
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
-
-  @Input() boardId: number;
 
   cards: ICard[] = [];
 
@@ -36,7 +37,8 @@ export class ListCardComponent implements OnInit {
     private cardService: CardService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
   }
 

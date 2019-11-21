@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IUser} from '../iuser';
 import {environment} from '../../../environments/environment.prod';
+import {IBoard} from "../../board/iboard";
 
 
 const apiUrl = environment.apiUrl;
@@ -37,5 +38,11 @@ export class UserService {
 
   deleteUser(id: number): Observable<any> {
     return this.httpClient.delete(`${this.URL}/${id}`);
+  }
+
+  getListUserByBoard(count = 10, id: number): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(this.URL + '/board/' + id).pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
   }
 }

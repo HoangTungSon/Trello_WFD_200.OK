@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BoardService} from './service/board.service';
 import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {IUser} from '../user/iuser';
 
 @Component({
   selector: 'app-board',
@@ -15,6 +16,8 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+
+  board: IBoard;
 
   listCards: IListCard[] = [];
 
@@ -28,7 +31,9 @@ export class BoardComponent implements OnInit {
 
   cardForm: FormGroup;
 
-  listSet: IListCard;
+  users: IUser[] = [];
+
+  members: IUser[] = [];
 
   constructor(
     private boardService: BoardService,
@@ -41,11 +46,24 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cardForm = this.fb.group({
+      cardId: [''],
+      title: ['', [Validators.required, Validators.minLength(10)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      listSet: [''],
+    });
     this.listForm = this.fb.group({
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
     });
     const id = +this.route.snapshot.paramMap.get('id');
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.board = next;
+      this.users = this.board.userSet;
+      console.log('success to get board');
+    }, error => {
+      console.log('fail to get board');
+    });
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -60,6 +78,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+
   createList() {
     this.listForm = this.fb.group({
       listName: ['new list', [Validators.required, Validators.minLength(10)]],
@@ -70,33 +89,15 @@ export class BoardComponent implements OnInit {
       .subscribe(
         next => {
           console.log('success to create a list card');
-          // this.createCard(next);
         }, error => {
           console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
-
-  //
-  // createCard(listSet) {
-  //   this.cardForm = this.fb.group({
-  //     title: ['new card', [Validators.required, Validators.minLength(10)]],
-  //     description: ['nothing', [Validators.required, Validators.minLength(10)]],
-  //     listSet: [listSet, [Validators.required, Validators.minLength(10)]],
-  //   });
-  //   const {value} = this.cardForm;
-  //   this.cardService.createCard(value)
-  //     .subscribe(
-  //       next => {
-  //         console.log('success to create a card');
-  //       }, error => {
-  //         console.log('fail to create card');
-  //       });
-  // }
 
   deleteList(id: number) {
     this.listCardService.deleteListCard(id).subscribe(right => {
@@ -154,7 +155,39 @@ export class BoardComponent implements OnInit {
     this.changeListId(this.listCards);
   }
 
+
+//  ---------------------------- Card --------------------------------
+
   openCard(card: ICard) {
     this.currentCard = card;
+
+    this.cardForm = this.fb.group({
+      cardId: [this.currentCard.cardId],
+      title: [this.currentCard.title, [Validators.required, Validators.minLength(10)]],
+      description: [this.currentCard.description, [Validators.required, Validators.minLength(10)]],
+      listSet: [this.currentCard.listSet],
+    });
+
+    this.cardForm.patchValue(this.currentCard);
+
+  }
+
+  submit() {
+    const {value} = this.cardForm;
+    this.cardService.updateCard(value).subscribe(next => {
+      console.log(next);
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        setTimeout(function () {
+          this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
+        }.bind(this), 500);
+      });
+    }, error => {
+      console.log('error update');
+    });
+  }
+
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
   }
 }
