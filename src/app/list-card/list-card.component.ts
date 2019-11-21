@@ -62,26 +62,29 @@ export class ListCardComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       if (event.currentIndex !== event.previousIndex) {
         this.changeCardId(event.container.data);
+        this.updateAllCardList(event.container.data);
       }
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.changeCardId(event.container.data);
       console.log('change container');
     }
   }
 
-  change(event: CdkDragDrop<ICard[]>, id: number) {
+  changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
     this.changeCardId(event.container.data);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
+          console.log(this.card);
           this.getListId(event.container.data, this.card);
           this.cardService.updateCard(this.card).subscribe(success => {
             console.log('success update');
-          });
+            });
           console.log('success drop');
         }
       );
@@ -113,7 +116,7 @@ export class ListCardComponent implements OnInit {
           console.log('fail to create card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -132,6 +135,9 @@ export class ListCardComponent implements OnInit {
         }
       }
     }
+  }
+
+  updateAllCardList(cards: ICard[]) {
     for (const card of cards) {
       this.cardService.updateCard(card).subscribe(next => {
         console.log('success to update card after drop');
