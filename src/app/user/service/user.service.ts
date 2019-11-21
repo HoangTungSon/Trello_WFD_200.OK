@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IUser} from '../iuser';
 import {environment} from '../../../environments/environment.prod';
-import {IBoard} from "../../board/iboard";
-
 
 const apiUrl = environment.apiUrl;
 
@@ -14,7 +12,8 @@ const apiUrl = environment.apiUrl;
 })
 export class UserService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   URL = apiUrl + '/users';
 
@@ -42,6 +41,12 @@ export class UserService {
 
   getListUserByBoard(count = 10, id: number): Observable<IUser[]> {
     return this.httpClient.get<IUser[]>(this.URL + '/board/' + id).pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
+  }
+
+  getUserByName(count = 10, name: string): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(this.URL + '/user?name=' + name).pipe(
       map(data => data.filter((todo, i) => i < count))
     );
   }

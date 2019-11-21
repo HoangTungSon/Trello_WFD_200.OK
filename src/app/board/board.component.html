@@ -1,18 +1,5 @@
 <app-login-taskbar></app-login-taskbar>
 
-
-<!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-<!--  <label class="btn btn-secondary active">-->
-<!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
-<!--  </label>-->
-<!--  <label class="btn btn-secondary">-->
-<!--    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
-<!--  </label>-->
-<!--  <label class="btn btn-secondary">-->
-<!--    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
-<!--  </label>-->
-<!--</div>-->
-
 <!---------------------------------lists--------------------------------->
 
 <form [formGroup]="listForm" class="formList">
@@ -63,8 +50,9 @@
             <div class="cardForm">
               <div>
                 <label for="recipient-id" class="col-form-label">Member(s):</label>
-                <div *ngFor="let user of currentCard.userSetCard">
-                  <button>{{user.username}}</button>
+                <br>
+                <div *ngFor="let user of currentCard.userSetCard" class="inner">
+                  <button class="memberButton">{{user.username}}</button>
                 </div>
                 <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
               </div>

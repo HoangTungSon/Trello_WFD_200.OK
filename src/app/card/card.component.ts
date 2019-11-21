@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CardService} from './service/card.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {ICard} from './icard';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../user/service/user.service';
@@ -15,11 +15,17 @@ import {IBoard} from '../board/iboard';
 })
 export class CardComponent implements OnInit {
 
+  name: string;
+
   board: IBoard;
 
   users: IUser[];
 
   members: IUser[] = [];
+
+  checkMembers: IUser[] = [];
+
+  memberSameUserSet: IUser[] = [];
 
   @Output() member = new EventEmitter<IUser[]>();
 
@@ -38,6 +44,10 @@ export class CardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUser();
+  }
+
+  getUser() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.boardService.getBoardById(id).subscribe(next => {
       this.board = next;
@@ -70,5 +80,25 @@ export class CardComponent implements OnInit {
     console.log('members after emit: ' + this.members);
   }
 
+  searchUserByName(name) {
+    this.getUser();
+    this.memberSameUserSet = [];
+    this.userService.getUserByName(100, name).subscribe(next => {
+      this.checkMembers = next;
+      console.log('function check user');
+      for (const mem of this.checkMembers) {
+        for (const memUser of this.users) {
+          if (mem.email === memUser.email) {
+            this.memberSameUserSet.push(mem);
+            console.log(this.memberSameUserSet);
+          }
+        }
+      }
+      this.users = this.memberSameUserSet;
+      console.log('success to get by name');
+    }, error => {
+      console.log('fail to get by name');
+    });
+  }
 
 }
