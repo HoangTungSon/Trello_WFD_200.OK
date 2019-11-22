@@ -9,7 +9,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
-import {SearchCardForm} from '../login-taskbar/search-card-form';
 import {SearchCardService} from '../card/service/search-card.service';
 
 @Component({
@@ -50,45 +49,38 @@ export class ListCardComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.cardService.getCardByList(10, this.id).subscribe(
-      next => {
-        this.cards = next;
-        if(this.searchDisplay === null){ this.searchDisplay = next;
-        }
-        console.log('card success');
-      }, error => {
-        console.log('error');
-      }
-    );
     this.listService.getListCardById(this.id).subscribe(next => {
       this.listSet = next;
       console.log('success fetch the list');
     });
 
     this.searchCardService.listen().subscribe(searchText => {
-          this.cardService.getSearchByTitleOrDescription(searchText).subscribe (
-            next => {
-              this.searchCard = next;
-              console.log('search dc');
-              for (let i = 0; i < 1; i++) {
-                for ( let  j = 0; j < 1; j++  ) {
-                  if (this.searchCard[i].description === this.cards[j].description) {
-                    this.searchDisplay.push(this.searchCard[i]);
-                    console.log('Ok search duoc card trong list va card');
-                  } else {
-                    this.searchDisplay = [];
-                  }
-                }
-              }
-            }, error => {
-              console.log('Khong search duoc Card ');
-              this.searchDisplay = this.cards;
-            }
-          );
-       }, error => {
-      this.searchDisplay = this.cards;
+      this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
+        this.searchCard = next;
+        for (const card of this.searchCard) {
+          card.listSet.listId = this.id;
+          this.searchDisplay = [];
+          this.searchDisplay.push(card);
+          console.log(this.searchDisplay);
+        }
+        console.log(next);
+        console.log('find card by id');
+      }, error => {
+        console.log('cannot find');
+      });
     });
+
+    this.cardService.getCardByList(10, this.id).subscribe(
+      next => {
+        this.searchDisplay = next;
+        if (this.searchDisplay !== null) {
+          this.cards = this.searchDisplay;
+        }
+        console.log('card success');
+      }, error => {
+        console.log('error');
+      }
+    );
 
   }
 
@@ -149,7 +141,7 @@ export class ListCardComponent implements OnInit {
           console.log('fail to create card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -173,23 +165,5 @@ export class ListCardComponent implements OnInit {
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
   }
-
-  // onSearchByTitleOrDescription() {
-  //   const searchFrom: SearchCardForm = {
-  //     title: this.searchForm,
-  //     description: this.searchForm,
-  //   };
-  //
-  //   console.log(searchFrom);
-  //
-  //   this.cardService.getSearchByTitleOrDescription(searchFrom).subscribe(
-  //     next => {
-  //       this.cardList = next;
-  //     }, error => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
-
 
 }
