@@ -142,70 +142,45 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getCard1(id) {
-    console.log('run');
-    this.cardService.getCardByList(1000, id).subscribe(
-      next => {
-        this.cardChange1 = next;
-        console.log('get card success');
-      }, error => {
-        console.log('error');
-      }
-    );
-  }
-
-  getCard2(id) {
-    this.cardService.getCardByList(1000, id).subscribe(
-      next => {
-        this.cardChange2 = next;
-        console.log('card success');
-      }, error => {
-        console.log('error');
-      }
-    );
-  }
-
   changeListId(lists: IListCard[]) {
     let mid = 0;
     for (let i = 0; i < lists.length; i++) {
       for (let j = i + 1; j < lists.length; j++) {
 
-        this.cardService.getCardByList(1000, lists[i].listId).subscribe(
-          next => {
-            this.cardChange1 = next;
-            console.log(next);
-            console.log('get card success');
-            console.log(this.cardChange1);
-            for (const card of this.cardChange1) {
-              card.listSet.listId = lists[i].listId;
-              this.updateCard(card);
-            }
-          }, error => {
-            console.log('error');
-          }
-        );
-
-        this.cardService.getCardByList(1000, lists[j].listId).subscribe(
-          next => {
-            this.cardChange2 = next;
-
-            for (const card of this.cardChange2) {
-              card.listSet.listId = lists[j].listId;
-              this.updateCard(card);
-            }
-            console.log('get card success');
-          }, error => {
-            console.log('error');
-          }
-        );
-
-        console.log(this.cardChange1);
-        console.log(this.cardChange2);
-
         if (lists[i].listId > lists[j].listId) {
           mid = lists[i].listId;
           lists[i].listId = lists[j].listId;
           lists[j].listId = mid;
+          console.log(lists[i]);
+
+          // this.cardService.getCardByList(1000, lists[j].listId).subscribe(
+          //   next => {
+          //     this.cardChange1 = next;
+          //     console.log(next);
+          //     console.log('get card success');
+          //     console.log(this.cardChange1);
+          //     for (const card of this.cardChange1) {
+          //       card.listSet.listId = lists[i].listId;
+          //       this.updateCard(card);
+          //     }
+          //   }, error => {
+          //     console.log('error');
+          //   }
+          // );
+          //
+          // this.cardService.getCardByList(1000, lists[i].listId).subscribe(
+          //   next => {
+          //     this.cardChange2 = next;
+          //
+          //     for (const card of this.cardChange2) {
+          //       card.listSet.listId = lists[j].listId;
+          //       this.updateCard(card);
+          //     }
+          //     console.log('get card success');
+          //   }, error => {
+          //     console.log('error');
+          //   }
+          // );
         }
       }
     }
@@ -218,7 +193,6 @@ export class BoardComponent implements OnInit {
       });
     }
   }
-
 
 
   updateCard(card) {
