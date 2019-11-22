@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ICard} from '../icard';
 import {environment} from '../../../environments/environment.prod';
+import {SearchCardForm} from '../../login-taskbar/search-card-form';
 
 const apiUrl = environment.apiUrl;
 
@@ -44,4 +45,9 @@ export class CardService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
+
+  getSearchByTitleOrDescription(search: string): Observable<ICard[]> {
+    return this.httpClient.get<ICard[]>(this.URL + '/searchCard?searchCardForm=' +  search);
+  }
+
 }
