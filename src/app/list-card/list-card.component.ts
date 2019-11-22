@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
+import {SearchCardService} from '../card/service/search-card.service';
 
 @Component({
   selector: 'app-list-card',
@@ -31,6 +32,10 @@ export class ListCardComponent implements OnInit {
 
   cardForm: FormGroup;
 
+  searchDisplay: ICard[] = [];
+
+  searchCard: ICard[];
+
   constructor(
     private boardService: BoardService,
     private listService: ListCardService,
@@ -38,24 +43,47 @@ export class ListCardComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private searchCardService: SearchCardService
   ) {
   }
 
   ngOnInit() {
+    this.listService.getListCardById(this.id).subscribe(next => {
+      this.listSet = next;
+      console.log('success fetch the list');
+    });
+
+    this.searchCardService.listen().subscribe(searchText => {
+      this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
+        this.searchCard = next;
+        for (const card of this.searchCard) {
+          card.listSet.listId = this.id;
+          this.searchDisplay = [];
+          this.searchDisplay.push(card);
+          console.log(this.searchDisplay);
+        }
+        console.log(next);
+        console.log('find card by id');
+      }, error => {
+        console.log('cannot find');
+      });
+    });
+
     this.cardService.getCardByList(10, this.id).subscribe(
       next => {
-        this.cards = next;
+        this.searchDisplay = next;
+        if (this.searchDisplay !== null) {
+          this.cards = this.searchDisplay;
+        }
         console.log('card success');
       }, error => {
         console.log('error');
       }
     );
-    this.listService.getListCardById(this.id).subscribe(next => {
-      this.listSet = next;
-      console.log('success fetch the list');
-    });
+
   }
+
 
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
