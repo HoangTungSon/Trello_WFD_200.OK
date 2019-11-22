@@ -88,9 +88,7 @@ export class ListCardComponent implements OnInit {
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      if (event.currentIndex !== event.previousIndex) {
-        this.changeCardId(event.container.data);
-      }
+      this.updateAllCardList(event.container.data);
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
@@ -101,15 +99,17 @@ export class ListCardComponent implements OnInit {
     }
   }
 
-  change(event: CdkDragDrop<ICard[]>, id: number) {
+  changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
+    this.changeCardId(event.container.data);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
+          console.log(this.card);
           this.getListId(event.container.data, this.card);
           this.cardService.updateCard(this.card).subscribe(success => {
             console.log('success update');
-          });
+            });
           console.log('success drop');
         }
       );
@@ -162,8 +162,30 @@ export class ListCardComponent implements OnInit {
     }
   }
 
+  updateAllCardList(cards: ICard[]) {
+    let mid = 0;
+    if (cards !== null) {
+      for (let i = 0; i < cards.length; i++) {
+        for (let j = i + 1; j < cards.length; j++) {
+          if (cards[i].cardId > cards[j].cardId) {
+            mid = cards[i].cardId;
+            cards[i].cardId = cards[j].cardId;
+            cards[j].cardId = mid;
+          }
+        }
+      }
+    }
+    for (const card of cards) {
+      this.cardService.updateCard(card).subscribe(next => {
+        console.log('success to update card after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop card');
+      });
+    }
+  }
+
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
   }
-
 }
