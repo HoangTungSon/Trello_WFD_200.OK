@@ -22,7 +22,11 @@
   </div>
   <div style="margin-left: 5px">
     <div class="form-inline my-2 my-lg-0">
+<<<<<<< HEAD
       <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search"[(ngModel)]="searchForm" (change)="onSearchComplete()" >
+=======
+      <input class="form-control mr-sm-2" type="text" [(ngModel)]="search" placeholder="Search" aria-label="Search" (keydown)="onSearchByTitleOrDescription()">
+>>>>>>> 7e783906be7a929c5014c9c706d0529cdbf6c91b
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
     </div>
   </div>
