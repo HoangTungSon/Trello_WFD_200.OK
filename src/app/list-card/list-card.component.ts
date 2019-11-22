@@ -36,6 +36,8 @@ export class ListCardComponent implements OnInit {
 
   searchCard: ICard[];
 
+  cardSearch: ICard[] = [];
+
   constructor(
     private boardService: BoardService,
     private listService: ListCardService,
@@ -49,22 +51,20 @@ export class ListCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listService.getListCardById(this.id).subscribe(next => {
-      this.listSet = next;
-      console.log('success fetch the list');
-    });
-
     this.searchCardService.listen().subscribe(searchText => {
+      this.cardSearch = [];
       this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
         this.searchCard = next;
         for (const card of this.searchCard) {
-          card.listSet.listId = this.id;
-          this.searchDisplay = [];
-          this.searchDisplay.push(card);
+          if (card.listSet.listId === this.id) {
+            this.cardSearch.push(card);
+            console.log('run');
+          }
           console.log(this.searchDisplay);
         }
         console.log(next);
         console.log('find card by id');
+        this.searchDisplay = this.cardSearch;
       }, error => {
         console.log('cannot find');
       });
@@ -73,17 +73,17 @@ export class ListCardComponent implements OnInit {
     this.cardService.getCardByList(10, this.id).subscribe(
       next => {
         this.searchDisplay = next;
-        if (this.searchDisplay !== null) {
-          this.cards = this.searchDisplay;
-        }
         console.log('card success');
       }, error => {
         console.log('error');
       }
     );
 
+    this.listService.getListCardById(this.id).subscribe(next => {
+      this.listSet = next;
+      console.log('success fetch the list');
+    });
   }
-
 
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
@@ -109,7 +109,7 @@ export class ListCardComponent implements OnInit {
           this.getListId(event.container.data, this.card);
           this.cardService.updateCard(this.card).subscribe(success => {
             console.log('success update');
-            });
+          });
           console.log('success drop');
         }
       );
