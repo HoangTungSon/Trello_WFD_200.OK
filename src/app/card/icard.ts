@@ -8,4 +8,5 @@ export interface ICard {
     listId: number;
   };
   userSetCard: IUser[];
+  colors: string[];
 }

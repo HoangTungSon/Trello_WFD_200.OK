@@ -1,7 +1,12 @@
-<div cdkDropList [cdkDropListData]="cards" class="example-list-card" (cdkDropListDropped)="drop($event)">
+<div cdkDropList [cdkDropListData]="cards"  class="example-list-card" (cdkDropListDropped)="drop($event)">
   <div class="example-box-card" *ngFor="let item of cards" cdkDrag (cdkDragDropped)="change($event, item.cardId)">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-      (click)="setOpenCart(item)">Id: {{item.cardId}} + {{item.title}}
+
+    <button type="button" class="btn btn-success "  data-toggle="modal" data-target="#exampleModal"
+      (click)="setOpenCart(item)">
+      <div *ngFor="let c of item.colors">
+        <div class="color-box1" [style.background]=c ></div>
+      </div>
+      Id: {{item.cardId}} + {{item.title}}
       + {{item.listSet.listId}}</button>
   </div>
   <div>  <button type="button" class="btn btn-light" (click)="createCard(listSet.boardSet.boardId)">+</button>
