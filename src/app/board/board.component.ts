@@ -246,9 +246,4 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  addMember(users: IUser[]) {
-    console.log(users);
-    this.members = users;
-  }
-
 }

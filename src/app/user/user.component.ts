@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
   iUsers: IUser[] = [];
   inputBoard = new FormControl();
   userId = this.tokenStorage.getId();
-
+  listGroupBoard: IBoard[] = [];
   constructor(
     private userservice: UserService,
     private boardservice: BoardService,
@@ -35,6 +35,11 @@ export class UserComponent implements OnInit {
     this.boardservice.getListBoardByUser(10, id).subscribe(
       next => {
         this.listBoard = next;
+        for (const board of this.listBoard) {
+          if (board.userSet.length > 1  ) {
+            this.listGroupBoard.push(board);
+          }
+        }
         console.log('get board successfully');
       }, error => {
         console.log('get board error');
