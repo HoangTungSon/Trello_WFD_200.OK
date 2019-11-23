@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
+import {SearchCardService} from '../card/service/search-card.service';
 
 @Component({
   selector: 'app-list-card',
@@ -31,6 +32,12 @@ export class ListCardComponent implements OnInit {
 
   cardForm: FormGroup;
 
+  searchDisplay: ICard[] = [];
+
+  searchCard: ICard[];
+
+  cardSearch: ICard[] = [];
+
   constructor(
     private boardService: BoardService,
     private listService: ListCardService,
@@ -38,19 +45,40 @@ export class ListCardComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private searchCardService: SearchCardService
   ) {
   }
 
   ngOnInit() {
+    this.searchCardService.listen().subscribe(searchText => {
+      this.cardSearch = [];
+      this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
+        this.searchCard = next;
+        for (const card of this.searchCard) {
+          if (card.listSet.listId === this.id) {
+            this.cardSearch.push(card);
+            console.log('run');
+          }
+          console.log(this.searchDisplay);
+        }
+        console.log(next);
+        console.log('find card by id');
+        this.searchDisplay = this.cardSearch;
+      }, error => {
+        console.log('cannot find');
+      });
+    });
+
     this.cardService.getCardByList(10, this.id).subscribe(
       next => {
-        this.cards = next;
+        this.searchDisplay = next;
         console.log('card success');
       }, error => {
         console.log('error');
       }
     );
+
     this.listService.getListCardById(this.id).subscribe(next => {
       this.listSet = next;
       console.log('success fetch the list');
@@ -60,9 +88,7 @@ export class ListCardComponent implements OnInit {
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      if (event.currentIndex !== event.previousIndex) {
-        this.changeCardId(event.container.data);
-      }
+      this.updateAllCardList(event.container.data);
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
@@ -73,11 +99,13 @@ export class ListCardComponent implements OnInit {
     }
   }
 
-  change(event: CdkDragDrop<ICard[]>, id: number) {
+  changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
+    this.changeCardId(event.container.data);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
+          console.log(this.card);
           this.getListId(event.container.data, this.card);
           this.cardService.updateCard(this.card).subscribe(success => {
             console.log('success update');
@@ -113,7 +141,7 @@ export class ListCardComponent implements OnInit {
           console.log('fail to create card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -134,8 +162,30 @@ export class ListCardComponent implements OnInit {
     }
   }
 
+  updateAllCardList(cards: ICard[]) {
+    let mid = 0;
+    if (cards !== null) {
+      for (let i = 0; i < cards.length; i++) {
+        for (let j = i + 1; j < cards.length; j++) {
+          if (cards[i].cardId > cards[j].cardId) {
+            mid = cards[i].cardId;
+            cards[i].cardId = cards[j].cardId;
+            cards[j].cardId = mid;
+          }
+        }
+      }
+    }
+    for (const card of cards) {
+      this.cardService.updateCard(card).subscribe(next => {
+        console.log('success to update card after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop card');
+      });
+    }
+  }
+
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
   }
-
 }

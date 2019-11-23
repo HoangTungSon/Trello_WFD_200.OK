@@ -35,6 +35,10 @@ export class BoardComponent implements OnInit {
   input5 = true;
   board: IBoard;
 
+  cardChange1: ICard[];
+
+  cardChange2: ICard[];
+
   listCards: IListCard[] = [];
 
   listForm: FormGroup;
@@ -103,6 +107,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+// -----------------------------List----------------------------------------
 
   createList() {
     this.listForm = this.fb.group({
@@ -146,7 +151,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -166,13 +171,61 @@ export class BoardComponent implements OnInit {
     let mid = 0;
     for (let i = 0; i < lists.length; i++) {
       for (let j = i + 1; j < lists.length; j++) {
+
         if (lists[i].listId > lists[j].listId) {
           mid = lists[i].listId;
           lists[i].listId = lists[j].listId;
           lists[j].listId = mid;
+          console.log(lists[i]);
+
+          // this.cardService.getCardByList(1000, lists[j].listId).subscribe(
+          //   next => {
+          //     this.cardChange1 = next;
+          //     console.log(next);
+          //     console.log('get card success');
+          //     console.log(this.cardChange1);
+          //     for (const card of this.cardChange1) {
+          //       card.listSet.listId = lists[i].listId;
+          //       this.updateCard(card);
+          //     }
+          //   }, error => {
+          //     console.log('error');
+          //   }
+          // );
+          //
+          // this.cardService.getCardByList(1000, lists[i].listId).subscribe(
+          //   next => {
+          //     this.cardChange2 = next;
+          //
+          //     for (const card of this.cardChange2) {
+          //       card.listSet.listId = lists[j].listId;
+          //       this.updateCard(card);
+          //     }
+          //     console.log('get card success');
+          //   }, error => {
+          //     console.log('error');
+          //   }
+          // );
         }
       }
     }
+    for (const list of lists) {
+      this.listCardService.updateListCard(list, list.listId).subscribe(next => {
+        console.log('success to update list after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop list');
+      });
+    }
+  }
+
+
+  updateCard(card) {
+    this.cardService.updateCard(card).subscribe(next => {
+      console.log('update card');
+    }, error => {
+      console.log('fail to update card');
+    });
   }
 
   drop(event: CdkDragDrop<IListCard[]>) {
@@ -196,8 +249,15 @@ export class BoardComponent implements OnInit {
     this.cardForm.patchValue(this.currentCard);
   }
 
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
+    this.currentCard.userSetCard = this.members;
+  }
+
   submit() {
     const {value} = this.cardForm;
+    value.userSetCard = this.members;
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
@@ -214,6 +274,7 @@ export class BoardComponent implements OnInit {
     console.log(users);
     this.members = users;
   }
+
 
   // -------------------- color ----------------------
 
