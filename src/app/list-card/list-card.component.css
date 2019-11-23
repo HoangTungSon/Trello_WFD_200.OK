@@ -74,3 +74,11 @@
 input[type='file'] {
   display: none;
 }
+.color-box1 {
+  float: left;
+  width: 30px;
+  height:5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
