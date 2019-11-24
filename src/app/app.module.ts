@@ -19,9 +19,8 @@ import {LoginTaskbarComponent} from './login-taskbar/login-taskbar.component';
 import {NotActivateTeam} from './active/NotActivateTeam';
 import {CanActivateTeam} from './active/CanActivateTeam';
 import {Permissions} from './active/Permissions';
-import {ScrollingModule} from '@angular/cdk/scrolling';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatIconModule} from "@angular/material/icon";
+import {ScrollingModule} from "@angular/cdk/scrolling";
+import {ColorPickerModule} from 'ngx-color-picker';
 
 
 @NgModule({
@@ -46,8 +45,8 @@ import {MatIconModule} from "@angular/material/icon";
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
-    MatBadgeModule,
-    MatIconModule
+    ColorPickerModule
+
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]

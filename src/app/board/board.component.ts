@@ -1,15 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {BoardService} from './service/board.service';
 import {ListCardService} from '../list-card/service/list-card.service';
 import {CardService} from '../card/service/card.service';
 import {IListCard} from '../list-card/ilist-card';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IUser} from '../user/iuser';
 import {UserService} from "../user/service/user.service";
+import {Cmyk, ColorPickerService} from 'ngx-color-picker';
+import {any} from 'codelyzer/util/function';
 
 @Component({
   selector: 'app-board',
@@ -17,7 +19,21 @@ import {UserService} from "../user/service/user.service";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-
+  constructor(
+    private boardService: BoardService,
+    private listCardService: ListCardService,
+    private cardService: CardService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router,
+    private cpService: ColorPickerService
+  ) {
+  }
+  input1 = true;
+  input2 = true;
+  input3 = true;
+  input4 = true;
+  input5 = true;
   board: IBoard;
 
   listCards: IListCard[] = [];
@@ -46,8 +62,27 @@ export class BoardComponent implements OnInit {
     private userService: UserService,
   ) {
   }
+=======
+  colors: string  [] = [];
+
+  card: ICard;
+
+  color1 = '#2883e9';
+  color2 = '#e920e9';
+  color3 = '#e4E925';
+  color4 = '#eC4040';
+  color5 = '#2DD02D';
+
+  colorForm: FormGroup = new FormGroup({
+    input1: new FormControl(''),
+    input2: new FormControl(''),
+    input3: new FormControl(''),
+    input4: new FormControl(''),
+    input5: new FormControl(''),
+  });
 
   ngOnInit() {
+    console.log(this.currentCard);
     this.cardForm = this.fb.group({
       cardId: [''],
       title: ['', [Validators.required, Validators.minLength(10)]],
@@ -96,7 +131,7 @@ export class BoardComponent implements OnInit {
           console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function z() {
+      setTimeout(function() {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -179,7 +214,6 @@ export class BoardComponent implements OnInit {
     });
 
     this.cardForm.patchValue(this.currentCard);
-
   }
 
   addMember(users: IUser[]) {
@@ -201,6 +235,120 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('error update');
     });
+  }
+
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
+  }
+
+
+  // -------------------- color ----------------------
+
+  check() {
+    console.log(this.colorForm.value.input1);
+
+    if (this.colorForm.value.input1)  {
+      this.colors.push(this.colorForm.value.input1);
+    }
+    console.log(this.colors);
+  }
+    // reset label's card
+   reset(idCard: any) {
+    this.currentCard.colors = [];
+    const cardForm: ICard = {
+       cardId: idCard,
+       title: '',
+       description: '',
+       listSet: {
+         listId: 0
+       },
+       userSetCard: []
+       ,
+       colors: this.colors
+     };
+   }
+  saveColor(idCard: any) {
+    console.log(this.input1);
+    if (this.colorForm.value.input1)  {
+      if (this.currentCard.colors === null) {
+        this.colors.push(this.color1);
+        this.currentCard.colors = this.colors;
+      } else if (this.currentCard.colors.indexOf(this.color1) === -1) {
+        console.log('ok');
+        this.currentCard.colors.push(this.color1);
+      } else {
+        alert('Màu đã tồn tại!');
+      }
+    }
+
+    if (this.colorForm.value.input2) {
+      if (this.currentCard.colors === null) {
+        this.colors.push(this.color2);
+        this.currentCard.colors = this.colors;
+      } else if (this.currentCard.colors.indexOf(this.color2) === -1) {
+        this.currentCard.colors.push(this.color2);
+      } else {
+        alert('Màu đã tồn tại!');
+      }
+    }
+
+    if (this.colorForm.value.input3) {
+      if (this.currentCard.colors === null) {
+        this.colors.push(this.color3);
+        this.currentCard.colors = this.colors;
+      } else if (this.currentCard.colors.indexOf(this.color3) === -1) {
+        this.currentCard.colors.push(this.color3);
+      } else {
+        alert('Màu đã tồn tại!');
+      }
+    }
+
+    if (this.colorForm.value.input4) {
+      if (this.currentCard.colors === null) {
+        this.colors.push(this.color4);
+        this.currentCard.colors = this.colors;
+      } else if (this.currentCard.colors.indexOf(this.color4) === -1) {
+        this.currentCard.colors.push(this.color4);
+      } else {
+        alert('Màu đã tồn tại!');
+      }
+    }
+
+    if (this.colorForm.value.input5) {
+      if (this.currentCard.colors === null) {
+        this.colors.push(this.color5);
+        this.currentCard.colors = this.colors;
+      } else if (this.currentCard.colors.indexOf(this.color5) === -1) {
+        this.currentCard.colors.push(this.color5);
+      } else {
+        alert('Màu đã tồn tại!');
+      }
+    }
+    console.log(this.colors);
+
+    const cardForm: ICard = {
+      cardId: idCard,
+      title: '',
+      description: '',
+      listSet: {
+        listId: 0
+      },
+      userSetCard: []
+      ,
+      colors: this.colors
+    };
+
+
+    // console.log(cardForm);
+
+    this.cardService.updateColor(this.currentCard).subscribe(
+      result => {
+        console.log(result);
+      }, error => {
+        console.log('loi');
+      }
+    );
   }
 
 }

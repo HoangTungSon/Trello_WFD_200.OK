@@ -17,6 +17,10 @@ export class CardService {
 
   URL = apiUrl + '/cards';
 
+  updateColor(card: ICard): Observable<ICard> {
+    return this.httpClient.put<ICard>(this.URL + '/updateColor/' + card.cardId, card);
+  }
+
   getCardById(id: number): Observable<ICard> {
     return this.httpClient.get<ICard>(`${this.URL}/${id}`);
   }
