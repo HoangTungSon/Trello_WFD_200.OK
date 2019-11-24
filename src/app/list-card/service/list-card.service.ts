@@ -45,4 +45,8 @@ export class ListCardService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
+
+  updateListCardAndCard(id: number, previousId: number): Observable<IListCard> {
+    return this.httpClient.put<IListCard>(this.URL + '/card?previousId=' + previousId + '&currentId=' + id, 1);
+  }
 }
