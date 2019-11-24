@@ -46,6 +46,7 @@ import {ColorPickerModule} from 'ngx-color-picker';
     ReactiveFormsModule,
     ScrollingModule,
     ColorPickerModule
+
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]

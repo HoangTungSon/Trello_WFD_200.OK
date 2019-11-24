@@ -1,14 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {AuthService} from '../auth/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from '../user/service/user.service';
-import {IUser} from '../user/iuser';
+import {Router} from '@angular/router';
 import {CardService} from '../card/service/card.service';
-
-import {SearchCardForm} from './search-card-form';
-import {ICard} from '../card/icard';
 import {SearchCardService} from '../card/service/search-card.service';
+import {IUser} from '../user/iuser';
+import {UserService} from '../user/service/user.service';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -16,18 +13,23 @@ import {SearchCardService} from '../card/service/search-card.service';
   styleUrls: ['./login-taskbar.component.css']
 })
 export class LoginTaskbarComponent implements OnInit {
-  search: any;
-  private cardList: ICard[];
-  searchForm: any;
+  searchText: string;
+
+  @Input() user: IUser;
+  @Input() userNoti: number;
+  midNoti: number;
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
               private router: Router,
               private cardService: CardService,
-              private searchCardService: SearchCardService) {
+              private searchCardService: SearchCardService,
+              private userService: UserService
+  ) {
   }
 
   ngOnInit() {
+    this.midNoti = this.userNoti;
   }
 
   onSubmit() {
@@ -41,7 +43,16 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   onSearchComplete() {
-    console.log('From Sarah with love: ', this.searchForm);
-    this.searchCardService.send(this.searchForm);
+    this.searchCardService.send(this.searchText);
+  }
+
+  clickNoti() {
+    this.userNoti = 0;
+    this.user.userNotification = 0;
+    this.userService.updateUser(this.user).subscribe(next => {
+      console.log('success make it to 0');
+    }, error => {
+      console.log('problem in notification');
+    });
   }
 }

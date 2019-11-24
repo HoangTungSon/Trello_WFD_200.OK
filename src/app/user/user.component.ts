@@ -19,6 +19,8 @@ export class UserComponent implements OnInit {
   iUsers: IUser[] = [];
   inputBoard = new FormControl();
   userId = this.tokenStorage.getId();
+  user: IUser;
+  userNoti: number;
 
   constructor(
     private userservice: UserService,
@@ -31,15 +33,19 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-
     this.boardservice.getListBoardByUser(10, id).subscribe(
       next => {
         this.listBoard = next;
         console.log('get board successfully');
       }, error => {
         console.log('get board error');
-    }
-    );
+    });
+
+    this.userservice.getUserById(id).subscribe(next => {
+      this.user = next;
+      this.userNoti = this.user.userNotification;
+      console.log(this.user);
+    });
 
     this.boardservice.getListBoardByTime(10, id).subscribe(
       next => {
