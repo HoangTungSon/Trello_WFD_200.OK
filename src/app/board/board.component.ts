@@ -9,7 +9,7 @@ import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IUser} from '../user/iuser';
-import {UserService} from "../user/service/user.service";
+import {UserService} from '../user/service/user.service';
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
 import {any} from 'codelyzer/util/function';
 
@@ -20,21 +20,13 @@ import {any} from 'codelyzer/util/function';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  constructor(
-    private boardService: BoardService,
-    private listCardService: ListCardService,
-    private cardService: CardService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router,
-    private cpService: ColorPickerService
-  ) {
-  }
+
   input1 = true;
   input2 = true;
   input3 = true;
   input4 = true;
   input5 = true;
+
   board: IBoard;
 
   listCards: IListCard[] = [];
@@ -69,10 +61,10 @@ export class BoardComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService,
+    private cpService: ColorPickerService
   ) {
   }
-=======
+
   colors: string  [] = [];
 
   card: ICard;
@@ -184,7 +176,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -298,11 +290,6 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('error update');
     });
-  }
-
-  addMember(users: IUser[]) {
-    console.log(users);
-    this.members = users;
   }
 
 
