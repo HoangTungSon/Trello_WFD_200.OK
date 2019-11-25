@@ -20,6 +20,7 @@ import {NotActivateTeam} from './active/NotActivateTeam';
 import {CanActivateTeam} from './active/CanActivateTeam';
 import {Permissions} from './active/Permissions';
 import {ScrollingModule} from "@angular/cdk/scrolling";
+import {ColorPickerModule} from 'ngx-color-picker';
 
 
 @NgModule({
@@ -44,6 +45,8 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
+    ColorPickerModule
+
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]

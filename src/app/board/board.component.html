@@ -1,6 +1,7 @@
 <app-login-taskbar></app-login-taskbar>
 
 
+
 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
 <!--  <label class="btn btn-secondary active">-->
 <!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
@@ -71,12 +72,17 @@
           </button>
         </div>
         <div class="modal-body">
+
           <div class="col-md-7 row" style="float: left">
+            <div *ngFor="let c of currentCard.colors">
+              <div class="circle" [style.background]=c></div>
+            </div>
             <div class="cardForm">
               <div>
                 <label for="recipient-id" class="col-form-label">Member(s):</label>
-                <div *ngFor="let user of members">
-                  <button>{{user.username}}</button>
+                <br>
+                <div *ngFor="let user of currentCard.userSetCard" class="inner">
+                  <button class="memberButton">{{user.username}}</button>
                 </div>
                 <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
               </div>
@@ -105,10 +111,61 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="labelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <form [formGroup]="colorForm" (ngSubmit)="saveColor(currentCard.cardId)">
+            <div class="modal-body">
+              <div class="row" style="height: 320px">
+                <div class="col-md-2">
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1" id="defaultCheck1">
+                    <div class="color-box" [style.background]="color1" ></div>
+
+                  </div><div class="form-check">
+                  <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2" id="defaultCheck12">
+                  <div class="color-box" [style.background]="color2" ></div>
+
+                </div><div class="form-check">
+                  <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3" id="defaultCheck13">
+                  <div class="color-box" [style.background]="color3" ></div>
+
+                </div><div class="form-check">
+                  <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4" id="defaultCheck14">
+                  <div class="color-box" [style.background]="color4" ></div>
+
+                </div><div class="form-check">
+                  <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5" id="defaultCheck15">
+                  <div class="color-box" [style.background]="color5" ></div>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let c of currentCard.colors">
+              <div class="color-box1" [style.background]=c ></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="reset(currentCard.cardId)">Reset</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" >Save</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
   </div>
 </form>
 
-<app-card (member)="addMember($event)"></app-card>
+<app-card [card]="currentCard" (member)="addMember($event)"></app-card>
+
 
 <!---------------------------- modal invite ------------------------------>
 

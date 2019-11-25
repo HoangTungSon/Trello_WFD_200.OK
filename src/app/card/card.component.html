@@ -13,7 +13,7 @@
       <div class="modal-body">
         <div>
           <label for="recipient-id" class="sr-only">Find member:</label>
-          <input type="text" class="form-control" id="recipient-id" placeholder="Member name">
+          <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="name" (keydown.enter)="searchUserByName(name)">
         </div>
         <div>
           <label for="recipient-id" class="sr-only">Board member:</label>
@@ -24,9 +24,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
-
