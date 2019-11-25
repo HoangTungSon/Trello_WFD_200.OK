@@ -4,8 +4,6 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IUser} from '../iuser';
 import {environment} from '../../../environments/environment.prod';
-import {IBoard} from "../../board/iboard";
-
 
 const apiUrl = environment.apiUrl;
 
