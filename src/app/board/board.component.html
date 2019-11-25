@@ -1,5 +1,31 @@
 <app-login-taskbar></app-login-taskbar>
 
+
+
+<!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+<!--  <label class="btn btn-secondary active">-->
+<!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
+<!--  </label>-->
+<!--  <label class="btn btn-secondary">-->
+<!--    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
+<!--  </label>-->
+<!--  <label class="btn btn-secondary">-->
+<!--    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
+<!--  </label>-->
+<!--</div>-->
+
+<div class="menubar" *ngFor="let board of boards">
+  <div class="boardName" [formGroup]="boardForm">
+    <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}" (change)="changeNameBoard(board.boardId)">
+  </div>
+  <div class="user" *ngFor="let user of users">
+    <button type="button" class="btn btn-outline-primary userNameButton">{{user.username}}</button>
+  </div>
+  <div class="invite">
+    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#invite">invite</button>
+  </div>
+</div>
+
 <!---------------------------------lists--------------------------------->
 
 <form [formGroup]="listForm" class="formList">
@@ -141,3 +167,28 @@
 <app-card [card]="currentCard" (member)="addMember($event)"></app-card>
 
 
+<!---------------------------- modal invite ------------------------------>
+
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inviteLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div>
+        <label for="recipient-id" class="sr-only">Find member:</label>
+        <input type="text" class="form-control" placeholder="Enter to find name">
+      </div>
+      <div class="modal-body" *ngFor="let user of listUser">
+        <button type="button" class="btn btn-outline-primary userNameButton" (click)="addNewUser(user)">{{user.username}}</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addUserToBoard()">Invite</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import {UserService} from "../user/service/user.service";
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
 import {any} from 'codelyzer/util/function';
 
+
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -52,7 +53,16 @@ export class BoardComponent implements OnInit {
 
   members: IUser[] = [];
 
+  boardForm: FormGroup;
+
+  boards: IBoard[] = [];
+
+  listUser: IUser[] = [];
+
+  newUser: IUser[] = [];
+
   constructor(
+    private userService: UserService,
     private boardService: BoardService,
     private listCardService: ListCardService,
     private cardService: CardService,
@@ -82,7 +92,15 @@ export class BoardComponent implements OnInit {
   });
 
   ngOnInit() {
+
+    this.boardForm = this.fb.group({
+      boardId: ['', [Validators.required, Validators.minLength(10)]],
+      boardName: ['', [Validators.required, Validators.minLength(10)]],
+      userSet: ['', [Validators.required, Validators.minLength(10)]],
+    });
+
     console.log(this.currentCard);
+
     this.cardForm = this.fb.group({
       cardId: [''],
       title: ['', [Validators.required, Validators.minLength(10)]],
@@ -97,6 +115,7 @@ export class BoardComponent implements OnInit {
     this.boardService.getBoardById(id).subscribe(next => {
       this.board = next;
       this.users = this.board.userSet;
+      this.boards.push(next);
       console.log('success to get board');
     }, error => {
       console.log('fail to get board');
@@ -113,6 +132,12 @@ export class BoardComponent implements OnInit {
       this.boardSet = next;
       console.log('success fetch the board');
     });
+    this.userService.getUser(10).subscribe(
+      next => {
+        this.listUser = next;
+        console.log('success fetch the board');
+      }
+    );
   }
 
 // -----------------------------List----------------------------------------
@@ -199,6 +224,44 @@ export class BoardComponent implements OnInit {
   drop(event: CdkDragDrop<IListCard[]>) {
     moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
     this.changeListId(this.listCards);
+  }
+
+
+  changeNameBoard(id) {
+    const {value} = this.boardForm;
+    value.boardId = id;
+    value.userSet = this.boardSet.userSet;
+    console.log(value);
+    this.boardService.updateBoard(value, id).subscribe(next => {
+      console.log('success update board name');
+    }, error => {
+      console.log('fail to change board name');
+    });
+  }
+
+  addUserToBoard() {
+    const {value} = this.boardForm;
+    value.boardId = this.board.boardId;
+    value.boardName = this.board.boardName;
+    value.userSet = this.newUser;
+    console.log(value);
+    this.boardService.updateBoard(value, this.board.boardId).subscribe(
+      next => {
+        console.log('add user success');
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          setTimeout(function() {
+            this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
+          }.bind(this), 500);
+        });
+      }, error => {
+        console.log('add user fail');
+    }
+    );
+  }
+
+  addNewUser(users: IUser) {
+    console.log(users);
+    this.newUser.push(users);
   }
 
 //  ---------------------------- Card --------------------------------
