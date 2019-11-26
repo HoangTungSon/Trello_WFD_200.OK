@@ -47,6 +47,8 @@ export class BoardComponent implements OnInit {
 
   cardMember: ICard;
 
+  checkBoard = false;
+
   user: IUser;
   boardForm: FormGroup;
 
@@ -64,7 +66,6 @@ export class BoardComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService,
     private cpService: ColorPickerService
   ) {
   }
@@ -88,7 +89,6 @@ export class BoardComponent implements OnInit {
   });
 
   ngOnInit() {
-
     this.boardForm = this.fb.group({
       boardId: ['', [Validators.required, Validators.minLength(10)]],
       boardName: ['', [Validators.required, Validators.minLength(10)]],
@@ -111,6 +111,7 @@ export class BoardComponent implements OnInit {
     this.boardService.getBoardById(id).subscribe(next => {
       this.board = next;
       this.users = this.board.userSet;
+      this.newUser = this.board.userSet;
       this.boards.push(next);
       console.log('success to get board');
     }, error => {
@@ -180,7 +181,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -253,19 +254,37 @@ export class BoardComponent implements OnInit {
       next => {
         console.log('add user success');
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-          setTimeout(function() {
+          setTimeout(function () {
             this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
           }.bind(this), 500);
         });
       }, error => {
         console.log('add user fail');
-    }
+      }
     );
   }
 
-  addNewUser(users: IUser) {
-    console.log(users);
-    this.newUser.push(users);
+  addNewUser(newUser: IUser) {
+    this.newUser = this.board.userSet;
+    for (let i = 0; i < this.newUser.length; i++) {
+      if (newUser.email === this.newUser[i].email) {
+        const mid = this.newUser[i];
+        this.newUser[i] = this.newUser[this.newUser.length - 1];
+        this.newUser[this.newUser.length - 1] = mid;
+        this.newUser.pop();
+        this.checkBoard = true;
+        break;
+      } else {
+        this.checkBoard = false;
+      }
+    }
+    if (!this.checkBoard) {
+      if (this.newUser === null) {
+        this.newUser = [];
+      }
+      this.newUser.push(newUser);
+    }
+    console.log(newUser);
   }
 
 //  ---------------------------- Card --------------------------------

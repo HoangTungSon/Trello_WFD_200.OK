@@ -65,7 +65,7 @@ export class CardComponent implements OnInit {
       if (this.members[i].email === user.email) {
         const mid = this.members[i];
         this.members[i] = this.members[this.members.length - 1];
-        this.members[this.members.length - 1] = this.members[i];
+        this.members[this.members.length - 1] = mid;
         this.members.pop();
         this.memberCheck = true;
         break;
@@ -74,6 +74,9 @@ export class CardComponent implements OnInit {
       }
     }
     if (!this.memberCheck) {
+      if (user.cardNoti === null) {
+        user.cardNoti = [];
+      }
       user.cardNoti.push(this.card.cardId);
       this.userService.updateUser(user).subscribe(next => {
         console.log('noti up');
