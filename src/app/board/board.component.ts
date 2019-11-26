@@ -58,6 +58,9 @@ export class BoardComponent implements OnInit {
 
   newUser: IUser[] = [];
 
+  events: string[] = [];
+  opened: boolean;
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -433,7 +436,6 @@ export class BoardComponent implements OnInit {
       ,
       colors: this.colors
     };
-
 
     // console.log(cardForm);
     this.cardService.updateColor(this.currentCard).subscribe(
