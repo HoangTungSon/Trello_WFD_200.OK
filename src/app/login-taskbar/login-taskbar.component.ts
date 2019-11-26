@@ -6,6 +6,7 @@ import {CardService} from '../card/service/card.service';
 import {SearchCardService} from '../card/service/search-card.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
+import {ICard} from '../card/icard';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -14,10 +15,8 @@ import {UserService} from '../user/service/user.service';
 })
 export class LoginTaskbarComponent implements OnInit {
   searchText: string;
-
-  @Input() user: IUser;
-  @Input() userNoti: number;
-  midNoti: number;
+  user: IUser;
+  cardsNotification: ICard[] = [];
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
@@ -29,7 +28,22 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.midNoti = this.userNoti;
+    const id = +this.tokenStorage.getId();
+    this.userService.getUserById(id).subscribe(next => {
+      this.user = next;
+      console.log(this.user);
+      console.log('success get user for taskbar');
+      for (const cardId of this.user.cardNoti) {
+        this.cardService.getCardById(cardId).subscribe(success => {
+          this.cardsNotification.push(success);
+          console.log('success push cardNoti to array');
+        }, error => {
+          console.log('fail to push cardNoti to array');
+        });
+      }
+    }, error => {
+      console.log('fail to get user for taskbar');
+    });
   }
 
   onSubmit() {
@@ -46,13 +60,13 @@ export class LoginTaskbarComponent implements OnInit {
     this.searchCardService.send(this.searchText);
   }
 
-  clickNoti() {
-    this.userNoti = 0;
-    this.user.userNotification = 0;
+  deleteAllCardNoti() {
+    this.user.cardNoti = [];
     this.userService.updateUser(this.user).subscribe(next => {
-      console.log('success make it to 0');
+      console.log('marked all read');
     }, error => {
-      console.log('problem in notification');
+      console.log('cannot marked all');
     });
   }
+
 }

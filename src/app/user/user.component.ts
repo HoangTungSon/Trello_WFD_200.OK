@@ -20,7 +20,6 @@ export class UserComponent implements OnInit {
   inputBoard = new FormControl();
   userId = this.tokenStorage.getId();
   user: IUser;
-  userNoti: number;
 
   constructor(
     private userservice: UserService,
@@ -43,7 +42,6 @@ export class UserComponent implements OnInit {
 
     this.userservice.getUserById(id).subscribe(next => {
       this.user = next;
-      this.userNoti = this.user.userNotification;
       console.log(this.user);
     });
 

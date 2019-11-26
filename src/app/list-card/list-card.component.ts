@@ -163,18 +163,7 @@ export class ListCardComponent implements OnInit {
   }
 
   updateAllCardList(cards: ICard[]) {
-    let mid = 0;
-    if (cards !== null) {
-      for (let i = 0; i < cards.length; i++) {
-        for (let j = i + 1; j < cards.length; j++) {
-          if (cards[i].cardId > cards[j].cardId) {
-            mid = cards[i].cardId;
-            cards[i].cardId = cards[j].cardId;
-            cards[j].cardId = mid;
-          }
-        }
-      }
-    }
+    this.changeCardId(cards);
     for (const card of cards) {
       this.cardService.updateCard(card).subscribe(next => {
         console.log('success to update card after drop');

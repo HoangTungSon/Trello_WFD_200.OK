@@ -9,7 +9,7 @@ import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IUser} from '../user/iuser';
-import {UserService} from "../user/service/user.service";
+import {UserService} from '../user/service/user.service';
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
 import {any} from 'codelyzer/util/function';
 
@@ -19,16 +19,7 @@ import {any} from 'codelyzer/util/function';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  constructor(
-    private boardService: BoardService,
-    private listCardService: ListCardService,
-    private cardService: CardService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router,
-    private cpService: ColorPickerService
-  ) {
-  }
+
   input1 = true;
   input2 = true;
   input3 = true;
@@ -52,6 +43,10 @@ export class BoardComponent implements OnInit {
 
   members: IUser[] = [];
 
+  cardMember: ICard;
+
+  user: IUser;
+
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -60,9 +55,10 @@ export class BoardComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
+    private cpService: ColorPickerService
   ) {
   }
-=======
+
   colors: string  [] = [];
 
   card: ICard;
@@ -131,7 +127,7 @@ export class BoardComponent implements OnInit {
           console.log('fail to create list card');
         });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -167,8 +163,8 @@ export class BoardComponent implements OnInit {
 
   changeNameList(id: number) {
     const {value} = this.listForm;
-    value.id = id;
-    this.listCardService.updateListCard(value, id).subscribe(next => {
+    value.listId = id;
+    this.listCardService.updateListCard(value).subscribe(next => {
       console.log('success update list');
     }, error => {
       console.log('fail to change');
@@ -185,6 +181,14 @@ export class BoardComponent implements OnInit {
           lists[j].listId = mid;
         }
       }
+    }
+    for (const list of lists) {
+      this.listCardService.updateListCard(list).subscribe(next => {
+        console.log('success to update list after drop');
+        console.log(next);
+      }, error => {
+        console.log('fail to update after drop list');
+      });
     }
   }
 
@@ -228,7 +232,7 @@ export class BoardComponent implements OnInit {
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        setTimeout(function() {
+        setTimeout(function () {
           this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
         }.bind(this), 500);
       });
@@ -237,35 +241,42 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  userMember(user: IUser) {
+    this.user = user;
+    console.log(this.user);
+  }
+
 
   // -------------------- color ----------------------
 
   check() {
     console.log(this.colorForm.value.input1);
 
-    if (this.colorForm.value.input1)  {
+    if (this.colorForm.value.input1) {
       this.colors.push(this.colorForm.value.input1);
     }
     console.log(this.colors);
   }
-    // reset label's card
-   reset(idCard: any) {
+
+  // reset label's card
+  reset(idCard: any) {
     this.currentCard.colors = [];
     const cardForm: ICard = {
-       cardId: idCard,
-       title: '',
-       description: '',
-       listSet: {
-         listId: 0
-       },
-       userSetCard: []
-       ,
-       colors: this.colors
-     };
-   }
+      cardId: idCard,
+      title: '',
+      description: '',
+      listSet: {
+        listId: 0
+      },
+      userSetCard: []
+      ,
+      colors: this.colors
+    };
+  }
+
   saveColor(idCard: any) {
     console.log(this.input1);
-    if (this.colorForm.value.input1)  {
+    if (this.colorForm.value.input1) {
       if (this.currentCard.colors === null) {
         this.colors.push(this.color1);
         this.currentCard.colors = this.colors;
@@ -336,7 +347,6 @@ export class BoardComponent implements OnInit {
 
 
     // console.log(cardForm);
-
     this.cardService.updateColor(this.currentCard).subscribe(
       result => {
         console.log(result);
