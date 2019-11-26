@@ -202,9 +202,16 @@ export class BoardComponent implements OnInit {
     for (let i = 0; i < lists.length; i++) {
       for (let j = i + 1; j < lists.length; j++) {
         if (lists[i].listId > lists[j].listId) {
+          const id1 = lists[i].listId;
+          const id2 = lists[j].listId;
           mid = lists[i].listId;
           lists[i].listId = lists[j].listId;
           lists[j].listId = mid;
+          this.listCardService.updateCardListId(lists[i], id1, id2).subscribe(next => {
+            console.log('success swap card');
+          }, error => {
+            console.log('fail to swap card');
+          });
         }
       }
     }

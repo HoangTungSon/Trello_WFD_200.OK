@@ -49,4 +49,9 @@ export class ListCardService {
   updateListCardAndCard(id: number, previousId: number): Observable<IListCard> {
     return this.httpClient.put<IListCard>(this.URL + '/card?previousId=' + previousId + '&currentId=' + id, 1);
   }
+
+  updateCardListId(list: IListCard, id: number, previousId: number): Observable<IListCard> {
+    return this.httpClient.put<IListCard>(this.URL + '/cardSwap?previousId=' + previousId + '&currentId=' + id, list);
+  }
+
 }
