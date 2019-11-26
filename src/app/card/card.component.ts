@@ -74,7 +74,7 @@ export class CardComponent implements OnInit {
       }
     }
     if (!this.memberCheck) {
-      user.userNotification++;
+      user.cardNoti.push(this.card.cardId);
       this.userService.updateUser(user).subscribe(next => {
         console.log('noti up');
       }, error => {
