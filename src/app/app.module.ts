@@ -61,6 +61,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {PortalModule} from '@angular/cdk/portal';
+import { CommentComponent } from './comment/comment.component';
 
 
 
@@ -76,7 +77,8 @@ import {PortalModule} from '@angular/cdk/portal';
     ProfileComponent,
     HomeTaskbarComponent,
     HomePageComponent,
-    LoginTaskbarComponent
+    LoginTaskbarComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

@@ -79,7 +79,9 @@ export class CardComponent implements OnInit {
       if (user.cardNoti === null) {
         user.cardNoti = [];
       }
-      user.cardNoti.push(this.card.cardId);
+      if (user.email !== this.tokenStorage.getEmail()) {
+        user.cardNoti.push(this.card.cardId);
+      }
       this.userService.updateUser(user).subscribe(next => {
         console.log('noti up');
       }, error => {

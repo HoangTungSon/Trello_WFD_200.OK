@@ -12,6 +12,9 @@ import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
 import {any} from 'codelyzer/util/function';
+import {TokenStorageService} from '../auth/token-storage.service';
+import {CommentService} from '../comment/service/comment.service';
+import {IComment} from '../comment/icomment';
 
 
 @Component({
@@ -56,6 +59,14 @@ export class BoardComponent implements OnInit {
 
   newUser: IUser[] = [];
 
+  commentForm: FormGroup;
+
+  userComment: IUser;
+
+  commentCard: IComment[];
+
+  userCard: IUser[] = [];
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -64,7 +75,9 @@ export class BoardComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    private cpService: ColorPickerService
+    private cpService: ColorPickerService,
+    private tokenStorage: TokenStorageService,
+    private commentService: CommentService,
   ) {
   }
 
@@ -87,13 +100,18 @@ export class BoardComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.commentForm = this.fb.group({
+      id: [''],
+      commentLine: [''],
+      cardComment: [this.currentCard],
+      userComment: [this.userComment],
+    });
+
     this.boardForm = this.fb.group({
       boardId: ['', [Validators.required, Validators.minLength(10)]],
       boardName: ['', [Validators.required, Validators.minLength(10)]],
       userSet: ['', [Validators.required, Validators.minLength(10)]],
     });
-
-    console.log(this.currentCard);
 
     this.cardForm = this.fb.group({
       cardId: [''],
@@ -296,26 +314,38 @@ export class BoardComponent implements OnInit {
 
   openCard(card: ICard) {
     this.currentCard = card;
-
     this.cardForm = this.fb.group({
       cardId: [this.currentCard.cardId],
       title: [this.currentCard.title, [Validators.required, Validators.minLength(10)]],
       description: [this.currentCard.description, [Validators.required, Validators.minLength(10)]],
       listSet: [this.currentCard.listSet],
     });
-
     this.cardForm.patchValue(this.currentCard);
+    this.commentService.getListCommentByCard(1000, this.currentCard.cardId).subscribe(next => {
+      this.commentCard = next;
+      console.log('success get comment');
+    }, error => {
+      console.log('cannot get comment');
+    });
   }
 
   addMember(users: IUser[]) {
     console.log(users);
     this.members = users;
-    this.currentCard.userSetCard = this.members;
+    if (this.members !== []) {
+      this.currentCard.userSetCard = this.members;
+    }
   }
 
   submit() {
     const {value} = this.cardForm;
-    value.userSetCard = this.members;
+    if (this.members.length > 0) {
+      console.log(this.members);
+      value.userSetCard = this.members;
+    } else {
+      console.log(this.currentCard.userSetCard);
+      value.userSetCard = this.currentCard.userSetCard;
+    }
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
@@ -333,7 +363,43 @@ export class BoardComponent implements OnInit {
     console.log(this.user);
   }
 
-  // -------------------- color ----------------------
+  // ----------------------comment-------------------------------
+
+  createComment() {
+    const idUser = +this.tokenStorage.getId();
+    this.userService.getUserById(idUser).subscribe(next => {
+      this.userComment = next;
+      const {value} = this.commentForm;
+      value.userComment = this.userComment;
+      value.cardComment = this.currentCard;
+      this.commentService.createComment(value).subscribe(success => {
+        console.log(success);
+        console.log('success create comment');
+      }, error => {
+        console.log('fail to create comment');
+      });
+      console.log('get user success');
+    }, error => {
+      console.log('cannot get user');
+    });
+    this.userService.getListUserByCard(1000, this.currentCard.cardId).subscribe(next => {
+      this.userCard = next;
+      for (const user of this.userCard) {
+        if (user.email !== this.tokenStorage.getEmail()) {
+          user.cardNoti.push(this.currentCard.cardId);
+        }
+        this.userService.updateUser(user).subscribe(userNoti => {
+          console.log('success update userNoti');
+        }, error => {
+          console.log('fail to update userNoti');
+        });
+      }
+    }, error => {
+      console.log('fail to get user');
+    });
+  }
+
+  // -------------------- label ----------------------
 
   check() {
     console.log(this.colorForm.value.input1);
@@ -415,5 +481,6 @@ export class BoardComponent implements OnInit {
       }
     );
   }
+
 
 }
