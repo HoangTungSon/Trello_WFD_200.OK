@@ -45,8 +45,6 @@ export class BoardComponent implements OnInit {
 
   members: IUser[] = [];
 
-  cardMember: ICard;
-
   checkBoard = false;
 
   user: IUser;
@@ -57,9 +55,6 @@ export class BoardComponent implements OnInit {
   listUser: IUser[] = [];
 
   newUser: IUser[] = [];
-
-  events: string[] = [];
-  opened: boolean;
 
   constructor(
     private userService: UserService,
@@ -338,7 +333,6 @@ export class BoardComponent implements OnInit {
     console.log(this.user);
   }
 
-
   // -------------------- color ----------------------
 
   check() {
@@ -353,17 +347,6 @@ export class BoardComponent implements OnInit {
   // reset label's card
   reset(idCard: any) {
     this.currentCard.colors = [];
-    const cardForm: ICard = {
-      cardId: idCard,
-      title: '',
-      description: '',
-      listSet: {
-        listId: 0
-      },
-      userSetCard: []
-      ,
-      colors: this.colors
-    };
   }
 
   saveColor(idCard: any) {
@@ -424,20 +407,6 @@ export class BoardComponent implements OnInit {
       }
     }
     console.log(this.colors);
-
-    const cardForm: ICard = {
-      cardId: idCard,
-      title: '',
-      description: '',
-      listSet: {
-        listId: 0
-      },
-      userSetCard: []
-      ,
-      colors: this.colors
-    };
-
-    // console.log(cardForm);
     this.cardService.updateColor(this.currentCard).subscribe(
       result => {
         console.log(result);

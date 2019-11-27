@@ -1,34 +1,4 @@
 <app-login-taskbar></app-login-taskbar>
-<!--<mat-sidenav-container class="example-container">-->
-<!--  <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"-->
-<!--               (closed)="events.push('close!')">-->
-<!--    <p>Events:</p>-->
-<!--    <div class="example-events">-->
-<!--      <div *ngFor="let e of events">{{e}}</div>-->
-<!--    </div>-->
-<!--  </mat-sidenav>-->
-
-<!--  <mat-sidenav-content>-->
-<!--    &lt;!&ndash; <p><mat-checkbox [(ngModel)]="opened">sidenav.opened</mat-checkbox></p> &ndash;&gt;-->
-<!--    <p>-->
-<!--      <button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button>-->
-<!--    </p>-->
-<!--    &lt;!&ndash; <p>Events:</p>-->
-<!--    <div class="example-events">-->
-<!--      <div *ngFor="let e of events">{{e}}</div>-->
-<!--    </div> &ndash;&gt;-->
-
-    <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-    <!--  <label class="btn btn-secondary active">-->
-    <!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
-    <!--  </label>-->
-    <!--  <label class="btn btn-secondary">-->
-    <!--    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
-    <!--  </label>-->
-    <!--  <label class="btn btn-secondary">-->
-    <!--    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
-    <!--  </label>-->
-    <!--</div>-->
 
     <div class="menubar" *ngFor="let board of boards">
       <div class="boardName" [formGroup]="boardForm">
@@ -77,8 +47,6 @@
         </div>
       </cdk-virtual-scroll-viewport>
     </form>
-<!--  </mat-sidenav-content>-->
-<!--</mat-sidenav-container>-->
 <!-------------------------modal form card------------------------------>
 
 <form [formGroup]="cardForm" (ngSubmit)="submit()">
@@ -226,5 +194,4 @@
     </div>
   </div>
 </div>
-
 

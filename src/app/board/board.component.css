@@ -78,7 +78,7 @@
 }
 
 .menubar {
-  width: 100%;
+  width: 90%;
   height: 50px;
   margin-top: 10px;
   margin-left: 10px;
@@ -163,20 +163,21 @@ input {
   float: left;
 }
 
-
 .inner {
   display: inline-block;
 }
 
-/*mat-sidenav-container{*/
-/*  height: 100%;*/
-/*  width: 99%;*/
+/*.example-container {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  bottom: 0;*/
+/*  left: 0;*/
+/*  right: 0;*/
 /*}*/
 
-/*mat-sidenav{*/
-/*  width: 10%;*/
-/*}*/
-
-/*mat-sidenav-content{*/
-/*  width: 2000px;*/
+/*.example-events {*/
+/*  width: 300px;*/
+/*  height: 200px;*/
+/*  overflow: auto;*/
+/*  border: 1px solid #555;*/
 /*}*/

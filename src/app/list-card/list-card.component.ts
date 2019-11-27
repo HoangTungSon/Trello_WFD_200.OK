@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ListCardService} from './service/list-card.service';
 import {IListCard} from './ilist-card';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, CdkDragEnd, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CardService} from '../card/service/card.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ICard} from '../card/icard';
@@ -10,6 +10,7 @@ import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {SearchCardService} from '../card/service/search-card.service';
+import {TokenStorageService} from "../auth/token-storage.service";
 
 @Component({
   selector: 'app-list-card',
@@ -21,6 +22,8 @@ export class ListCardComponent implements OnInit {
   @Input() users: IUser[];
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
+
+  searchText: string;
 
   cards: ICard[] = [];
 
@@ -38,6 +41,12 @@ export class ListCardComponent implements OnInit {
 
   cardSearch: ICard[] = [];
 
+  userList: IUser[] = [];
+
+  userCard: IUser[] = [];
+
+  cardDrag: ICard;
+
   constructor(
     private boardService: BoardService,
     private listService: ListCardService,
@@ -46,7 +55,8 @@ export class ListCardComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private searchCardService: SearchCardService
+    private searchCardService: SearchCardService,
+    private tokenStorage: TokenStorageService,
   ) {
   }
 
@@ -99,6 +109,26 @@ export class ListCardComponent implements OnInit {
     }
   }
 
+  sendNotification(eventSend: CdkDragEnd<ICard>, id: number) {
+    this.userService.getListUserByCard(1000, id).subscribe(next => {
+      this.userCard = next;
+      console.log('success to get user of dragged card');
+      for (const user of this.userCard) {
+        if (user.email !== this.tokenStorage.getEmail()) {
+          user.cardNoti.push(id);
+        }
+        this.userService.updateUser(user).subscribe(success => {
+          console.log('success to update user noti after drag');
+        }, error => {
+          console.log('fail to update user noti after drag');
+        });
+      }
+    }, error => {
+      console.log('fail to get user after drag');
+    });
+    console.log(eventSend.source.data);
+  }
+
   changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
     this.changeCardId(event.container.data);
     if (event.previousContainer !== event.container) {
@@ -136,6 +166,22 @@ export class ListCardComponent implements OnInit {
     this.cardService.createCard(value)
       .subscribe(
         next => {
+          this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
+            this.userList = listUser;
+            for (const user of this.userList) {
+              if (user.email !== this.tokenStorage.getEmail()) {
+                user.cardNoti.push(next.cardId);
+              }
+              this.userService.updateUser(user).subscribe(userNoti => {
+                console.log('success update userNoti');
+              }, error => {
+                console.log('fail to update userNoti');
+              });
+            }
+            console.log('cardNoti update');
+          }, error => {
+            console.log('cannot add cardNoti');
+          });
           console.log('success to create a card');
         }, error => {
           console.log('fail to create card');
@@ -176,5 +222,22 @@ export class ListCardComponent implements OnInit {
 
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
+  }
+
+  // -------------------------find card by color--------------------------------------------
+
+  findCard(color: string) {
+    const colors: string[] = [];
+    colors.push(color);
+    console.log(colors);
+    for (const card of this.searchDisplay) {
+      for (const colorIndex of card.colors) {
+        if (color === colorIndex) {
+          this.cards.push(card);
+        }
+      }
+    }
+    this.searchDisplay = this.cards;
+    console.log(this.cards);
   }
 }

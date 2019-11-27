@@ -7,6 +7,7 @@ import {UserService} from '../user/service/user.service';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
+import {TokenStorageService} from "../auth/token-storage.service";
 
 @Component({
   selector: 'app-card',
@@ -39,7 +40,8 @@ export class CardComponent implements OnInit {
     private cardService: CardService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tokenStorage: TokenStorageService,
   ) {
   }
 
@@ -97,7 +99,7 @@ export class CardComponent implements OnInit {
       console.log('function check user');
       for (const mem of this.checkMembers) {
         for (const memUser of this.users) {
-          if (mem.email === memUser.email) {
+          if (mem.email === memUser.email && mem.email !== this.tokenStorage.getEmail()) {
             this.memberSameUserSet.push(mem);
             console.log(this.memberSameUserSet);
           }
