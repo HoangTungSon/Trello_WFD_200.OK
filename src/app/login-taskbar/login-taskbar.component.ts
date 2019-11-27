@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {AuthService} from '../auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -19,6 +19,8 @@ export class LoginTaskbarComponent implements OnInit {
   search: any;
   private cardList: ICard[];
   searchForm: any;
+
+  @Input() user1: number;
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,

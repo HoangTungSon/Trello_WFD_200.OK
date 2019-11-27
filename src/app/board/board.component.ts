@@ -39,6 +39,8 @@ export class BoardComponent implements OnInit {
 
   members: IUser[] = [];
 
+  userNoti: IUser;
+
   constructor(
     private boardService: BoardService,
     private listCardService: ListCardService,
@@ -234,6 +236,7 @@ export class BoardComponent implements OnInit {
   submit() {
     const {value} = this.cardForm;
     value.userSetCard = this.members;
+    this.userNoti ++;
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
