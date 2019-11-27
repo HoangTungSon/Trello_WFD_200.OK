@@ -48,7 +48,12 @@ export class CardService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
+
   getSearchByTitleOrDescription(search: string, id: number): Observable<ICard[]> {
     return this.httpClient.get<ICard[]>(this.URL + '/card/' + id + '?searchWord=' + search);
+  }
+
+  searchCardByColor(colors: string[]): Observable<ICard[]> {
+    return this.httpClient.post<ICard[]>(this.URL + '/color', colors);
   }
 }

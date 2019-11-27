@@ -1,61 +1,52 @@
 <app-login-taskbar></app-login-taskbar>
 
-<!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-<!--  <label class="btn btn-secondary active">-->
-<!--    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
-<!--  </label>-->
-<!--  <label class="btn btn-secondary">-->
-<!--    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
-<!--  </label>-->
-<!--  <label class="btn btn-secondary">-->
-<!--    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
-<!--  </label>-->
-<!--</div>-->
-
-<div class="menubar" *ngFor="let board of boards">
-  <div class="boardName" [formGroup]="boardForm">
-    <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}" (change)="changeNameBoard(board.boardId)">
-  </div>
-  <div class="user" *ngFor="let user of users">
-    <button type="button" class="btn btn-outline-primary userNameButton">{{user.username}}</button>
-  </div>
-  <div class="invite">
-    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#invite">invite</button>
-  </div>
-</div>
-
-<!---------------------------------lists--------------------------------->
-
-<form [formGroup]="listForm" class="formList">
-  <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
-    <div class="example-container">
-      <div cdkDropListGroup>
-        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let list of listCards" cdkDrag>
-            <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
-                   (change)="changeNameList(list.listId)">
-            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right"
-                   (click)="deleteListCard(list.listId)"
-                   value="---">
-          </div>
-        </div>
+    <div class="menubar" *ngFor="let board of boards">
+      <div class="boardName" [formGroup]="boardForm">
+        <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}"
+               (change)="changeNameBoard(board.boardId)">
       </div>
-
-      <!----------------------------list cards--------------------------------->
-
-      <div cdkDropListGroup>
-        <div class="example-list">
-          <div class="example-box" *ngFor="let list of listCards">
-            <app-list-card [users]="this.users" [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
-          </div>
-        </div>
+      <div class="user" *ngFor="let user of users">
+        <button type="button" class="btn btn-outline-primary userNameButton">{{user.username}}</button>
       </div>
-      <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">Adding a new list
-      </button>
+      <div class="invite">
+        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#invite">invite</button>
+      </div>
     </div>
-  </cdk-virtual-scroll-viewport>
-</form>
 
+    <!---------------------------------lists--------------------------------->
+
+    <form [formGroup]="listForm" class="formList">
+      <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
+        <div class="example-container">
+          <div cdkDropListGroup>
+            <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+                 (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let list of listCards" cdkDrag>
+                <input id="listName" type="text" formControlName="listName"
+                       value="{{list.listName + ' ' + list.listId}}"
+                       (change)="changeNameList(list.listId)">
+                <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right"
+                       (click)="deleteListCard(list.listId)"
+                       value="---">
+              </div>
+            </div>
+          </div>
+
+          <!----------------------------list cards--------------------------------->
+
+          <div cdkDropListGroup>
+            <div class="example-list">
+              <div class="example-box" *ngFor="let list of listCards">
+                <app-list-card [users]="this.users" [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
+              </div>
+            </div>
+          </div>
+          <button id="createListButton" type="button" class="btn btn-outline-dark" (click)="createList()">Adding a new
+            list
+          </button>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </form>
 <!-------------------------modal form card------------------------------>
 
 <form [formGroup]="cardForm" (ngSubmit)="submit()">
@@ -70,7 +61,6 @@
           </button>
         </div>
         <div class="modal-body">
-
           <div class="col-md-7 row" style="float: left">
             <div *ngFor="let c of currentCard.colors">
               <div class="circle" [style.background]=c></div>
@@ -96,11 +86,15 @@
           </div>
           <div class="col-md-4 ml-auto row" style="float: right">
             <div>ADD TO CARD</div>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#memberModal"><i class="fas fa-user"></i> Member</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#memberModal"><i
+              class="fas fa-user"></i> Member
+            </button>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#labelModal">Label</button>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#checkListModal">CheckList</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#checkListModal">CheckList
+            </button>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#dueDateModal">Due Date</button>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#attachmentModal">Attachment</button>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#attachmentModal">Attachment
+            </button>
           </div>
         </div>
         <div class="modal-footer">
@@ -109,6 +103,8 @@
         </div>
       </div>
     </div>
+
+<!----------------------------------------------------------------modal label----------------------------------------------------------->
     <div class="modal fade" id="labelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -124,38 +120,46 @@
               <div class="row" style="height: 320px">
                 <div class="col-md-2">
                   <div class="form-check">
-                    <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1" id="defaultCheck1">
-                    <div class="color-box" [style.background]="color1" ></div>
+                    <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1"
+                           id="defaultCheck1">
+                    <div class="color-box" [style.background]="color1"></div>
 
-                  </div><div class="form-check">
-                  <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2" id="defaultCheck12">
-                  <div class="color-box" [style.background]="color2" ></div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2"
+                           id="defaultCheck12">
+                    <div class="color-box" [style.background]="color2"></div>
 
-                </div><div class="form-check">
-                  <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3" id="defaultCheck13">
-                  <div class="color-box" [style.background]="color3" ></div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3"
+                           id="defaultCheck13">
+                    <div class="color-box" [style.background]="color3"></div>
 
-                </div><div class="form-check">
-                  <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4" id="defaultCheck14">
-                  <div class="color-box" [style.background]="color4" ></div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4"
+                           id="defaultCheck14">
+                    <div class="color-box" [style.background]="color4"></div>
 
-                </div><div class="form-check">
-                  <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5" id="defaultCheck15">
-                  <div class="color-box" [style.background]="color5" ></div>
-                </div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5"
+                           id="defaultCheck15">
+                    <div class="color-box" [style.background]="color5"></div>
+                  </div>
                 </div>
               </div>
             </div>
             <div *ngFor="let c of currentCard.colors">
-              <div class="color-box1" [style.background]=c ></div>
+              <div class="color-box1" [style.background]=c></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" (click)="reset(currentCard.cardId)">Reset</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" >Save</button>
+              <button type="submit" class="btn btn-primary">Save</button>
             </div>
           </form>
-
         </div>
       </div>
     </div>
@@ -180,7 +184,8 @@
         <input type="text" class="form-control" placeholder="Enter to find name">
       </div>
       <div class="modal-body" *ngFor="let user of listUser">
-        <button type="button" class="btn btn-outline-primary userNameButton" (click)="addNewUser(user)">{{user.username}}</button>
+        <button type="button" class="btn btn-outline-primary userNameButton"
+                (click)="addNewUser(user)">{{user.username}}</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -189,3 +194,4 @@
     </div>
   </div>
 </div>
+

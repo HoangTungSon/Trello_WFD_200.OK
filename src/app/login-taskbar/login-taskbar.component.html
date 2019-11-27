@@ -39,7 +39,7 @@
     </a>
     <div class="dropdown-menu dropright" aria-labelledby="accessoriesDropdown">
       <a (click)="deleteAllCardNoti()">Marked all read</a>
-      <a class="dropdown-item" href="#" *ngFor=" let card of cardsNotification">{{card.title}}</a>
+      <a class="dropdown-item" href="#" *ngFor=" let card of cardsNotification">{{card.title + ' on list:' + card.listSet.listId}}</a>
       <div class="dropdown-divider"></div>
     </div>
   </div>
