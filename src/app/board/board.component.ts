@@ -403,13 +403,11 @@ export class BoardComponent implements OnInit {
 
   check() {
     console.log(this.colorForm.value.input1);
-
     if (this.colorForm.value.input1) {
       this.colors.push(this.colorForm.value.input1);
     }
     console.log(this.colors);
   }
-
   // reset label's card
   reset(idCard: any) {
     this.currentCard.colors = [];

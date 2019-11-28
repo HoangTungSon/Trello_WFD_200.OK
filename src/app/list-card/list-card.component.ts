@@ -10,7 +10,7 @@ import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {SearchCardService} from '../card/service/search-card.service';
-import {TokenStorageService} from "../auth/token-storage.service";
+import {TokenStorageService} from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-list-card',
@@ -45,7 +45,7 @@ export class ListCardComponent implements OnInit {
 
   userCard: IUser[] = [];
 
-  cardDrag: ICard;
+  labels: string[] = [];
 
   constructor(
     private boardService: BoardService,
@@ -88,6 +88,26 @@ export class ListCardComponent implements OnInit {
         console.log('error');
       }
     );
+
+    this.searchCardService.listenLabel().subscribe(searchLabel => {
+      this.labels = searchLabel;
+      for (const color of this.labels) {
+        for (const card of this.searchDisplay) {
+          if (card.colors === null) {
+            card.colors = [];
+          }
+          for (const colorIndex of card.colors) {
+            if (color === colorIndex) {
+              this.cards.push(card);
+            }
+          }
+        }
+      }
+      this.searchDisplay = this.cards;
+      console.log('success send the label');
+    }, error => {
+      console.log('cannot send the label');
+    });
 
     this.listService.getListCardById(this.id).subscribe(next => {
       this.listSet = next;

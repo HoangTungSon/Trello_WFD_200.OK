@@ -62,6 +62,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {PortalModule} from '@angular/cdk/portal';
 import { CommentComponent } from './comment/comment.component';
+import { TestfileComponent } from './testfile/testfile.component';
 
 
 
@@ -78,7 +79,8 @@ import { CommentComponent } from './comment/comment.component';
     HomeTaskbarComponent,
     HomePageComponent,
     LoginTaskbarComponent,
-    CommentComponent
+    CommentComponent,
+    TestfileComponent
   ],
   imports: [
     BrowserModule,

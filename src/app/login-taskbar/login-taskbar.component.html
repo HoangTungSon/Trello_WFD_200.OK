@@ -5,7 +5,8 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div style="margin-left: 5px">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+       aria-expanded="false">
       <i class="fas fa-clipboard-list"></i> Boards
     </a>
     <div class="dropdown-menu">
@@ -22,15 +23,18 @@
   </div>
   <div style="margin-left: 5px">
     <div class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search"[(ngModel)]="searchText" (change)="onSearchComplete()" >
+      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search" [(ngModel)]="searchText"
+             (change)="onSearchComplete()">
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
     </div>
   </div>
   <div class="ml-auto">
-    <button type="button" class="btn btn-outline-primary" (click)="onSubmit()" >Logout</button>
+    <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i></button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',this.tokenStorage.getId()]"><i class="fas fa-user"></i></button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal" data-target="#findingModal" value="---"><i class="fas fa-info"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',userId]"><i
+      class="fas fa-user"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal"
+            data-target="#findlabelModal" value="---"><i class="fas fa-info"></i></button>
   </div>
   <div class="navbar-nav nav-item dropdown dropleft">
     <a class="nav-link dropdown-toggle" href="#" id="accessoriesDropdown" role="button" data-toggle="dropdown"
@@ -39,9 +43,63 @@
     </a>
     <div class="dropdown-menu dropright" aria-labelledby="accessoriesDropdown">
       <a (click)="deleteAllCardNoti()">Marked all read</a>
-      <a class="dropdown-item" href="#" *ngFor=" let card of cardsNotification">{{card.title + ' on list:' + card.listSet.listId}}</a>
+      <a class="dropdown-item" href="#"
+         *ngFor=" let card of cardsNotification">{{card.title + ' on list:' + card.listSet.listId}}</a>
       <div class="dropdown-divider"></div>
     </div>
   </div>
 </nav>
 
+<div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search" [(ngModel)]="searchText"
+             (change)="onSearchLabel()">
+      <form [formGroup]="colorForm" (ngSubmit)="onSearchLabel()">
+        <div class="modal-body">
+          <div class="row" style="height: 320px">
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1"
+                     id="defaultCheck1.1">
+              <div class="color-box" [style.background]="color1"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2"
+                     id="defaultCheck1.2">
+              <div class="color-box" [style.background]="color2"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3"
+                     id="defaultCheck1.3">
+              <div class="color-box" [style.background]="color3"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4"
+                     id="defaultCheck1.4">
+              <div class="color-box" [style.background]="color4"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5"
+                     id="defaultCheck1.5">
+              <div class="color-box" [style.background]="color5"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

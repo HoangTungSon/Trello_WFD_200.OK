@@ -7,6 +7,7 @@ import {SearchCardService} from '../card/service/search-card.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {ICard} from '../card/icard';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -17,6 +18,29 @@ export class LoginTaskbarComponent implements OnInit {
   searchText: string;
   user: IUser;
   cardsNotification: ICard[] = [];
+  userId: number;
+  colors: string[] = [];
+
+  input1 = true;
+  input2 = true;
+  input3 = true;
+  input4 = true;
+  input5 = true;
+
+  color1 = '#2883e9';
+  color2 = '#e920e9';
+  color3 = '#e4E925';
+  color4 = '#eC4040';
+  color5 = '#2DD02D';
+
+  colorForm: FormGroup = new FormGroup({
+    input1: new FormControl(''),
+    input2: new FormControl(''),
+    input3: new FormControl(''),
+    input4: new FormControl(''),
+    input5: new FormControl(''),
+  });
+
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
@@ -28,6 +52,7 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = +this.tokenStorage.getId();
     const id = +this.tokenStorage.getId();
     this.userService.getUserById(id).subscribe(next => {
       this.user = next;
@@ -68,5 +93,32 @@ export class LoginTaskbarComponent implements OnInit {
       console.log('cannot marked all');
     });
   }
+
+  onSearchLabel() {
+    if (this.colorForm.value.input1) {
+      this.colors.push(this.color1);
+    }
+
+    if (this.colorForm.value.input2) {
+      this.colors.push(this.color2);
+    }
+
+    if (this.colorForm.value.input3) {
+      this.colors.push(this.color3);
+    }
+
+    if (this.colorForm.value.input4) {
+      this.colors.push(this.color4);
+    }
+
+    if (this.colorForm.value.input5) {
+      this.colors.push(this.color5);
+    }
+
+    console.log(this.colors);
+
+    this.searchCardService.sendLabel(this.colors);
+  }
+
 
 }
