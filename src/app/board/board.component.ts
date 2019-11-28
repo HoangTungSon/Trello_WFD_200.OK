@@ -9,7 +9,7 @@ import {IBoard} from './iboard';
 import {ICard} from '../card/icard';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IUser} from '../user/iuser';
-import {UserService} from "../user/service/user.service";
+// import {UserService} from "../user/service/user.service";
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
 import {any} from 'codelyzer/util/function';
 
@@ -52,17 +52,17 @@ export class BoardComponent implements OnInit {
 
   members: IUser[] = [];
 
-  constructor(
-    private boardService: BoardService,
-    private listCardService: ListCardService,
-    private cardService: CardService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router,
-    private userService: UserService,
-  ) {
-  }
-=======
+  // constructor(
+  //   private boardService: BoardService,
+  //   private listCardService: ListCardService,
+  //   private cardService: CardService,
+  //   private route: ActivatedRoute,
+  //   private fb: FormBuilder,
+  //   private router: Router,
+  //   private userService: UserService,
+  // ) {
+  // }
+// =======
   colors: string  [] = [];
 
   card: ICard;
@@ -159,7 +159,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -237,10 +237,10 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  addMember(users: IUser[]) {
-    console.log(users);
-    this.members = users;
-  }
+  // addMember(users: IUser[]) {
+  //   console.log(users);
+  //   this.members = users;
+  // }
 
 
   // -------------------- color ----------------------
