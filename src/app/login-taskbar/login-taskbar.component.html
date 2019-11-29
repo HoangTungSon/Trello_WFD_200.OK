@@ -11,8 +11,24 @@
     <div class="dropdown-menu">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <p class="user-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</p>
+        <p *ngFor="let board of listBoardByTime">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <p class="user-page-header-personal"><i class="far fa-user"></i> Personal Boards</p>
+        <p *ngFor="let board of listBoard">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <p class="user-page-header-group"><i class="fas fa-users"></i> Group Boards</p>
+        <p *ngFor="let board of listBoard">
+          <a *ngIf="board.userSet.length > 1"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <a class="dropdown-item" href="#">Create new board</a>
       <a class="dropdown-item" href="#">Another action</a>
       <a class="dropdown-item" href="#">Something else here</a>
