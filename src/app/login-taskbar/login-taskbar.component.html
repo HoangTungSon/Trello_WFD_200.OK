@@ -59,9 +59,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search" [(ngModel)]="searchText"
-             (change)="onSearchLabel()">
-      <form [formGroup]="colorForm" (ngSubmit)="onSearchLabel()">
+      <div>
+        <label for="recipient-id" class="sr-only">Find member:</label>
+        <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="searchText"
+               (keydown.enter)="searchUserByName(searchText)">
+      </div>
+      <label for="recipient-id" class="sr-only">Board member:</label>
+      <div *ngFor="let user of users">
+        <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
+      </div>
+      <form [formGroup]="colorForm">
         <div class="modal-body">
           <div class="row" style="height: 320px">
             <div class="form-check">
@@ -97,7 +104,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary" (click)="onSearchLabel()">Save</button>
         </div>
       </form>
     </div>

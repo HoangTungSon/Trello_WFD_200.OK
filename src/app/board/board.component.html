@@ -1,4 +1,4 @@
-<app-login-taskbar></app-login-taskbar>
+<app-login-taskbar [boardId]="boardId"></app-login-taskbar>
 
 <div class="menubar" *ngFor="let board of boards">
   <div class="boardName" [formGroup]="boardForm">
