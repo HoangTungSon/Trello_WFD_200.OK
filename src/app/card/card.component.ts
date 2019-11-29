@@ -7,7 +7,7 @@ import {UserService} from '../user/service/user.service';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
-import {TokenStorageService} from "../auth/token-storage.service";
+import {TokenStorageService} from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-card',

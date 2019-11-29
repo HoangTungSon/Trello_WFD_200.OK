@@ -27,6 +27,8 @@ export class ListCardComponent implements OnInit {
 
   cards: ICard[] = [];
 
+  findUser: IUser[] = [];
+
   listId: number;
 
   card: ICard;
@@ -89,24 +91,56 @@ export class ListCardComponent implements OnInit {
       }
     );
 
-    this.searchCardService.listenLabel().subscribe(searchLabel => {
-      this.labels = searchLabel;
-      for (const color of this.labels) {
-        for (const card of this.searchDisplay) {
-          if (card.colors === null) {
-            card.colors = [];
-          }
-          for (const colorIndex of card.colors) {
-            if (color === colorIndex) {
-              this.cards.push(card);
+    this.searchCardService.listenUser().subscribe(searchUser => {
+      this.searchDisplay = [];
+      console.log(searchUser);
+      console.log('success listen');
+      for (const user of searchUser) {
+        this.cardService.searchCardByUser(user).subscribe(success => {
+          this.searchDisplay = [];
+          this.cardSearch = [];
+          console.log('success get card by user');
+          for (const card of success) {
+            if (card.listSet.listId === this.id) {
+              this.cardSearch.push(card);
+              console.log('success find card');
             }
           }
-        }
+          this.searchDisplay = this.cardSearch;
+        }, error => {
+          console.log('fail to get card by user');
+        });
       }
-      this.searchDisplay = this.cards;
-      console.log('success send the label');
+    }, error => {
+      console.log('cannot listen');
+    });
+
+    this.searchCardService.listenLabel().subscribe(searchLabel => {
+      this.labels = [];
+      this.searchDisplay = [];
+      console.log('run');
+      if (searchLabel.length > 0) {
+        console.log('run 2');
+        this.labels = searchLabel;
+        this.cardService.searchCardByColor(this.labels).subscribe(next => {
+          this.cardSearch = [];
+          for (const card of next) {
+            if (card.listSet.listId === this.id) {
+              this.cardSearch.push(card);
+              console.log('run 3');
+            }
+          }
+          this.searchDisplay = this.cardSearch;
+        }, error => {
+          console.log('dont have any card');
+          this.searchDisplay = [];
+        });
+      } else {
+        this.searchDisplay = [];
+      }
     }, error => {
       console.log('cannot send the label');
+      this.searchDisplay = [];
     });
 
     this.listService.getListCardById(this.id).subscribe(next => {
@@ -242,22 +276,5 @@ export class ListCardComponent implements OnInit {
 
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
-  }
-
-  // -------------------------find card by color--------------------------------------------
-
-  findCard(color: string) {
-    const colors: string[] = [];
-    colors.push(color);
-    console.log(colors);
-    for (const card of this.searchDisplay) {
-      for (const colorIndex of card.colors) {
-        if (color === colorIndex) {
-          this.cards.push(card);
-        }
-      }
-    }
-    this.searchDisplay = this.cards;
-    console.log(this.cards);
   }
 }

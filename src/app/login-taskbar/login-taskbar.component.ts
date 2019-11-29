@@ -20,6 +20,10 @@ export class LoginTaskbarComponent implements OnInit {
   cardsNotification: ICard[] = [];
   userId: number;
   colors: string[] = [];
+  users: IUser[] = [];
+  userFind: IUser[] = [];
+
+  @Input() boardId: number;
 
   input1 = true;
   input2 = true;
@@ -54,6 +58,7 @@ export class LoginTaskbarComponent implements OnInit {
   ngOnInit() {
     this.userId = +this.tokenStorage.getId();
     const id = +this.tokenStorage.getId();
+
     this.userService.getUserById(id).subscribe(next => {
       this.user = next;
       console.log(this.user);
@@ -69,6 +74,15 @@ export class LoginTaskbarComponent implements OnInit {
     }, error => {
       console.log('fail to get user for taskbar');
     });
+    if (this.boardId !== undefined) {
+      this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
+        this.users = next;
+        console.log(this.users);
+        console.log('success get user');
+      }, error => {
+        console.log('fail to get user');
+      })
+    }
   }
 
   onSubmit() {
@@ -95,6 +109,7 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   onSearchLabel() {
+    this.colors = [];
     if (this.colorForm.value.input1) {
       this.colors.push(this.color1);
     }
@@ -120,5 +135,35 @@ export class LoginTaskbarComponent implements OnInit {
     this.searchCardService.sendLabel(this.colors);
   }
 
+  searchUserByName(name: string) {
+    this.userService.getUserByName(1000, name).subscribe(next => {
+      for (const user of next) {
+        for (const user2 of this.users) {
+          if (user.email === user2.email) {
+            this.userFind.push(user);
+          }
+        }
+      }
+      this.users = this.userFind;
+      console.log('get user by name');
+      console.log(this.users);
+      this.searchCardService.sendUser(this.users);
+    }, error => {
+      console.log('cannot get user by name');
+    });
+  }
+
+  sendMember(user: IUser) {
+    this.users = [];
+    this.users.push(user);
+    this.searchCardService.sendUser(this.users);
+    this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
+      this.users = next;
+      console.log(this.users);
+      console.log('success get user');
+    }, error => {
+      console.log('fail to get user');
+    });
+  }
 
 }

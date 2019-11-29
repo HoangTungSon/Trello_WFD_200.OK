@@ -67,6 +67,8 @@ export class BoardComponent implements OnInit {
 
   userCard: IUser[] = [];
 
+  boardId: number;
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -119,11 +121,14 @@ export class BoardComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       listSet: [''],
     });
+
     this.listForm = this.fb.group({
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
     });
+
     const id = +this.route.snapshot.paramMap.get('id');
+    this.boardId = id;
     this.boardService.getBoardById(id).subscribe(next => {
       this.board = next;
       this.users = this.board.userSet;
@@ -133,6 +138,7 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('fail to get board');
     });
+
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -141,6 +147,7 @@ export class BoardComponent implements OnInit {
         console.log('error');
       }
     );
+
     this.boardService.getBoardById(id).subscribe(next => {
       this.boardSet = next;
       console.log('success fetch the board');

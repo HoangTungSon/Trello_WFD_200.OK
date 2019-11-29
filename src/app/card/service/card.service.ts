@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ICard} from '../icard';
 import {environment} from '../../../environments/environment.prod';
+import {IUser} from "../../user/iuser";
 
 const apiUrl = environment.apiUrl;
 
@@ -55,5 +56,9 @@ export class CardService {
 
   searchCardByColor(colors: string[]): Observable<ICard[]> {
     return this.httpClient.post<ICard[]>(this.URL + '/color', colors);
+  }
+
+  searchCardByUser(user: IUser): Observable<ICard[]> {
+    return this.httpClient.post<ICard[]>(this.URL + '/user', user);
   }
 }
