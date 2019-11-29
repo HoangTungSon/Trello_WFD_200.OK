@@ -9,6 +9,7 @@ import {UserService} from '../user/service/user.service';
 import {ICard} from '../card/icard';
 import {IBoard} from '../board/iboard';
 import {BoardService} from '../board/service/board.service';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -21,6 +22,9 @@ export class LoginTaskbarComponent implements OnInit {
   cardsNotification: ICard[] = [];
   listBoard: IBoard[] = [];
   listBoardByTime: IBoard[] = [];
+  inputBoard = new FormControl();
+  iUsers: IUser[] = [];
+  userId = this.tokenStorage.getId();
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
@@ -66,6 +70,13 @@ export class LoginTaskbarComponent implements OnInit {
         console.log('get board by time error');
       }
     );
+
+    this.userService.getUserById(id).subscribe(
+      next => {
+        this.iUsers.push(next);
+        console.log('success fetch the user');
+      }
+    );
   }
 
   onSubmit() {
@@ -93,15 +104,36 @@ export class LoginTaskbarComponent implements OnInit {
 
   updateBoard(board, id) {
     this.boardService.updateBoard(board, id).subscribe();
-    this.refreshPage(id);
-  }
-
-  refreshPage(boardId) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function() {
-        this.router.navigate(['/board/' + boardId + '/list']).then(r => console.log('success navigate'));
+        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
+
+  createBoard() {
+    if (this.inputBoard.value == null) {
+      return alert('Please enter board name');
+    }
+
+    const value: Partial<IBoard> = {
+      boardName: this.inputBoard.value,
+      userSet: this.iUsers
+    };
+
+    this.boardService.createBoard(value).subscribe(
+      next => {
+        console.log('success to create a board');
+      }, error => {
+        console.log('fail to create board');
+      });
+
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
+    });
+  }
+
 
 }
