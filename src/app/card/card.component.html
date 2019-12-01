@@ -13,17 +13,54 @@
       <div class="modal-body">
         <div>
           <label for="recipient-id" class="sr-only">Find member:</label>
-          <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="name" (keydown.enter)="searchUserByName(name)">
+          <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="name"
+                 (keydown.enter)="searchUserByName(name)">
         </div>
         <div>
           <label for="recipient-id" class="sr-only">Board member:</label>
           <div *ngFor="let user of users">
-            <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
+            <button type="button" class="btn btn-secondary userNameButton"
+                    (click)="sendMember(user)">{{user.username}}</button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--------------------------------modal for attrachFile---------------------------------->
+<div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="dropzone"
+               appDropzone
+               (hovered)="toggleHover($event)"
+               (dropped)="onDrop($event)"
+               [class.hovering]="isHovering">
+            <h3>AngularFire Drop Zone</h3>
+            <p>Drag and Drop a IFile</p>
+          </div>
+          <h3>Uploads</h3>
+          <div *ngFor="let file of files">
+            <app-upload-task [file]="file"></app-upload-task>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

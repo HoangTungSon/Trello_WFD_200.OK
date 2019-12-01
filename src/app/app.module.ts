@@ -61,9 +61,15 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {PortalModule} from '@angular/cdk/portal';
-import { CommentComponent } from './comment/comment.component';
-import { TestfileComponent } from './testfile/testfile.component';
-
+import {CommentComponent} from './comment/comment.component';
+import {TestfileComponent} from './testfile/testfile.component';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../environments/environment';
+import {UploadTaskComponent} from './upload-task/upload-task.component';
+import {DropzoneDirective} from './dropzone.directive';
 
 
 @NgModule({
@@ -80,7 +86,9 @@ import { TestfileComponent } from './testfile/testfile.component';
     HomePageComponent,
     LoginTaskbarComponent,
     CommentComponent,
-    TestfileComponent
+    TestfileComponent,
+    UploadTaskComponent,
+    DropzoneDirective,
   ],
   imports: [
     BrowserModule,
@@ -136,10 +144,13 @@ import { TestfileComponent } from './testfile/testfile.component';
     MatTooltipModule,
     MatTreeModule,
     PortalModule,
-    ScrollingModule
+    ScrollingModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
