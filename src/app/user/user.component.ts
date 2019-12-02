@@ -69,25 +69,25 @@ export class UserComponent implements OnInit {
     );
   }
 
-  createBoard() {
-    if (this.inputBoard.value == null) {
-      return alert('Please enter board name');
-    }
-
-    const value: Partial<IBoard> = {
-      boardName: this.inputBoard.value,
-      userSet: this.iUsers
-    };
-
-    this.boardservice.createBoard(value).subscribe(
-      next => {
-        console.log('success to create a board');
-      }, error => {
-        console.log('fail to create board');
-      });
-
-    this.refreshPage();
-  }
+  // createBoard() {
+  //   if (this.inputBoard.value == null) {
+  //     return alert('Please enter board name');
+  //   }
+  //
+  //   const value: Partial<IBoard> = {
+  //     boardName: this.inputBoard.value,
+  //     userSet: this.iUsers
+  //   };
+  //
+  //   this.boardservice.createBoard(value).subscribe(
+  //     next => {
+  //       console.log('success to create a board');
+  //     }, error => {
+  //     console.log('fail to create board');
+  //   });
+  //
+  //   this.refreshPage();
+  // }
 
   updateBoard(board, id) {
     this.boardservice.updateBoard(board, id).subscribe();

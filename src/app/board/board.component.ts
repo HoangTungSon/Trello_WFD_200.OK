@@ -180,11 +180,7 @@ export class BoardComponent implements OnInit {
         }, error => {
           console.log('fail to create list card');
         });
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
-        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
-      }.bind(this), 500);
-    });
+    this.refreshPage();
   }
 
   deleteList(id: number) {
@@ -209,10 +205,12 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
+=======
+    this.refreshPage();
   }
 
   changeNameList(id: number) {
@@ -288,11 +286,7 @@ export class BoardComponent implements OnInit {
     this.boardService.updateBoard(value, this.board.boardId).subscribe(
       next => {
         console.log('add user success');
-        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-          setTimeout(function () {
-            this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
-          }.bind(this), 500);
-        });
+        this.refreshPage();
       }, error => {
         console.log('add user fail');
       }
@@ -361,11 +355,7 @@ export class BoardComponent implements OnInit {
     }
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
-      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        setTimeout(function () {
-          this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
-        }.bind(this), 500);
-      });
+      this.refreshPage();
     }, error => {
       console.log('error update');
     });
@@ -431,6 +421,17 @@ export class BoardComponent implements OnInit {
     }
     console.log(this.colors);
   }
+
+  checkColor(color) {
+    if (this.currentCard.colors === null) {
+      this.colors.push(color);
+      this.currentCard.colors = this.colors;
+    } else if (this.currentCard.colors.indexOf(color) === -1) {
+      this.currentCard.colors.push(color);
+    } else {
+      alert('Màu đã tồn tại!');
+    }
+}
   // reset label's card
   reset(idCard: any) {
     this.currentCard.colors = [];
@@ -439,59 +440,23 @@ export class BoardComponent implements OnInit {
   saveColor(idCard: any) {
     console.log(this.input1);
     if (this.colorForm.value.input1) {
-      if (this.currentCard.colors === null) {
-        this.colors.push(this.color1);
-        this.currentCard.colors = this.colors;
-      } else if (this.currentCard.colors.indexOf(this.color1) === -1) {
-        console.log('ok');
-        this.currentCard.colors.push(this.color1);
-      } else {
-        alert('Màu đã tồn tại!');
-      }
+      this.checkColor(this.color1);
     }
 
     if (this.colorForm.value.input2) {
-      if (this.currentCard.colors === null) {
-        this.colors.push(this.color2);
-        this.currentCard.colors = this.colors;
-      } else if (this.currentCard.colors.indexOf(this.color2) === -1) {
-        this.currentCard.colors.push(this.color2);
-      } else {
-        alert('Màu đã tồn tại!');
-      }
+      this.checkColor(this.color2);
     }
 
     if (this.colorForm.value.input3) {
-      if (this.currentCard.colors === null) {
-        this.colors.push(this.color3);
-        this.currentCard.colors = this.colors;
-      } else if (this.currentCard.colors.indexOf(this.color3) === -1) {
-        this.currentCard.colors.push(this.color3);
-      } else {
-        alert('Màu đã tồn tại!');
-      }
+      this.checkColor(this.color3);
     }
 
     if (this.colorForm.value.input4) {
-      if (this.currentCard.colors === null) {
-        this.colors.push(this.color4);
-        this.currentCard.colors = this.colors;
-      } else if (this.currentCard.colors.indexOf(this.color4) === -1) {
-        this.currentCard.colors.push(this.color4);
-      } else {
-        alert('Màu đã tồn tại!');
-      }
+      this.checkColor(this.color4);
     }
 
     if (this.colorForm.value.input5) {
-      if (this.currentCard.colors === null) {
-        this.colors.push(this.color5);
-        this.currentCard.colors = this.colors;
-      } else if (this.currentCard.colors.indexOf(this.color5) === -1) {
-        this.currentCard.colors.push(this.color5);
-      } else {
-        alert('Màu đã tồn tại!');
-      }
+      this.checkColor(this.color5);
     }
     console.log(this.colors);
     this.cardService.updateColor(this.currentCard).subscribe(
@@ -503,5 +468,13 @@ export class BoardComponent implements OnInit {
     );
   }
 
+  // ---------------------refresh page---------------------------
+  refreshPage() {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
+    });
+  }
 
 }

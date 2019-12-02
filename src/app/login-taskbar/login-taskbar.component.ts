@@ -7,6 +7,8 @@ import {SearchCardService} from '../card/service/search-card.service';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {ICard} from '../card/icard';
+import {IBoard} from '../board/iboard';
+import {BoardService} from '../board/service/board.service';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -18,6 +20,10 @@ export class LoginTaskbarComponent implements OnInit {
   searchText: string;
   user: IUser;
   cardsNotification: ICard[] = [];
+  listBoard: IBoard[] = [];
+  listBoardByTime: IBoard[] = [];
+  inputBoard = new FormControl();
+  iUsers: IUser[] = [];
   userId: number;
   colors: string[] = [];
   users: IUser[] = [];
@@ -45,13 +51,13 @@ export class LoginTaskbarComponent implements OnInit {
     input5: new FormControl(''),
   });
 
-
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
               private router: Router,
               private cardService: CardService,
               private searchCardService: SearchCardService,
-              private userService: UserService
+              private userService: UserService,
+              private boardService: BoardService
   ) {
   }
 
@@ -74,6 +80,29 @@ export class LoginTaskbarComponent implements OnInit {
     }, error => {
       console.log('fail to get user for taskbar');
     });
+    this.boardService.getListBoardByUser(10, id).subscribe(
+      next => {
+        this.listBoard = next;
+        console.log('get board successfully');
+      }, error => {
+        console.log('get board error');
+      });
+
+    this.boardService.getListBoardByTime(10, id).subscribe(
+      next => {
+        this.listBoardByTime = next;
+        console.log('get board by time successfully');
+      }, error1 => {
+        console.log('get board by time error');
+      }
+    );
+
+    this.userService.getUserById(id).subscribe(
+      next => {
+        this.iUsers.push(next);
+        console.log('success fetch the user');
+      }
+    );
     if (this.boardId !== undefined) {
       this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
         this.users = next;
@@ -81,7 +110,7 @@ export class LoginTaskbarComponent implements OnInit {
         console.log('success get user');
       }, error => {
         console.log('fail to get user');
-      })
+      });
     }
   }
 
@@ -105,6 +134,39 @@ export class LoginTaskbarComponent implements OnInit {
       console.log('marked all read');
     }, error => {
       console.log('cannot marked all');
+    });
+  }
+
+  updateBoard(board, id) {
+    this.boardService.updateBoard(board, id).subscribe();
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
+    });
+  }
+
+  createBoard() {
+    if (this.inputBoard.value == null) {
+      return alert('Please enter board name');
+    }
+
+    const value: Partial<IBoard> = {
+      boardName: this.inputBoard.value,
+      userSet: this.iUsers
+    };
+
+    this.boardService.createBoard(value).subscribe(
+      next => {
+        console.log('success to create a board');
+      }, error => {
+        console.log('fail to create board');
+      });
+
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
     });
   }
 
@@ -165,5 +227,4 @@ export class LoginTaskbarComponent implements OnInit {
       console.log('fail to get user');
     });
   }
-
 }

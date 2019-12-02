@@ -22,12 +22,14 @@
         <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
              (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let list of listCards" cdkDrag>
-            <input id="listName" type="text" formControlName="listName"
-                   value="{{list.listName + ' ' + list.listId}}"
+            <div div class="example-box-list">
+            <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
+                   style="float: left;"
                    (change)="changeNameList(list.listId)">
-            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right"
+            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: left; "
                    (click)="deleteListCard(list.listId)"
                    value="---">
+            </div>
           </div>
         </div>
       </div>
