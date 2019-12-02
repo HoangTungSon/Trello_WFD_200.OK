@@ -129,6 +129,8 @@ export class CardComponent implements OnInit {
   onDrop(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i));
+      const file = files.item(i).name.split('.');
+      console.log(file[1]);
     }
   }
 }

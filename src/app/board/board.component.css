@@ -167,6 +167,28 @@ input {
   display: inline-block;
 }
 
+.imageFileCard {
+  width: 150px;
+  height: 100px;
+}
+
+a.commentFile::before{
+  content: " - ";
+}
+
+.fileDetail {
+  margin-left: 10px;
+}
+
+.imageFileCards {
+  margin-bottom: 50px;
+}
+
+.attachment {
+  margin-bottom: 100px;
+}
+
+
 /*.example-container {*/
 /*  position: absolute;*/
 /*  top: 0;*/

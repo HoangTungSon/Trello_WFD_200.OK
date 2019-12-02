@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {finalize, tap} from 'rxjs/operators';
 import {FileService} from './service/file.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {ICard} from '../card/icard';
 
 @Component({
   selector: 'app-upload-task',
@@ -15,7 +16,7 @@ export class UploadTaskComponent implements OnInit {
 
   @Input() file: File;
 
-  fireForm: FormGroup;
+  @Input() card: ICard;
 
   task: AngularFireUploadTask;
 
@@ -32,9 +33,14 @@ export class UploadTaskComponent implements OnInit {
   ) {
   }
 
+  fireForm = this.fb.group({
+    id: [''],
+    url: [''],
+    card: [''],
+  });
+
   ngOnInit() {
     this.startUpload();
-
     this.fireForm = this.fb.group({
       id: [''],
       url: [''],
@@ -56,14 +62,28 @@ export class UploadTaskComponent implements OnInit {
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
 
+    const fileType = this.file.name.split('.');
+
     this.snapshot = this.task.snapshotChanges().pipe(
       tap(console.log),
       // The file's download URL
       finalize(async () => {
-        this.downloadURL = await ref.getDownloadURL().toPromise();
+        this.downloadURL = await ref.getDownloadURL().toPromise().then();
         this.db.collection('files').add({downloadURL: this.downloadURL, path});
 
-        // this.fileService.createFile()
+        const {value} = this.fireForm;
+        value.url = this.downloadURL.toString();
+        value.card = this.card;
+        value.type = fileType[1];
+        value.fileName = fileType[0];
+        console.log(value);
+
+        this.fileService.createFile(value).subscribe(next => {
+          console.log(next);
+          console.log('success upload file');
+        }, error => {
+          console.log('fail to upload file');
+        });
       }),
     );
   }

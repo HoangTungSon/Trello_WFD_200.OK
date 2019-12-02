@@ -82,16 +82,47 @@
                 <label for="message-text" class="col-form-label"><i class="fas fa-list"></i> Description:</label>
                 <textarea class="form-control" id="message-text" formControlName="description"></textarea>
               </div>
-              <form [formGroup]="commentForm">
-                <div>
-                  <label for="comment" class="col-form-label"><i class="fas fa-list"></i> Comment:</label>
-                  <textarea class="form-control" id="comment" formControlName="commentLine"></textarea>
-                  <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="createComment()">Save Comment</button>
+              <br>
+              <span class="attachment"><i class="fas fa-paperclip" style="margin-bottom: 10px"></i> Attachments</span>
+              <div *ngFor="let file of files" class="imageFile">
+                <div class="imageFileCards float-left">
+                  <a href="{{file.url}}"><img class="imageFileCard float-left"
+                                              *ngIf="file.type === 'png' || file.type === 'jpg'" src="{{file.url}}"
+                                              alt="image"></a>
+                  <a class="imageFileCard" *ngIf="file.type !=='png' && file.type !=='jpg'" href="{{file.url}}">
+                    <img class="imageFileCard"
+                         src="https://store-images.s-microsoft.com/image/apps.34961.13510798887621962.47b62c4c-a0c6-4e3c-87bb-509317d9c364.a6354b48-c68a-47fa-b69e-4cb592d42ffc?mode=scale&q=90&h=300&w=300"
+                         alt="image2">
+                  </a>
+                  <p class="fileDetail float-left">
+                      <span class="fileName">
+                        <a href="{{file.url}}">{{file.fileName}}</a>
+                      </span>
+                    <br>
+                    <span class="buttonFile float-left">
+                    <span>Type: {{file.type}}</span>
+                    <span><a class="commentFile" href="#">Comment</a></span>
+                    <span><a class="commentFile" href="#">Delete</a></span>
+                    <span><a class="commentFile" href="#">Edit</a></span>
+                    </span>
+                  </p>
                 </div>
-              </form>
+              </div>
+              <br>
+              <div class="commentForm float-left">
+                <form [formGroup]="commentForm">
+                  <div>
+                    <label for="comment" class="col-form-label"><i class="fas fa-list"></i> Comment:</label>
+                    <textarea class="form-control" id="comment" formControlName="commentLine"></textarea>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="createComment()">Save
+                      Comment
+                    </button>
+                  </div>
+                </form>
+              </div>
               <br>
               <div *ngFor="let comment of commentCard">
-                <div><i class="fas fa-user"></i> {{comment.userComment.username}}: </div>
+                <div><i class="fas fa-user"></i> {{comment.userComment.username}}:</div>
                 <div><i class="fas fa-comments"></i> {{comment.commentLine}}</div>
                 <br>
               </div>

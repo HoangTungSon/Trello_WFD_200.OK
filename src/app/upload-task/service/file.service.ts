@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment.prod';
 import {HttpClient} from '@angular/common/http';
-import {ICard} from '../../card/icard';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IFile} from '../IFile';
@@ -46,7 +45,4 @@ export class FileService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
-
-
-
 }
