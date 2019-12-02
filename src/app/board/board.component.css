@@ -15,7 +15,8 @@
 
 .example-box {
   padding: 20px 10px;
-  border-right: solid 1px #ccc;
+  /*border-right: solid 1px #ccc;*/
+  border: none;
   color: rgba(0, 0, 0, 0.87);
   flex-direction: row;
   align-items: center;
@@ -29,8 +30,19 @@
   max-height: 100%;
 }
 
-.example-list {
+.example-box-list {
   border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  align-items: center;
+  background: white;
+  font-size: 14px;
+  height: 50px;
+  padding: 10px;
+}
+
+.example-list {
+  /*border: solid 1px #ccc;*/
+  border: none;
   min-height: 100px;
   display: inline-flex;
   flex-direction: row;

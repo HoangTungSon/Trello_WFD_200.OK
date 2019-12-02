@@ -10,15 +10,28 @@
       <i class="fas fa-clipboard-list"></i> Boards
     </a>
     <div class="dropdown-menu">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+<!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
       <p class="user-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</p>
-      <p class="user-page-header-personal"><i class="far fa-user"></i> Personal Boards</p>
+        <p *ngFor="let board of listBoardByTime">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
+      <p class="user-page-header-personal"><i class="fas fa-user"></i> Personal Boards</p>
+        <p *ngFor="let board of listBoard">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <p class="user-page-header-group"><i class="fas fa-users"></i> Group Boards</p>
-      <a class="dropdown-item" href="#">Create new board</a>
-      <a class="dropdown-item" href="#">Another action</a>rm
-      <a class="dropdown-item" href="#">Something else here</a>
+        <p *ngFor="let board of listBoard">
+          <a *ngIf="board.userSet.length > 1"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Separated link</a>
+      <a class="dropdown-item" data-toggle="modal" data-target="#createBoard">Create new board</a>
     </div>
   </div>
   <div style="margin-left: 5px">
@@ -49,6 +62,27 @@
     </div>
   </div>
 </nav>
+
+
+<div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" [formControl]="inputBoard" placeholder="Board name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createBoard()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
