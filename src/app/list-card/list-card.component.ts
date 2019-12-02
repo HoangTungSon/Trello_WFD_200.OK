@@ -87,9 +87,38 @@ export class ListCardComponent implements OnInit {
         this.searchDisplay = next;
         console.log('card success');
       }, error => {
+        console.log(error);
         console.log('error');
       }
     );
+
+    this.searchCardService.listenLabel().subscribe(searchLabel => {
+      this.labels = [];
+      console.log(searchLabel);
+      if (searchLabel.length > 0) {
+        this.searchDisplay = [];
+        console.log('search card');
+      }
+      console.log('run');
+      if (searchLabel.length > 0) {
+        console.log('run 2');
+        this.labels = searchLabel;
+        this.cardService.searchCardByColor(this.labels).subscribe(next => {
+          this.cardSearch = [];
+          for (const card of next) {
+            if (card.listSet.listId === this.id) {
+              this.cardSearch.push(card);
+              console.log('run 3');
+            }
+          }
+          this.searchDisplay = this.cardSearch;
+        }, error => {
+          console.log('dont have any card');
+        });
+      }
+    }, error => {
+      console.log('cannot send the label');
+    });
 
     this.searchCardService.listenUser().subscribe(searchUser => {
       this.searchDisplay = [];
@@ -113,34 +142,6 @@ export class ListCardComponent implements OnInit {
       }
     }, error => {
       console.log('cannot listen');
-    });
-
-    this.searchCardService.listenLabel().subscribe(searchLabel => {
-      this.labels = [];
-      this.searchDisplay = [];
-      console.log('run');
-      if (searchLabel.length > 0) {
-        console.log('run 2');
-        this.labels = searchLabel;
-        this.cardService.searchCardByColor(this.labels).subscribe(next => {
-          this.cardSearch = [];
-          for (const card of next) {
-            if (card.listSet.listId === this.id) {
-              this.cardSearch.push(card);
-              console.log('run 3');
-            }
-          }
-          this.searchDisplay = this.cardSearch;
-        }, error => {
-          console.log('dont have any card');
-          this.searchDisplay = [];
-        });
-      } else {
-        this.searchDisplay = [];
-      }
-    }, error => {
-      console.log('cannot send the label');
-      this.searchDisplay = [];
     });
 
     this.listService.getListCardById(this.id).subscribe(next => {

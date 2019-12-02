@@ -15,6 +15,8 @@ import {any} from 'codelyzer/util/function';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {CommentService} from '../comment/service/comment.service';
 import {IComment} from '../comment/icomment';
+import {FileService} from '../upload-task/service/file.service';
+import {IFile} from "../upload-task/IFile";
 
 
 @Component({
@@ -69,6 +71,8 @@ export class BoardComponent implements OnInit {
 
   boardId: number;
 
+  files: IFile[] = [];
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -80,6 +84,7 @@ export class BoardComponent implements OnInit {
     private cpService: ColorPickerService,
     private tokenStorage: TokenStorageService,
     private commentService: CommentService,
+    private fileService: FileService
   ) {
   }
 
@@ -328,6 +333,7 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('cannot get comment');
     });
+    this.displayFile(this.currentCard);
   }
 
   addMember(users: IUser[]) {
@@ -393,6 +399,16 @@ export class BoardComponent implements OnInit {
       }
     }, error => {
       console.log('fail to get user');
+    });
+  }
+
+  displayFile(card: ICard) {
+    this.fileService.getFileByCard(1000, card.cardId).subscribe(next => {
+      this.files = next;
+      console.log(next);
+      console.log('success to get file');
+    }, error => {
+      console.log('fail to get file');
     });
   }
 

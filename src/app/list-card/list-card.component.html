@@ -1,9 +1,3 @@
-<div style="margin-left: 5px">
-  <div class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search"[(ngModel)]="searchText" (change)="findCard(searchText)" >
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-  </div>
-</div>
 <div cdkDropList [cdkDropListData]="searchDisplay" class="example-list-card" (cdkDropListDropped)="drop($event)">
   <div class="example-box-card" *ngFor="let item of searchDisplay" (cdkDragEnded)="sendNotification($event, item.cardId)" cdkDrag (cdkDragDropped)="changeCardListSet($event, item.cardId)">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
