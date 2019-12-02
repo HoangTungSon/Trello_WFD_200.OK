@@ -18,8 +18,8 @@ export class ChangePasswordService {
   constructor(private http: HttpClient) { }
 
 
-  onChangePassword(pass: PassForm): Observable<PassForm> {
-    return this.http.put<PassForm>(`${this.URL}/${pass.userId}`, pass);
+  onChangePassword(pass: PassForm): Observable<void> {
+    return this.http.put<void>('http://localhost:5000/users/update-password/' + pass.userId, pass);
   }
 
 }

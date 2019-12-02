@@ -199,6 +199,12 @@ export class BoardComponent implements OnInit {
       this.deleteList(id);
       console.log('fail to delete cards from this list');
     });
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 3000);
+    });
+=======
     this.refreshPage();
   }
 
