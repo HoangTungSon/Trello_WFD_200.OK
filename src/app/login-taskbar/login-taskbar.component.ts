@@ -24,7 +24,6 @@ export class LoginTaskbarComponent implements OnInit {
   listBoardByTime: IBoard[] = [];
   inputBoard = new FormControl();
   iUsers: IUser[] = [];
-  userId = this.tokenStorage.getId();
   userId: number;
   colors: string[] = [];
   users: IUser[] = [];
@@ -111,7 +110,7 @@ export class LoginTaskbarComponent implements OnInit {
         console.log('success get user');
       }, error => {
         console.log('fail to get user');
-      })
+      });
     }
   }
 
