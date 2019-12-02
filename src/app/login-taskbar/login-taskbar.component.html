@@ -5,34 +5,142 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div style="margin-left: 5px">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+       aria-expanded="false">
       <i class="fas fa-clipboard-list"></i> Boards
     </a>
     <div class="dropdown-menu">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+<!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
       <p class="user-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</p>
-      <p class="user-page-header-personal"><i class="far fa-user"></i> Personal Boards</p>
+        <p *ngFor="let board of listBoardByTime">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
+      <p class="user-page-header-personal"><i class="fas fa-user"></i> Personal Boards</p>
+        <p *ngFor="let board of listBoard">
+          <a [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <p class="user-page-header-group"><i class="fas fa-users"></i> Group Boards</p>
-      <a class="dropdown-item" href="#">Create new board</a>
-      <a class="dropdown-item" href="#">Another action</a>rm
-      <a class="dropdown-item" href="#">Something else here</a>
+        <p *ngFor="let board of listBoard">
+          <a *ngIf="board.userSet.length > 1"
+             [routerLink]="['/board',board.boardId,'list']"
+             (click)="updateBoard(board, board.boardId)">
+            Name: {{board.boardName}}</a>
+        </p>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Separated link</a>
+      <a class="dropdown-item" data-toggle="modal" data-target="#createBoard">Create new board</a>
     </div>
   </div>
   <div style="margin-left: 5px">
     <div class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search"[(ngModel)]="searchText" (change)="onSearchComplete()" >
+      <input class="form-control mr-sm-2" type="type" placeholder="Search" aria-label="Search" [(ngModel)]="searchText"
+             (change)="onSearchComplete()">
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-
-
     </div>
   </div>
   <div class="ml-auto">
-    <button type="button" class="btn btn-outline-primary" (click)="onSubmit()" >Logout</button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" (click)="clickNoti()"><i class="far fa-bell"></i>{{userNoti}}</button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',this.tokenStorage.getId()]"><i class="fas fa-user"></i></button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal" data-target="#findingModal" value="---"><i class="fas fa-info"></i></button>
+    <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',userId]"><i
+      class="fas fa-user"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal"
+            data-target="#findlabelModal" value="---"><i class="fas fa-info"></i></button>
+  </div>
+  <div class="navbar-nav nav-item dropdown dropleft">
+    <a class="nav-link dropdown-toggle" href="#" id="accessoriesDropdown" role="button" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+      Notification
+    </a>
+    <div class="dropdown-menu dropright" aria-labelledby="accessoriesDropdown">
+      <a (click)="deleteAllCardNoti()">Marked all read</a>
+      <a class="dropdown-item" href="#"
+         *ngFor=" let card of cardsNotification">{{card.title + ' on list:' + card.listSet.listId}}</a>
+      <div class="dropdown-divider"></div>
+    </div>
   </div>
 </nav>
 
+
+<div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" [formControl]="inputBoard" placeholder="Board name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createBoard()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div>
+        <label for="recipient-id" class="sr-only">Find member:</label>
+        <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="searchText"
+               (keydown.enter)="searchUserByName(searchText)">
+      </div>
+      <label for="recipient-id" class="sr-only">Board member:</label>
+      <div *ngFor="let user of users">
+        <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
+      </div>
+      <form [formGroup]="colorForm">
+        <div class="modal-body">
+          <div class="row" style="height: 320px">
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1"
+                     id="defaultCheck1.1">
+              <div class="color-box" [style.background]="color1"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2"
+                     id="defaultCheck1.2">
+              <div class="color-box" [style.background]="color2"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3"
+                     id="defaultCheck1.3">
+              <div class="color-box" [style.background]="color3"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4"
+                     id="defaultCheck1.4">
+              <div class="color-box" [style.background]="color4"></div>
+
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5"
+                     id="defaultCheck1.5">
+              <div class="color-box" [style.background]="color5"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSearchLabel()">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

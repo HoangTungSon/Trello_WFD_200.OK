@@ -31,14 +31,13 @@ export class ListCardService {
     return this.httpClient.post<IListCard>(this.URL, listCard);
   }
 
-  updateListCard(listCard: IListCard, id: number): Observable<IListCard> {
-    return this.httpClient.put<IListCard>(`${this.URL}/${id}`, listCard);
+  updateListCard(listCard: IListCard): Observable<IListCard> {
+    return this.httpClient.put<IListCard>(this.URL + '/' + listCard.listId, listCard);
   }
 
   deleteListCard(id: number): Observable<any> {
     return this.httpClient.delete(`${this.URL}/${id}`);
   }
-
 
   getListCardByBoard(count = 10, id: number): Observable<IListCard[]> {
     return this.httpClient.get<IListCard[]>( this.URL + '/board/' + id).pipe(
@@ -49,4 +48,9 @@ export class ListCardService {
   updateListCardAndCard(id: number, previousId: number): Observable<IListCard> {
     return this.httpClient.put<IListCard>(this.URL + '/card?previousId=' + previousId + '&currentId=' + id, 1);
   }
+
+  updateCardListId(list: IListCard, id: number, previousId: number): Observable<IListCard> {
+    return this.httpClient.put<IListCard>(this.URL + '/cardSwap?previousId=' + previousId + '&currentId=' + id, list);
+  }
+
 }

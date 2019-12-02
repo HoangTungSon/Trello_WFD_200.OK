@@ -15,7 +15,8 @@
 
 .example-box {
   padding: 20px 10px;
-  border-right: solid 1px #ccc;
+  /*border-right: solid 1px #ccc;*/
+  border: none;
   color: rgba(0, 0, 0, 0.87);
   flex-direction: row;
   align-items: center;
@@ -29,8 +30,19 @@
   max-height: 100%;
 }
 
-.example-list {
+.example-box-list {
   border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  align-items: center;
+  background: white;
+  font-size: 14px;
+  height: 50px;
+  padding: 10px;
+}
+
+.example-list {
+  /*border: solid 1px #ccc;*/
+  border: none;
   min-height: 100px;
   display: inline-flex;
   flex-direction: row;
@@ -75,6 +87,36 @@
 
 .example-list.cdk-drop-list-dragging .example-container:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.menubar {
+  width: 90%;
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.boardName {
+  float: left;
+  margin-left: 10px;
+  border: none;
+}
+
+.invite {
+  float: left;
+  margin-left: 10px;
+}
+
+#boardName{
+  border: none;
+  font-weight: bold;
+  font-size: 26px;
+  width: 200px;
+}
+
+.user{
+  float: left;
+  margin-left: 5px;
 }
 
 /*-----------------------------card css----------------------------*/
@@ -136,3 +178,18 @@ input {
 .inner {
   display: inline-block;
 }
+
+/*.example-container {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  bottom: 0;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*}*/
+
+/*.example-events {*/
+/*  width: 300px;*/
+/*  height: 200px;*/
+/*  overflow: auto;*/
+/*  border: 1px solid #555;*/
+/*}*/

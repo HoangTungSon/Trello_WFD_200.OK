@@ -7,6 +7,7 @@ import {UserService} from '../user/service/user.service';
 import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
+import {TokenStorageService} from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-card',
@@ -39,7 +40,8 @@ export class CardComponent implements OnInit {
     private cardService: CardService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tokenStorage: TokenStorageService,
   ) {
   }
 
@@ -65,7 +67,7 @@ export class CardComponent implements OnInit {
       if (this.members[i].email === user.email) {
         const mid = this.members[i];
         this.members[i] = this.members[this.members.length - 1];
-        this.members[this.members.length - 1] = this.members[i];
+        this.members[this.members.length - 1] = mid;
         this.members.pop();
         this.memberCheck = true;
         break;
@@ -74,7 +76,12 @@ export class CardComponent implements OnInit {
       }
     }
     if (!this.memberCheck) {
-      user.userNotification++;
+      if (user.cardNoti === null) {
+        user.cardNoti = [];
+      }
+      if (user.email !== this.tokenStorage.getEmail()) {
+        user.cardNoti.push(this.card.cardId);
+      }
       this.userService.updateUser(user).subscribe(next => {
         console.log('noti up');
       }, error => {
@@ -94,7 +101,7 @@ export class CardComponent implements OnInit {
       console.log('function check user');
       for (const mem of this.checkMembers) {
         for (const memUser of this.users) {
-          if (mem.email === memUser.email) {
+          if (mem.email === memUser.email && mem.email !== this.tokenStorage.getEmail()) {
             this.memberSameUserSet.push(mem);
             console.log(this.memberSameUserSet);
           }

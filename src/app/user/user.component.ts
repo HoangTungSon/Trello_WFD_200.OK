@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from './service/user.service';
 import {BoardService} from '../board/service/board.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -14,13 +14,13 @@ import {TokenStorageService} from '../auth/token-storage.service';
 })
 export class UserComponent implements OnInit {
 
+  listBoardGroup: IBoard[] = [];
   listBoard: IBoard[] = [];
   listBoardByTime: IBoard[] = [];
   iUsers: IUser[] = [];
   inputBoard = new FormControl();
   userId = this.tokenStorage.getId();
   user: IUser;
-  userNoti: number;
 
   constructor(
     private userservice: UserService,
@@ -29,21 +29,26 @@ export class UserComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private tokenStorage: TokenStorageService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.boardservice.getListBoardByUser(10, id).subscribe(
       next => {
         this.listBoard = next;
+        for (const list of this.listBoard) {
+          if (list.userSet.length > 1) {
+            this.listBoardGroup.push(list);
+          }
+        }
         console.log('get board successfully');
       }, error => {
         console.log('get board error');
-    });
+      });
 
     this.userservice.getUserById(id).subscribe(next => {
       this.user = next;
-      this.userNoti = this.user.userNotification;
       console.log(this.user);
     });
 
@@ -64,25 +69,25 @@ export class UserComponent implements OnInit {
     );
   }
 
-  createBoard() {
-    if (this.inputBoard.value == null) {
-      return alert('Please enter board name');
-    }
-
-    const value: Partial<IBoard> = {
-      boardName: this.inputBoard.value,
-      userSet: this.iUsers
-    };
-
-    this.boardservice.createBoard(value).subscribe(
-      next => {
-        console.log('success to create a board');
-      }, error => {
-      console.log('fail to create board');
-    });
-
-    this.refreshPage();
-  }
+  // createBoard() {
+  //   if (this.inputBoard.value == null) {
+  //     return alert('Please enter board name');
+  //   }
+  //
+  //   const value: Partial<IBoard> = {
+  //     boardName: this.inputBoard.value,
+  //     userSet: this.iUsers
+  //   };
+  //
+  //   this.boardservice.createBoard(value).subscribe(
+  //     next => {
+  //       console.log('success to create a board');
+  //     }, error => {
+  //     console.log('fail to create board');
+  //   });
+  //
+  //   this.refreshPage();
+  // }
 
   updateBoard(board, id) {
     this.boardservice.updateBoard(board, id).subscribe();
@@ -95,7 +100,7 @@ export class UserComponent implements OnInit {
 
   refreshPage() {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
