@@ -50,4 +50,10 @@ export class UserService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
+
+  getListUserByCard(count = 10, id: number): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(this.URL + '/card/' + id).pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
+  }
 }

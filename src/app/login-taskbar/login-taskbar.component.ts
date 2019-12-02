@@ -9,7 +9,7 @@ import {UserService} from '../user/service/user.service';
 import {ICard} from '../card/icard';
 import {IBoard} from '../board/iboard';
 import {BoardService} from '../board/service/board.service';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -25,6 +25,32 @@ export class LoginTaskbarComponent implements OnInit {
   inputBoard = new FormControl();
   iUsers: IUser[] = [];
   userId = this.tokenStorage.getId();
+  userId: number;
+  colors: string[] = [];
+  users: IUser[] = [];
+  userFind: IUser[] = [];
+
+  @Input() boardId: number;
+
+  input1 = true;
+  input2 = true;
+  input3 = true;
+  input4 = true;
+  input5 = true;
+
+  color1 = '#2883e9';
+  color2 = '#e920e9';
+  color3 = '#e4E925';
+  color4 = '#eC4040';
+  color5 = '#2DD02D';
+
+  colorForm: FormGroup = new FormGroup({
+    input1: new FormControl(''),
+    input2: new FormControl(''),
+    input3: new FormControl(''),
+    input4: new FormControl(''),
+    input5: new FormControl(''),
+  });
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
@@ -37,7 +63,9 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = +this.tokenStorage.getId();
     const id = +this.tokenStorage.getId();
+
     this.userService.getUserById(id).subscribe(next => {
       this.user = next;
       console.log(this.user);
@@ -53,7 +81,6 @@ export class LoginTaskbarComponent implements OnInit {
     }, error => {
       console.log('fail to get user for taskbar');
     });
-
     this.boardService.getListBoardByUser(10, id).subscribe(
       next => {
         this.listBoard = next;
@@ -77,6 +104,15 @@ export class LoginTaskbarComponent implements OnInit {
         console.log('success fetch the user');
       }
     );
+    if (this.boardId !== undefined) {
+      this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
+        this.users = next;
+        console.log(this.users);
+        console.log('success get user');
+      }, error => {
+        console.log('fail to get user');
+      })
+    }
   }
 
   onSubmit() {
@@ -135,5 +171,61 @@ export class LoginTaskbarComponent implements OnInit {
     });
   }
 
+  onSearchLabel() {
+    this.colors = [];
+    if (this.colorForm.value.input1) {
+      this.colors.push(this.color1);
+    }
 
+    if (this.colorForm.value.input2) {
+      this.colors.push(this.color2);
+    }
+
+    if (this.colorForm.value.input3) {
+      this.colors.push(this.color3);
+    }
+
+    if (this.colorForm.value.input4) {
+      this.colors.push(this.color4);
+    }
+
+    if (this.colorForm.value.input5) {
+      this.colors.push(this.color5);
+    }
+
+    console.log(this.colors);
+
+    this.searchCardService.sendLabel(this.colors);
+  }
+
+  searchUserByName(name: string) {
+    this.userService.getUserByName(1000, name).subscribe(next => {
+      for (const user of next) {
+        for (const user2 of this.users) {
+          if (user.email === user2.email) {
+            this.userFind.push(user);
+          }
+        }
+      }
+      this.users = this.userFind;
+      console.log('get user by name');
+      console.log(this.users);
+      this.searchCardService.sendUser(this.users);
+    }, error => {
+      console.log('cannot get user by name');
+    });
+  }
+
+  sendMember(user: IUser) {
+    this.users = [];
+    this.users.push(user);
+    this.searchCardService.sendUser(this.users);
+    this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
+      this.users = next;
+      console.log(this.users);
+      console.log('success get user');
+    }, error => {
+      console.log('fail to get user');
+    });
+  }
 }

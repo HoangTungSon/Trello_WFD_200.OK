@@ -1,0 +1,55 @@
+<button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal" data-target="#findlabelModal" value="---"><i class="fas fa-info"></i></button>
+
+<div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="colorForm">
+        <div class="modal-body">
+          <div class="row" style="height: 320px">
+            <div class="col-md-2">
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input10" type="checkbox"
+                       id="defaultCheck1">
+                <div class="color-box" [style.background]="color1"></div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input20" type="checkbox"
+                       id="defaultCheck12">
+                <div class="color-box" [style.background]="color2"></div>
+
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input30" type="checkbox"
+                       id="defaultCheck13">
+                <div class="color-box" [style.background]="color3"></div>
+
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input40" type="checkbox"
+                       id="defaultCheck14">
+                <div class="color-box" [style.background]="color4"></div>
+
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input50" type="checkbox"
+                       id="defaultCheck15">
+                <div class="color-box" [style.background]="color5"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

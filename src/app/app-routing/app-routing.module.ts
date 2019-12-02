@@ -9,6 +9,7 @@ import {ProfileComponent} from '../profile/profile.component';
 import {HomePageComponent} from '../home-page/home-page.component';
 import {CanActivateTeam} from '../active/CanActivateTeam';
 import {NotActivateTeam} from '../active/NotActivateTeam';
+import {TestfileComponent} from "../testfile/testfile.component";
 
 const routes: Routes = [{
   path: 'board/:id/list',
@@ -38,6 +39,9 @@ const routes: Routes = [{
 }, {
   path: '',
   component: HomePageComponent
+}, {
+  path: 'testFile',
+  component: TestfileComponent
 }
 ];
 
