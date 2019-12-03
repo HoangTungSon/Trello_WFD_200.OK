@@ -9,29 +9,29 @@
        aria-expanded="false">
       <i class="fas fa-clipboard-list"></i> Boards
     </a>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" style="background-color: #e3f2fd">
 <!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-      <p class="user-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</p>
+      <p class="user-page-header-recently" style="font-weight: bold"><i class="far fa-clock"></i> Recently Viewed</p>
         <p *ngFor="let board of listBoardByTime">
           <a [routerLink]="['/board',board.boardId,'list']"
-             (click)="updateBoard(board, board.boardId)">
+             (click)="updateBoard(board, board.boardId)" class="listBoard">
             Name: {{board.boardName}}</a>
         </p>
-      <p class="user-page-header-personal"><i class="fas fa-user"></i> Personal Boards</p>
+      <p class="user-page-header-personal" style="font-weight: bold"><i class="fas fa-user"></i> Personal Boards</p>
         <p *ngFor="let board of listBoard">
           <a [routerLink]="['/board',board.boardId,'list']"
-             (click)="updateBoard(board, board.boardId)">
+             (click)="updateBoard(board, board.boardId)" class="listBoard">
             Name: {{board.boardName}}</a>
         </p>
-      <p class="user-page-header-group"><i class="fas fa-users"></i> Group Boards</p>
+      <p class="user-page-header-group" style="font-weight: bold"><i class="fas fa-users"></i> Group Boards</p>
         <p *ngFor="let board of listBoard">
           <a *ngIf="board.userSet.length > 1"
              [routerLink]="['/board',board.boardId,'list']"
-             (click)="updateBoard(board, board.boardId)">
+             (click)="updateBoard(board, board.boardId)" class="listBoard">
             Name: {{board.boardName}}</a>
         </p>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" data-toggle="modal" data-target="#createBoard">Create new board</a>
+      <button class="createBoard" data-toggle="modal" data-target="#createBoard">Create new board</button>
     </div>
   </div>
   <div style="margin-left: 5px">
@@ -43,11 +43,11 @@
   </div>
   <div class="ml-auto">
     <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i><span class="badge badge-light">{{user.cardNoti.length}}</span></button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',userId]"><i
       class="fas fa-user"></i></button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal"
-            data-target="#findlabelModal" value="---"><i class="fas fa-info"></i></button>
+            data-target="#findlabelModal" value="---" *ngIf="boardId"><i class="fas fa-info"></i></button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i></button>
   </div>
   <div class="navbar-nav nav-item dropdown dropleft">
     <a class="nav-link dropdown-toggle" href="#" id="accessoriesDropdown" role="button" data-toggle="dropdown"
