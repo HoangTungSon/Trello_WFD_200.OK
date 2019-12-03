@@ -100,7 +100,7 @@ export class UserComponent implements OnInit {
 
   refreshPage() {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
