@@ -1,4 +1,3 @@
-import {ICard} from '../card/icard';
 
 export interface IUser {
   userId: number;
@@ -7,4 +6,5 @@ export interface IUser {
   password: string;
   userNotification: number;
   cardNoti: number[];
+  avatarLink: string;
 }
