@@ -50,6 +50,8 @@ export class UploadTaskComponent implements OnInit {
 
   startUpload() {
 
+    console.log(this.file);
+
     // The storage path
     const path = `test/${Date.now()}_${this.file.name}`;
 
@@ -68,9 +70,10 @@ export class UploadTaskComponent implements OnInit {
       tap(console.log),
       // The file's download URL
       finalize(async () => {
+        console.log(this.downloadURL);
         this.downloadURL = await ref.getDownloadURL().toPromise().then();
         this.db.collection('files').add({downloadURL: this.downloadURL, path});
-
+        console.log(this.downloadURL);
         const {value} = this.fireForm;
         value.url = this.downloadURL.toString();
         value.card = this.card;

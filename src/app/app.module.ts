@@ -70,6 +70,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {UploadTaskComponent} from './upload-task/upload-task.component';
 import {DropzoneDirective} from './dropzone.directive';
+import {AngularFireDatabaseModule} from "@angular/fire/database";
 
 
 @NgModule({
@@ -149,6 +150,7 @@ import {DropzoneDirective} from './dropzone.directive';
     AngularFireStorageModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule
   ],
   providers: [Permissions, CanActivateTeam, NotActivateTeam],
   bootstrap: [AppComponent]

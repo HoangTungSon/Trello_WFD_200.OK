@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user/service/user.service';
 import {ActivatedRoute, Route, Router} from '@angular/router';
 import {IUser} from '../user/iuser';
@@ -7,6 +7,11 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SignUpInfo} from '../auth/sign-up-info';
 import {PassForm} from './pass-form';
 import {ChangePasswordService} from './service/change-password.service';
+import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
+import {Observable} from 'rxjs';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {finalize, tap} from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-profile',
@@ -16,8 +21,8 @@ import {ChangePasswordService} from './service/change-password.service';
 export class ProfileComponent implements OnInit {
 
   user: IUser;
+  userInfo: IUser;
   info: any;
-  pass: PassForm;
   isError = false;
   error = '';
   returnUrl: string;
@@ -29,7 +34,7 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private userservice: UserService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private tokenStorage: TokenStorageService,
     private changePasswordService: ChangePasswordService,
@@ -37,7 +42,23 @@ export class ProfileComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit() {
+    const id = +this.tokenStorage.getId();
+    this.userService.getUserById(id).subscribe(next => {
+      this.userInfo = next;
+      console.log('success to get user');
+    }, error1 => {
+      console.log('fail to get user');
+    });
+    const fileSelect = document.getElementById('fileSelect');
+    const fileElem = document.getElementById('fileElem');
+
+    fileSelect.addEventListener('click', next => {
+      if (fileElem) {
+        fileElem.click();
+      }
+    }, false);
 
     this.info = {
       userId: this.tokenStorage.getId(),
@@ -74,4 +95,64 @@ export class ProfileComponent implements OnInit {
     this.tokenStorage.signOut();
     this.router.navigateByUrl(this.returnUrl);
   }
+
+  startUpload(file: File) {
+    const metadata = {
+      contentType: 'image/jpg'
+    };
+    const storageRef = firebase.storage().ref();
+    const fileImage = storageRef.child('image/' + file.name).put(file, metadata);
+    storageRef.child(file.name).getDownloadURL().then(url => {
+      console.log(url);
+    });
+    fileImage.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('upload is ' + progress + ' % done');
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('upload is paused');
+            break;
+        }
+      }, errors => {
+        switch (errors.message) {
+          case 'storage/unauthorized':
+            console.log('unauthorized');
+            break;
+          case 'storage/canceled':
+            console.log('cancel upload');
+            break;
+          case 'storage/unknown':
+            console.log('unknown');
+            break;
+        }
+      }, () => {
+      fileImage.snapshot.ref.getDownloadURL().then(downloadURl => {
+        console.log('file available at: ' + downloadURl);
+        const id = +this.tokenStorage.getId();
+        this.userService.getUserById(id).subscribe(next => {
+          console.log('success get user');
+          this.userInfo = next;
+          this.userInfo.avatarLink = downloadURl;
+          this.userService.updateUser(this.userInfo).subscribe(success => {
+            console.log('success update user');
+          }, error1 => {
+            console.log('fail to update user');
+          });
+        }, error1 => {
+          console.log('fail to get user');
+        });
+      });
+      });
+  }
+
+  isActive(snapshot) {
+    return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
+  }
+
+  onFileSelect(event) {
+    console.log(event.target.files[0].name);
+    this.startUpload(event.target.files[0]);
+  }
+
+
 }
