@@ -16,7 +16,7 @@ import {TokenStorageService} from '../auth/token-storage.service';
 import {CommentService} from '../comment/service/comment.service';
 import {IComment} from '../comment/icomment';
 import {FileService} from '../upload-task/service/file.service';
-import {IFile} from "../upload-task/IFile";
+import {IFile} from '../upload-task/IFile';
 
 
 @Component({
@@ -94,7 +94,7 @@ export class BoardComponent implements OnInit {
 
   color1 = '#2883e9';
   color2 = '#e920e9';
-  color3 = '#e4E925';
+  color3 = '#fffe11';
   color4 = '#eC4040';
   color5 = '#2DD02D';
 
@@ -209,7 +209,6 @@ export class BoardComponent implements OnInit {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
-=======
     this.refreshPage();
   }
 
@@ -438,6 +437,7 @@ export class BoardComponent implements OnInit {
   }
 
   saveColor(idCard: any) {
+    this.colors = [];
     console.log(this.input1);
     if (this.colorForm.value.input1) {
       this.checkColor(this.color1);
@@ -459,6 +459,7 @@ export class BoardComponent implements OnInit {
       this.checkColor(this.color5);
     }
     console.log(this.colors);
+
     this.cardService.updateColor(this.currentCard).subscribe(
       result => {
         console.log(result);

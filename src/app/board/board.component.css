@@ -23,11 +23,12 @@
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
+  background: #3bffb5;
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
   max-height: 100%;
+
 }
 
 .example-box-list {
@@ -36,8 +37,10 @@
   align-items: center;
   background: white;
   font-size: 14px;
-  height: 50px;
+  height: 70px;
   padding: 10px;
+  border-radius: 10px;
+
 }
 
 .example-list {
@@ -164,6 +167,7 @@ input {
   height:10px;
   margin: 1px;
   cursor: pointer;
+  border-radius: 5px;
 }
 .circle {
   width: 30px;
