@@ -1,17 +1,18 @@
 <app-login-taskbar [boardId]="boardId"></app-login-taskbar>
-<div>
+<div class="container1">
 <div class="menubar" *ngFor="let board of boards">
   <div class="boardName" [formGroup]="boardForm">
     <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}"
            (change)="changeNameBoard(board.boardId)">
   </div>
   <div class="user" *ngFor="let user of users">
-    <button type="button" class="btn btn-outline-primary userNameButton">{{user.username}}</button>
+    <button type="button" class="btn btn-light">{{user.username}}</button>
   </div>
   <div class="invite">
-    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#invite">invite</button>
+    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#invite">invite</button>
   </div>
 
+</div>
 
 <!---------------------------------lists--------------------------------->
 <form [formGroup]="listForm" class="formList">
@@ -32,8 +33,8 @@
           </div>
         </div>
       </div>
-      <!----------------------------list cards--------------------------------->
 
+      <!----------------------------list cards--------------------------------->
       <div cdkDropListGroup>
         <div class="example-list">
           <div class="example-box" *ngFor="let list of listCards">
@@ -48,7 +49,7 @@
   </cdk-virtual-scroll-viewport>
 </form>
 </div>
-</div>
+
 <!-------------------------modal form card------------------------------>
 
 <form [formGroup]="cardForm" (ngSubmit)="submit()">

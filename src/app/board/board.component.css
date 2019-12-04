@@ -23,11 +23,14 @@
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: #3bffb5;
+  /*background: #3bffb5;*/
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
   max-height: 100%;
+  background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
+  border-radius: 10px;
+  margin-left: 15px;
 
 }
 
@@ -49,10 +52,12 @@
   min-height: 100px;
   display: inline-flex;
   flex-direction: row;
-  background: #e3f2fd;
+  /*background: #e3f2fd;*/
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
+  background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");
+
 }
 
 #createListButton {
@@ -103,6 +108,8 @@
   float: left;
   margin-left: 10px;
   border: none;
+  border-radius: 10px;
+
 }
 
 .invite {
@@ -203,7 +210,16 @@ a.commentFile::before{
 .attachment {
   margin-bottom: 100px;
 }
+.container1 {
+  background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");
+  height: 100%;
 
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
 
 /*.example-container {*/
 /*  position: absolute;*/
