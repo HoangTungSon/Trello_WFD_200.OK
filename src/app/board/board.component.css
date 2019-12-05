@@ -107,7 +107,6 @@
 .menubar {
   width: 90%;
   height: 50px;
-  margin-top: 10px;
   margin-left: 10px;
 }
 
@@ -116,7 +115,6 @@
   margin-left: 10px;
   border: none;
   border-radius: 10px;
-
 }
 
 .invite {
@@ -129,6 +127,8 @@
   font-weight: bold;
   font-size: 26px;
   width: 200px;
+  background: none;
+  color: white;
 }
 
 .user{
@@ -225,10 +225,15 @@ a.commentFile::before{
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
 
+<<<<<<< HEAD
 }
 
 .imageAvatar {
+=======
+ .imageAvatar {
+>>>>>>> 21b360594f29bd1e50a7b352c76ab5e5ba64ba49
   width: 40px;
   height: 30px;
 }
@@ -236,6 +241,8 @@ a.commentFile::before{
 .avatarImage {
   width: auto;
   height: auto;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 21b360594f29bd1e50a7b352c76ab5e5ba64ba49
 }
-
