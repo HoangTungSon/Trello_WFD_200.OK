@@ -227,13 +227,7 @@ a.commentFile::before{
   background-size: cover;
 }
 
-<<<<<<< HEAD
-}
-
-.imageAvatar {
-=======
  .imageAvatar {
->>>>>>> 21b360594f29bd1e50a7b352c76ab5e5ba64ba49
   width: 40px;
   height: 30px;
 }
@@ -241,8 +235,4 @@ a.commentFile::before{
 .avatarImage {
   width: auto;
   height: auto;
-<<<<<<< HEAD
-
-=======
->>>>>>> 21b360594f29bd1e50a7b352c76ab5e5ba64ba49
 }
