@@ -10,7 +10,9 @@
       <!--Avatar-->
       <div class="avatar mx-auto white">
         <a>
-          <img src="{{userInfo.avatarLink}}" class="rounded-circle img-fluid" alt="image">
+          <img *ngIf="userInfo.avatarLink !== null" src="{{userInfo.avatarLink}}" class="rounded-circle img-fluid" alt="image">
+          <img *ngIf="userInfo.avatarLink === null" src="https://www.pnglot.com/pngfile/detail/173-1734978_unknown-profile-black-and-white-unknown-profile.png"
+               class="rounded-circle img-fluid" alt="image">
           <input type="file" id="fileElem" style="display:none" (change)="onFileSelect($event)">
         </a>
       </div>
@@ -157,9 +159,5 @@
       </div>
     </div>
   </div>
-
 </div>
 
-<script>
-
-</script>

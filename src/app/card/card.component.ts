@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CardService} from './service/card.service';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {ICard} from './icard';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../user/service/user.service';
@@ -8,6 +8,7 @@ import {BoardService} from '../board/service/board.service';
 import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
 import {TokenStorageService} from '../auth/token-storage.service';
+import {NotificationService} from '../otherService/notification/notification.service';
 
 @Component({
   selector: 'app-card',
@@ -40,6 +41,8 @@ export class CardComponent implements OnInit {
 
   memberCheck = false;
 
+  notificationForm: FormGroup;
+
   constructor(
     private boardService: BoardService,
     private userService: UserService,
@@ -48,6 +51,7 @@ export class CardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private tokenStorage: TokenStorageService,
+    private notificationService: NotificationService,
   ) {
   }
 
@@ -67,6 +71,12 @@ export class CardComponent implements OnInit {
   }
 
   sendMember(user: IUser) {
+    this.notificationForm = this.fb.group({
+      id: [''],
+      type: ['added you as member'],
+      cardNoti: [this.card],
+      userCardNoti: [''],
+    });
     this.members = this.card.userSetCard;
     console.log('before pop' + this.members);
     for (let i = 0; i < this.members.length; i++) {
@@ -82,17 +92,15 @@ export class CardComponent implements OnInit {
       }
     }
     if (!this.memberCheck) {
-      if (user.cardNoti === null) {
-        user.cardNoti = [];
-      }
       if (user.email !== this.tokenStorage.getEmail()) {
-        user.cardNoti.push(this.card.cardId);
+        const {value} = this.notificationForm;
+        value.userCardNoti = user;
+        this.notificationService.createNotification(value).subscribe(next => {
+          console.log('success create notification for user');
+        }, error => {
+          console.log('fail to create notification');
+        });
       }
-      this.userService.updateUser(user).subscribe(next => {
-        console.log('noti up');
-      }, error => {
-        console.log('noti cannot update');
-      });
       this.members.push(user);
     }
     this.member.emit(this.members);

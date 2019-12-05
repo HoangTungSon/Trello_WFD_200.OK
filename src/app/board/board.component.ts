@@ -17,6 +17,8 @@ import {CommentService} from '../comment/service/comment.service';
 import {IComment} from '../comment/icomment';
 import {FileService} from '../upload-task/service/file.service';
 import {IFile} from '../upload-task/IFile';
+import {OrderChangeService} from '../otherService/orderChange/order-change.service';
+import {NotificationService} from '../otherService/notification/notification.service';
 
 
 @Component({
@@ -73,6 +75,8 @@ export class BoardComponent implements OnInit {
 
   files: IFile[] = [];
 
+  notificationForm: FormGroup;
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -84,7 +88,9 @@ export class BoardComponent implements OnInit {
     private cpService: ColorPickerService,
     private tokenStorage: TokenStorageService,
     private commentService: CommentService,
-    private fileService: FileService
+    private fileService: FileService,
+    private orderChangeService: OrderChangeService,
+    private notificationService: NotificationService,
   ) {
   }
 
@@ -107,6 +113,15 @@ export class BoardComponent implements OnInit {
   });
 
   ngOnInit() {
+
+    this.userService.getUser(10).subscribe(
+      next => {
+        this.listUser = next;
+        console.log('success fetch the board');
+      }, error => {
+        console.log('fail to get all user');
+      });
+
     this.commentForm = this.fb.group({
       id: [''],
       commentLine: [''],
@@ -130,6 +145,13 @@ export class BoardComponent implements OnInit {
     this.listForm = this.fb.group({
       listName: ['new card', [Validators.required, Validators.minLength(10)]],
       boardSet: [this.boardSet, [Validators.required, Validators.minLength(10)]],
+    });
+
+    this.notificationForm = this.fb.group({
+      id: [''],
+      type: [''],
+      cardNoti: [''],
+      userCardNoti: [''],
     });
 
     const id = +this.route.snapshot.paramMap.get('id');
@@ -156,13 +178,9 @@ export class BoardComponent implements OnInit {
     this.boardService.getBoardById(id).subscribe(next => {
       this.boardSet = next;
       console.log('success fetch the board');
+    }, error => {
+      console.log('fail to fetch board');
     });
-    this.userService.getUser(10).subscribe(
-      next => {
-        this.listUser = next;
-        console.log('success fetch the board');
-      }
-    );
   }
 
 // -----------------------------List----------------------------------------
@@ -205,7 +223,7 @@ export class BoardComponent implements OnInit {
       console.log('fail to delete cards from this list');
     });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 3000);
     });
@@ -222,47 +240,10 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  changeListId(lists: IListCard[]) {
-    let mid = 0;
-    for (let i = 0; i < lists.length; i++) {
-      for (let j = i + 1; j < lists.length; j++) {
-        if (lists[i].listId > lists[j].listId) {
-          const id1 = lists[i].listId;
-          const id2 = lists[j].listId;
-          mid = lists[i].listId;
-          lists[i].listId = lists[j].listId;
-          lists[j].listId = mid;
-          this.listCardService.updateCardListId(lists[i], id1, id2).subscribe(next => {
-            console.log('success swap card');
-          }, error => {
-            console.log('fail to swap card');
-          });
-        }
-      }
-    }
-    for (const list of lists) {
-      this.listCardService.updateListCard(list).subscribe(next => {
-        console.log('success to update list after drop');
-        console.log(next);
-      }, error => {
-        console.log('fail to update after drop list');
-      });
-    }
-  }
-
-  updateCard(card) {
-    this.cardService.updateCard(card).subscribe(next => {
-      console.log('update card');
-    }, error => {
-      console.log('fail to update card');
-    });
-  }
-
   drop(event: CdkDragDrop<IListCard[]>) {
     moveItemInArray(this.listCards, event.previousIndex, event.currentIndex);
     this.changeListId(this.listCards);
   }
-
 
   changeNameBoard(id) {
     const {value} = this.boardForm;
@@ -275,6 +256,17 @@ export class BoardComponent implements OnInit {
       console.log('fail to change board name');
     });
   }
+
+  updateList(list: IListCard) {
+    this.listCardService.updateListCard(list).subscribe(next => {
+      console.log('success to update list after drop');
+      console.log(next);
+    }, error => {
+      console.log('fail to update after drop list');
+    });
+  }
+
+  // ----------------------- add user to board ----------------------------
 
   addUserToBoard() {
     const {value} = this.boardForm;
@@ -315,7 +307,28 @@ export class BoardComponent implements OnInit {
     console.log(newUser);
   }
 
-//  ---------------------------- Card --------------------------------
+  userMember(user: IUser) {
+    this.user = user;
+    console.log(this.user);
+  }
+
+  addMember(users: IUser[]) {
+    console.log(users);
+    this.members = users;
+    if (this.members !== []) {
+      this.currentCard.userSetCard = this.members;
+    }
+  }
+
+
+//  --------------------------- Card --------------------------------
+  updateCard(card) {
+    this.cardService.updateCard(card).subscribe(next => {
+      console.log('update card');
+    }, error => {
+      console.log('fail to update card');
+    });
+  }
 
   openCard(card: ICard) {
     this.currentCard = card;
@@ -335,11 +348,11 @@ export class BoardComponent implements OnInit {
     this.displayFile(this.currentCard);
   }
 
-  addMember(users: IUser[]) {
-    console.log(users);
-    this.members = users;
-    if (this.members !== []) {
-      this.currentCard.userSetCard = this.members;
+  // -----------------------change listId of card----------------------------
+  changeListId(lists: IListCard[]) {
+    this.orderChangeService.changeCardOrder(lists);
+    for (const list of lists) {
+      this.updateList(list);
     }
   }
 
@@ -360,10 +373,6 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  userMember(user: IUser) {
-    this.user = user;
-    console.log(this.user);
-  }
 
   // ----------------------comment-------------------------------
 
@@ -384,11 +393,20 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('cannot get user');
     });
+
     this.userService.getListUserByCard(1000, this.currentCard.cardId).subscribe(next => {
       this.userCard = next;
       for (const user of this.userCard) {
         if (user.email !== this.tokenStorage.getEmail()) {
-          user.cardNoti.push(this.currentCard.cardId);
+          const {value} = this.notificationForm;
+          value.type = 'comment';
+          value.cardNoti = this.currentCard;
+          value.userCardNoti = user;
+          this.notificationService.createNotification(value).subscribe(success => {
+            console.log('success create comment');
+          }, error => {
+            console.log('fail to create comment');
+          });
         }
         this.userService.updateUser(user).subscribe(userNoti => {
           console.log('success update userNoti');
@@ -401,6 +419,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  // ---------------------------------display file ---------------------------
   displayFile(card: ICard) {
     this.fileService.getFileByCard(1000, card.cardId).subscribe(next => {
       this.files = next;
@@ -430,7 +449,8 @@ export class BoardComponent implements OnInit {
     } else {
       alert('Màu đã tồn tại!');
     }
-}
+  }
+
   // reset label's card
   reset(idCard: any) {
     this.currentCard.colors = [];
@@ -472,7 +492,7 @@ export class BoardComponent implements OnInit {
   // ---------------------refresh page---------------------------
   refreshPage() {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });

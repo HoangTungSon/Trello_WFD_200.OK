@@ -10,6 +10,8 @@ import {ICard} from '../card/icard';
 import {IBoard} from '../board/iboard';
 import {BoardService} from '../board/service/board.service';
 import {FormControl, FormGroup} from '@angular/forms';
+import {NotificationService} from '../otherService/notification/notification.service';
+import {INotification} from '../otherInterface/iNotification';
 
 @Component({
   selector: 'app-login-taskbar',
@@ -19,7 +21,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class LoginTaskbarComponent implements OnInit {
   searchText: string;
   user: IUser;
-  cardsNotification: ICard[] = [];
+  cardsNotification: INotification[] = [];
   listBoard: IBoard[] = [];
   listBoardByTime: IBoard[] = [];
   inputBoard = new FormControl();
@@ -57,31 +59,14 @@ export class LoginTaskbarComponent implements OnInit {
               private cardService: CardService,
               private searchCardService: SearchCardService,
               private userService: UserService,
-              private boardService: BoardService
+              private boardService: BoardService,
+              private notificationService: NotificationService,
   ) {
   }
 
   ngOnInit() {
-    this.userId = +this.tokenStorage.getId();
     const id = +this.tokenStorage.getId();
-
-    this.userService.getUserById(id).subscribe(next => {
-      this.user = next;
-      console.log(this.user);
-      console.log('success get user for taskbar');
-      if (this.user.cardNoti !== []) {
-        for (const cardId of this.user.cardNoti) {
-          this.cardService.getCardById(cardId).subscribe(success => {
-            this.cardsNotification.push(success);
-            console.log('success push cardNoti to array');
-          }, error => {
-            console.log('fail to push cardNoti to array');
-          });
-        }
-      }
-    }, error => {
-      console.log('fail to get user for taskbar');
-    });
+    this.clickNoti();
 
     this.boardService.getListBoardByUser(10, id).subscribe(
       next => {
@@ -132,12 +117,13 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   deleteAllCardNoti() {
-    this.user.cardNoti = [];
-    this.userService.updateUser(this.user).subscribe(next => {
-      console.log('marked all read');
-    }, error => {
-      console.log('cannot marked all');
-    });
+    for (const noti of this.cardsNotification) {
+      this.notificationService.deleteNotification(noti.id).subscribe(next => {
+        console.log('success get delete all noti');
+      }, error => {
+        console.log('fail to delete all noti');
+      });
+    }
   }
 
   updateBoard(board, id) {
@@ -228,6 +214,16 @@ export class LoginTaskbarComponent implements OnInit {
       console.log('success get user');
     }, error => {
       console.log('fail to get user');
+    });
+  }
+
+  clickNoti() {
+    this.userId = +this.tokenStorage.getId();
+    this.notificationService.getListNotificationByUser(1000, this.userId).subscribe(next => {
+      this.cardsNotification = next;
+      console.log('success get noti by user');
+    }, error => {
+      console.log('fail to get noti by user');
     });
   }
 }

@@ -70,8 +70,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {UploadTaskComponent} from './upload-task/upload-task.component';
 import {DropzoneDirective} from './dropzone.directive';
-import {AngularFireDatabaseModule} from "@angular/fire/database";
-
+import {AngularFireDatabaseModule} from '@angular/fire/database';
 
 @NgModule({
   declarations: [
