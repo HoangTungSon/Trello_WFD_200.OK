@@ -11,6 +11,9 @@ import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {SearchCardService} from '../card/service/search-card.service';
 import {TokenStorageService} from '../auth/token-storage.service';
+import {OrderChangeService} from '../otherService/orderChange/order-change.service';
+import {NotificationService} from '../otherService/notification/notification.service';
+import {INotification} from "../otherInterface/iNotification";
 
 @Component({
   selector: 'app-list-card',
@@ -22,12 +25,6 @@ export class ListCardComponent implements OnInit {
   @Input() users: IUser[];
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
-
-  searchText: string;
-
-  cards: ICard[] = [];
-
-  findUser: IUser[] = [];
 
   listId: number;
 
@@ -49,6 +46,10 @@ export class ListCardComponent implements OnInit {
 
   labels: string[] = [];
 
+  notificationForm: FormGroup;
+
+  notification: INotification;
+
   constructor(
     private boardService: BoardService,
     private listService: ListCardService,
@@ -59,10 +60,19 @@ export class ListCardComponent implements OnInit {
     private userService: UserService,
     private searchCardService: SearchCardService,
     private tokenStorage: TokenStorageService,
+    private orderChangeService: OrderChangeService,
+    private notificationService: NotificationService,
   ) {
   }
 
   ngOnInit() {
+    this.notificationForm = this.fb.group({
+      id: [''],
+      type: [''],
+      cardNoti: [''],
+      userCardNoti: [''],
+    });
+    // ---------------------find card by searchText ----------------------------
     this.searchCardService.listen().subscribe(searchText => {
       this.cardSearch = [];
       this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
@@ -82,6 +92,7 @@ export class ListCardComponent implements OnInit {
       });
     });
 
+    // --------------------------find card by list -----------------------------------
     this.cardService.getCardByList(10, this.id).subscribe(
       next => {
         this.searchDisplay = next;
@@ -92,6 +103,7 @@ export class ListCardComponent implements OnInit {
       }
     );
 
+    // ---------------------------find card by color ----------------------------------
     this.searchCardService.listenLabel().subscribe(searchLabel => {
       this.labels = [];
       console.log(searchLabel);
@@ -120,6 +132,7 @@ export class ListCardComponent implements OnInit {
       console.log('cannot send the label');
     });
 
+    // ------------------ find card by user -------------------------------
     this.searchCardService.listenUser().subscribe(searchUser => {
       this.searchDisplay = [];
       console.log(searchUser);
@@ -150,27 +163,30 @@ export class ListCardComponent implements OnInit {
     });
   }
 
+  // -------------------change card detail when moving----------------------------------
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.updateAllCardList(event.container.data);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-      this.changeCardId(event.container.data);
-      console.log('change container');
+      console.log('stay the same');
     }
   }
 
-  sendNotification(eventSend: CdkDragEnd<ICard>, id: number) {
-    this.userService.getListUserByCard(1000, id).subscribe(next => {
+  sendNotification(eventSend: CdkDragEnd<ICard>, card: ICard) {
+    this.userService.getListUserByCard(1000, card.cardId).subscribe(next => {
       this.userCard = next;
       console.log('success to get user of dragged card');
       for (const user of this.userCard) {
         if (user.email !== this.tokenStorage.getEmail()) {
-          user.cardNoti.push(id);
+          const {value} = this.notificationForm;
+          value.type = 'card moving';
+          value.userCardNoti = user;
+          value.cardNoti = card;
+          this.notificationService.createNotification(value).subscribe(success => {
+            console.log('success create notification for user');
+          }, error => {
+            console.log('fail to create notification');
+          });
         }
         this.userService.updateUser(user).subscribe(success => {
           console.log('success to update user noti after drag');
@@ -185,20 +201,24 @@ export class ListCardComponent implements OnInit {
   }
 
   changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
-    this.changeCardId(event.container.data);
+    transferArrayItem(event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex);
+    console.log('change container');
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
           console.log(this.card);
           this.getListId(event.container.data, this.card);
-          this.cardService.updateCard(this.card).subscribe(success => {
-            console.log('success update');
-          });
           console.log('success drop');
-        }
-      );
+        }, error => {
+          console.log('fail to get cardId');
+        });
     }
+    this.updateAllCardList(event.container.data);
+    this.refreshPage();
   }
 
   getListId(list: ICard[], card: ICard) {
@@ -209,6 +229,7 @@ export class ListCardComponent implements OnInit {
       }
     }
     card.listSet.listId = this.listId;
+    this.updateCard(this.card);
   }
 
   createCard(id) {
@@ -218,14 +239,21 @@ export class ListCardComponent implements OnInit {
       listSet: [this.listSet, [Validators.required, Validators.minLength(10)]],
     });
     const {value} = this.cardForm;
-    this.cardService.createCard(value)
-      .subscribe(
+    this.cardService.createCard(value).subscribe(
         next => {
           this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
             this.userList = listUser;
             for (const user of this.userList) {
               if (user.email !== this.tokenStorage.getEmail()) {
-                user.cardNoti.push(next.cardId);
+                this.notification = this.notificationForm.value;
+                this.notification.type = 'create new card';
+                this.notification.cardNoti = next;
+                this.notification.userCardNoti = user;
+                this.notificationService.createNotification(this.notification).subscribe(success => {
+                  console.log('success create notification for user');
+                }, error => {
+                  console.log('fail to create notification');
+                });
               }
               this.userService.updateUser(user).subscribe(userNoti => {
                 console.log('success update userNoti');
@@ -248,34 +276,32 @@ export class ListCardComponent implements OnInit {
     });
   }
 
-  changeCardId(cards: ICard[]) {
-    let mid = 0;
-    if (cards !== null) {
-      for (let i = 0; i < cards.length; i++) {
-        for (let j = i + 1; j < cards.length; j++) {
-          if (cards[i].cardId > cards[j].cardId) {
-            mid = cards[i].cardId;
-            cards[i].cardId = cards[j].cardId;
-            cards[j].cardId = mid;
-          }
-        }
-      }
-    }
-  }
-
   updateAllCardList(cards: ICard[]) {
-    this.changeCardId(cards);
+    this.orderChangeService.changeCardOrder(cards);
     for (const card of cards) {
-      this.cardService.updateCard(card).subscribe(next => {
-        console.log('success to update card after drop');
-        console.log(next);
-      }, error => {
-        console.log('fail to update after drop card');
-      });
+      this.updateCard(card);
     }
   }
 
   setOpenCart(item: ICard) {
     this.selectCard.emit(item);
+  }
+
+  updateCard(card: ICard) {
+    this.cardService.updateCard(card).subscribe(next => {
+      console.log('success to update card after drop');
+      console.log(next);
+    }, error => {
+      console.log('fail to update after drop card');
+    });
+  }
+
+  refreshPage() {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function () {
+        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 500);
+    });
   }
 }

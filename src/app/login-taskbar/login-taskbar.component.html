@@ -43,6 +43,7 @@
   </div>
   <div class="ml-auto">
     <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><i class="far fa-bell"></i><span class="badge badge-light">{{cardsNotification.length}}</span></button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',userId]"><i
       class="fas fa-user"></i></button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal"
@@ -52,12 +53,12 @@
   <div class="navbar-nav nav-item dropdown dropleft">
     <a class="nav-link dropdown-toggle" href="#" id="accessoriesDropdown" role="button" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false">
-      Notification
+      INotification
     </a>
-    <div class="dropdown-menu dropright" aria-labelledby="accessoriesDropdown">
+    <div *ngIf="cardsNotification !== null" class="dropdown-menu dropright" aria-labelledby="accessoriesDropdown">
       <a (click)="deleteAllCardNoti()">Marked all read</a>
       <a class="dropdown-item" href="#"
-         *ngFor=" let card of cardsNotification">{{card.title + ' on list:' + card.listSet.listId}}</a>
+         *ngFor=" let notification of cardsNotification">{{'Card: ' + notification.cardNoti.title + ' have been ' + notification.type}}</a>
       <div class="dropdown-divider"></div>
     </div>
   </div>
