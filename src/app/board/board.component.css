@@ -68,6 +68,7 @@
 
 #createListButton {
   border: solid 1px #ccc;
+  color: white;
 }
 
 #listName {
