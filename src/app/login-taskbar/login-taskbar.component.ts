@@ -69,17 +69,20 @@ export class LoginTaskbarComponent implements OnInit {
       this.user = next;
       console.log(this.user);
       console.log('success get user for taskbar');
-      for (const cardId of this.user.cardNoti) {
-        this.cardService.getCardById(cardId).subscribe(success => {
-          this.cardsNotification.push(success);
-          console.log('success push cardNoti to array');
-        }, error => {
-          console.log('fail to push cardNoti to array');
-        });
+      if (this.user.cardNoti !== []) {
+        for (const cardId of this.user.cardNoti) {
+          this.cardService.getCardById(cardId).subscribe(success => {
+            this.cardsNotification.push(success);
+            console.log('success push cardNoti to array');
+          }, error => {
+            console.log('fail to push cardNoti to array');
+          });
+        }
       }
     }, error => {
       console.log('fail to get user for taskbar');
     });
+
     this.boardService.getListBoardByUser(10, id).subscribe(
       next => {
         this.listBoard = next;
@@ -140,7 +143,7 @@ export class LoginTaskbarComponent implements OnInit {
   updateBoard(board, id) {
     this.boardService.updateBoard(board, id).subscribe();
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -164,7 +167,7 @@ export class LoginTaskbarComponent implements OnInit {
       });
 
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function() {
+      setTimeout(function () {
         this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });

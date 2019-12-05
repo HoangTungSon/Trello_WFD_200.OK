@@ -52,7 +52,7 @@ export class CardComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUser();
   }
 
   getUser() {

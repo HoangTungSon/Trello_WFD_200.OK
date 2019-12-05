@@ -6,7 +6,10 @@
            (change)="changeNameBoard(board.boardId)">
   </div>
   <div class="user" *ngFor="let user of users">
-    <button type="button" class="btn btn-light">{{user.username}}</button>
+<!--     <button type="button" class="btn btn-light">{{user.username}}</button> -->
+    <button type="button" class="btn btn-outline-primary userNameButton avatarImage">
+      <img *ngIf="user.avatarLink !== null" class="imageAvatar rounded-circle img-fluid" src="{{user.avatarLink}}" alt="imageAvatar">
+      {{user.username}}</button>
   </div>
   <div class="invite">
     <button type="button" class="btn btn-light" data-toggle="modal" data-target="#invite">invite</button>
@@ -23,12 +26,12 @@
              (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let list of listCards" cdkDrag>
             <div div class="example-box-list">
-            <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
-                   style="float: left;"
-                   (change)="changeNameList(list.listId)">
-            <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: left; "
-                   (click)="deleteListCard(list.listId)"
-                   value="---">
+              <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
+                     style="float: left;"
+                     (change)="changeNameList(list.listId)">
+              <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: left; "
+                     (click)="deleteListCard(list.listId)"
+                     value="---">
             </div>
           </div>
         </div>
@@ -75,7 +78,9 @@
                 <label for="recipient-id" class="col-form-label">Member(s):</label>
                 <br>
                 <div *ngFor="let user of currentCard.userSetCard" class="inner">
-                  <button class="memberButton">{{user.username}}</button>
+                  <button class="memberButton avatarImage">
+                    <img *ngIf="user.avatarLink !== null" class="imageAvatar rounded-circle img-fluid" src="{{user.avatarLink}}" alt="imageAvatar">
+                    {{user.username}}</button>
                 </div>
                 <input type="hidden" class="form-control" id="recipient-id" formControlName="cardId">
               </div>
@@ -232,8 +237,11 @@
         <input type="text" class="form-control" placeholder="Enter to find name">
       </div>
       <div class="modal-body" *ngFor="let user of listUser">
-        <button type="button" class="btn btn-outline-primary userNameButton"
-                (click)="addNewUser(user)">{{user.username}}</button>
+        <button type="button" class="btn btn-outline-primary userNameButton avatarImage"
+                (click)="addNewUser(user)" style="border: none">
+          <img *ngIf="user.avatarLink !== null" class="imageAvatar rounded-circle img-fluid" src="{{user.avatarLink}}" alt="imageAvatar">
+          {{user.username}}
+        </button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -438,7 +438,7 @@ export class BoardComponent implements OnInit {
 
   saveColor(idCard: any) {
     this.colors = [];
-    console.log(this.input1);
+
     if (this.colorForm.value.input1) {
       this.checkColor(this.color1);
     }

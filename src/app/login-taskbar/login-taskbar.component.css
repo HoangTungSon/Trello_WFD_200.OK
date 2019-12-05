@@ -7,7 +7,6 @@
   margin-top: 10px;
   margin-left: 5px;
   color: dodgerblue;
-
 }
 
 .dropdown-menu p{
@@ -28,4 +27,20 @@
   margin: 16px auto;
 
   cursor: pointer;
+}
+
+a.listBoard:hover {
+  background: lightseagreen;
+  color: #fff;
+}
+
+.createBoard:hover {
+  background: dodgerblue;
+  color: #fff;
+}
+
+.createBoard {
+  border: none;
+  color: dodgerblue;
+  background-color: #e3f2fd;
 }
