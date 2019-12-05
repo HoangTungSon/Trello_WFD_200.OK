@@ -1,26 +1,29 @@
 .example-list-card {
   border: solid 1px #ccc;
   min-height: 100px;
-  background: white;
-  border-radius: 4px;
+  background: #f0f0f0;
+  border-radius: 10px;
   overflow: hidden;
   display: block;
+  margin: 5px;
 }
 
 .example-box-card {
-  padding: 20px 10px;
-  border-right: solid 1px #ccc;
+  padding: 10px;
+  border-right: solid 1px #e3e3e3;
   color: rgba(0, 0, 0, 0.87);
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
+  background: #ffffff;
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
   max-height: 100%;
+  margin: 15px;
+  border-radius: 10px;
 }
 
 .cdk-drag-preview {
@@ -77,8 +80,21 @@ input[type='file'] {
 .color-box1 {
   float: left;
   width: 30px;
-  height:5px;
+  height:10px;
   margin: 5px;
   cursor: pointer;
+  border-radius: 5px;
+
+}
+.button1 {
+width: 250px;
+  /*box-shadow:*/
+  /*  inset 0 -3em 3em rgba(0,0,0,0.1),*/
+  /*  0 0  0 2px rgb(255,255,255),*/
+  /*  0.3em 0.3em 1em rgba(0,0,0,0.3);*/
+  background-color: white;
+  border-radius: 10px;
+  border: 0px;
+
 }
 
