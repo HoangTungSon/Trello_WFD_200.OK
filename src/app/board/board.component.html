@@ -25,7 +25,7 @@
         <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
              (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let list of listCards" cdkDrag>
-            <div div class="example-box-list">
+            <div class="example-box-list">
               <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
                      style="float: left;"
                      (change)="changeNameList(list.listId)">

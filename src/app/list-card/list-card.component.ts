@@ -11,9 +11,9 @@ import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {SearchCardService} from '../card/service/search-card.service';
 import {TokenStorageService} from '../auth/token-storage.service';
+import {INotification} from '../otherInterface/iNotification';
 import {OrderChangeService} from '../otherService/orderChange/order-change.service';
 import {NotificationService} from '../otherService/notification/notification.service';
-import {INotification} from "../otherInterface/iNotification";
 
 @Component({
   selector: 'app-list-card',
