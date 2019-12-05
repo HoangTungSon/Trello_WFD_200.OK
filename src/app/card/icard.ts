@@ -9,4 +9,5 @@ export interface ICard {
   };
   userSetCard: IUser[];
   colors: string[];
+  orderNumber: number;
 }
