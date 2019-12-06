@@ -3,7 +3,7 @@
   background-image: url("../../assets/img/wallpaper-4k-hinh-nen-4k-nhung-chiec-coi-xay-gio-dep_100012653.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   padding-left: 130px;
   padding-bottom: 10px;
 }
