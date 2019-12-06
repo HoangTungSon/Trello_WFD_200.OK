@@ -1,8 +1,8 @@
 <app-login-taskbar></app-login-taskbar>
 
-<div class="container">
+<div class="container-fluid">
   <!--Grid column-->
-  <div class="col-lg-4 col-md-12 mb-lg-0 mb-4 float-right">
+  <div class="col-lg-4 col-md-6 mb-lg-0 mb-4 float-right">
     <!--Card-->
     <div class="card testimonial-card">
       <!--Background color-->
@@ -18,7 +18,7 @@
       </div>
       <div class="card-body">
         <!--Name-->
-        <h4 class="font-weight-bold mb-4">John Doe</h4>
+        <h4 class="font-weight-bold mb-4">{{info.username}}</h4>
         <hr>
         <!--Quotation-->
         <p class="dark-grey-text mt-4"><i class="fa fa-quote-left pr-2"></i>Lorem ipsum dolor sit amet eos
@@ -30,42 +30,42 @@
   </div>
   <!--Grid column-->
   <div class="row">
-    <div class="col-3">
+    <div class="col-3.5 ">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-           aria-controls="v-pills-profile" aria-selected="true">Profile</a>
-        <a class="nav-link" id="v-pills-changePassword-tab" data-toggle="pill" href="#v-pills-changePassword" role="tab"
-           aria-controls="v-pills-changePassword" aria-selected="false">Change Password</a>
-        <a class="nav-link" id="v-pills-logout-tab" data-toggle="pill" href="#v-pills-logout" role="tab"
-           aria-controls="v-pills-logout" aria-selected="false">Logout</a>
+        <a class="nav-link active  btn-outline-info" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+           aria-controls="v-pills-profile" aria-selected="true"><i class="fa fa-user"></i>  Profile</a>
+        <a class="nav-link  btn-outline-info" id="v-pills-changePassword-tab" data-toggle="pill" href="#v-pills-changePassword" role="tab"
+           aria-controls="v-pills-changePassword" aria-selected="false"><i class="fa fa-lock"></i> Change Password</a>
+        <a class="nav-link  btn-outline-info" id="v-pills-logout-tab" data-toggle="pill" href="#v-pills-logout" role="tab"
+           aria-controls="v-pills-logout" aria-selected="false"><i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
-    <div class="col-9">
+    <div class="col-9 col-lg-9 col-md-6 mb-lg-0">
       <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
              aria-labelledby="v-pills-profile-tab">
-          <div class="panel panel-info" style="margin: 1em;">
-            <div class="panel-heading">
+          <div class="card panel-info" style="margin: 1em;">
+            <div class="panel-heading list-group-item-info">
               <h3 class="panel-title">Name</h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
               {{info.username}}
             </div>
           </div>
-          <div class="panel panel-info" style="margin: 1em;">
-            <div class="panel-heading">
+          <div class="card panel-info" style="margin: 1em;">
+            <div class="panel-heading list-group-item-info">
               <h3 class="panel-title">Email</h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
               {{info.email}}
             </div>
           </div>
-          <div class="panel panel-info" style="margin: 1em;">
-            <div class="panel-heading">
+          <div class="card panel-info" style="margin: 1em;">
+            <div class="panel-heading list-group-item-info">
               <h3 class="panel-title">Last Password Change</h3>
 
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
               4 days Ago
             </div>
           </div>
@@ -75,14 +75,15 @@
         <div class="tab-pane fade" id="v-pills-changePassword" role="tabpanel"
              aria-labelledby="v-pills-changePassword-tab">
           <form action="/password" method="post" [formGroup]="passForm">
-            <div class="panel panel-info" style="margin: 1em;">
-              <div class="panel-heading">
-                <h3 class="panel-title"><label for="old_password" class="control-label panel-title">Old Password</label>
+            <div class="card panel-info">
+              <div class="panel-heading list-group-item-info">
+                <h3 class="panel-title">
+                  <label for="old_password" class="control-label panel-title">Old Password</label>
                 </h3>
               </div>
               <div class="panel-body">
                 <div class="form-group">
-                  <div class="col-sm-10">
+                  <div class="col-sm-12 " style="margin-top: 10px">
                     <input type="password" class="form-control" formControlName="oldPassword" name="oldPassword"
                            id="old_password">
                     <div class="alert alert-danger" role="alert"
@@ -95,14 +96,14 @@
               </div>
             </div>
 
-            <div class="panel panel-info" style="margin: 1em;">
-              <div class="panel-heading">
+            <div class="card panel-info" style="margin: 1em;">
+              <div class="panel-heading list-group-item-info">
                 <h3 class="panel-title"><label for="new_password" class="control-label panel-title">New Password</label>
                 </h3>
               </div>
               <div class="panel-body">
                 <div class="form-group">
-                  <div class="col-sm-10">
+                  <div class="col-sm-12 " style="margin-top: 10px">
                     <input type="password" class="form-control" name="newPassword" id="new_password"
                            formControlName="newPassword">
                     <div class="alert alert-danger" role="alert"
@@ -116,14 +117,14 @@
             </div>
 
 
-            <div class="panel panel-info" style="margin: 1em;">
-              <div class="panel-heading">
+            <div class="card panel-info" style="margin: 1em;">
+              <div class="panel-heading list-group-item-info">
                 <h3 class="panel-title"><label for="confirm_password" class="control-label panel-title">Confirm
                   password</label></h3>
               </div>
               <div class="panel-body">
                 <div class="form-group">
-                  <div class="col-sm-10">
+                  <div class="col-sm-12 " style="margin-top: 10px">
                     <input type="password" class="form-control" name="cPassword" id="confirm_password"
                            formControlName="cPassword">
                     <div class="alert alert-danger" role="alert"
@@ -136,13 +137,13 @@
             </div>
 
 
-            <div class="panel panel-info border" style="margin: 1em;">
+            <div class="panel " style="margin: 1em;">
               <div class="panel-body">
                 <div class="form-group">
-                  <div class="pull-left">
-                    <input type="submit" class="form-control btn btn-primary" name="submit" id="submit"
+
+                    <input type="submit" class=" btn btn-primary" name="submit" id="submit" value="Update Password"
                            (click)="updatePassword()">
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -151,10 +152,24 @@
         </div>
 
 
-        <div class="tab-pane fade" id="v-pills-logout" role="tabpanel" aria-labelledby="v-pills-logout-tab"><p>Fugiat id
-          quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse
-          anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud magna nulla. Velit et et proident Lorem do ea
-          tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</p>
+        <div class="tab-pane fade" id="v-pills-logout" role="tabpanel" aria-labelledby="v-pills-logout-tab">
+
+          <div class="col-md-12 admin-content" id="logout">
+            <div class="card panel-info" style="margin: 1em;">
+              <div class="panel-heading list-group-item-info">
+                <h3 class="panel-title">Confirm Logout</h3>
+              </div>
+              <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
+                Do you really want to logout ?  
+                <a class="label label-danger">
+                <button type="button" class="btn btn-outline-danger" (click)="onLogout()">Yes</button>
+                </a>    
+                <a class="label label-success"><button type="button" class="btn btn-outline-success" (click)="onTranPageBoard()">No</button>
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
