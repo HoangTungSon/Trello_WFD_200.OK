@@ -9,12 +9,12 @@
       <div class="card-up info-color"></div>
       <!--Avatar-->
       <div class="avatar mx-auto white">
-        <a>
+        <a *ngIf="userInfo !== undefined">
           <img *ngIf="userInfo.avatarLink !== null" src="{{userInfo.avatarLink}}" class="rounded-circle img-fluid" alt="image">
           <img *ngIf="userInfo.avatarLink === null" src="https://www.pnglot.com/pngfile/detail/173-1734978_unknown-profile-black-and-white-unknown-profile.png"
                class="rounded-circle img-fluid" alt="image">
-          <input type="file" id="fileElem" style="display:none" (change)="onFileSelect($event)">
         </a>
+        <input type="file" id="fileElem" style="display:none" (change)="onFileSelect($event)">
       </div>
       <div class="card-body">
         <!--Name-->

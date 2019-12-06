@@ -28,8 +28,6 @@ export class ListCardComponent implements OnInit {
   @Output() arrays = new EventEmitter<number>();
   @Input() listIdArrays: number[];
 
-  listId: number;
-
   card: ICard;
 
   listSet: IListCard;

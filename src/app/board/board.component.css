@@ -1,5 +1,5 @@
 .example-viewport {
-  height: 610px;
+  height: 690px;
   width: 100%;
   /*border-radius: 15px;*/
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
@@ -32,7 +32,7 @@
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
-  width: 350px;
+  width: 300px;
   max-height: 100%;
   background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
   border-radius: 10px;

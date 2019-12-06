@@ -44,3 +44,8 @@ a.listBoard:hover {
   color: dodgerblue;
   background-color: #e3f2fd;
 }
+
+#accessoriesDropdown {
+  height: 38px;
+  width: auto;
+}

@@ -5,13 +5,12 @@
     <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}"
            (change)="changeNameBoard(board.boardId)">
   </div>
-  <div class="user" *ngFor="let user of users">
-<!--     <button type="button" class="btn btn-light">{{user.username}}</button> -->
+  <div class="user" style="margin-top: 5px" *ngFor="let user of users">
     <button type="button" class="btn btn-outline-primary userNameButton avatarImage">
       <img *ngIf="user.avatarLink !== null" class="imageAvatar rounded-circle img-fluid" src="{{user.avatarLink}}" alt="imageAvatar">
       {{user.username}}</button>
   </div>
-  <div class="invite">
+  <div class="invite" style="margin-top: 5px">
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#invite">invite</button>
   </div>
 </div>
@@ -29,9 +28,9 @@
               <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
                      style="float: left;"
                      (change)="changeNameList(list.listId)">
-              <input id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: left; "
+              <button id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right; "
                      (click)="deleteListCard(list.listId)"
-                     value="---">
+                      value="---">---</button>
             </div>
           </div>
         </div>

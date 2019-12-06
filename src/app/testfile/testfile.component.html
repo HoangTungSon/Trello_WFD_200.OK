@@ -1,32 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>File(s) size</title>
-  <script>
-      function updateSize() {
-          let nBytes = 0,
-              oFiles = document.getElementById("uploadInput").files,
-              nFiles = oFiles.length;
-          for (let nFileId = 0; nFileId < nFiles; nFileId++) {
-              nBytes += oFiles[nFileId].size;
-          }
-          let sOutput = nBytes + " bytes";
-          // optional code for multiples approximation
-          for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-              sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
-          }
-          // end of optional code
-          document.getElementById("fileNum").innerHTML = nFiles;
-          document.getElementById("fileSize").innerHTML = sOutput;
-      }
-  </script>
-</head>
+<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+  <a href="#" class="w3-bar-item w3-button">Link 1</a>
+  <a href="#" class="w3-bar-item w3-button">Link 2</a>
+  <a href="#" class="w3-bar-item w3-button">Link 3</a>
+</div>
 
-<body onload="updateSize();">
-<form name="uploadForm">
-  <p><input id="uploadInput" type="file" name="myFiles" onchange="updateSize();" multiple> selected files: <span id="fileNum">0</span>; total size: <span id="fileSize">0</span></p>
-  <p><input type="submit" value="Send file"></p>
-</form>
-</body>
-</html>
+<!-- Page Content -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" (click)="w3_open()">☰</button>
+  <div class="w3-container">
+    <h1>My Page</h1>
+  </div>
+</div>
+
+<div class="w3-container">
+  <p>This sidebar is hidden by default, (style="display:none")</p>
+  <p>You must click on the "hamburger" icon (top left) to open it.</p>
+  <p>The sidebar will hide a part of the page content.</p>
+</div>
