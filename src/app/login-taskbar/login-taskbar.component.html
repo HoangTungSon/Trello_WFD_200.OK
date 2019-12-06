@@ -42,16 +42,13 @@
     </div>
   </div>
   <div class="ml-auto">
-    <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
     <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" [routerLink]="['/profile',userId]"><i
       class="fas fa-user"></i></button>
-    <button type="button" class="btn btn-outline-primary" style="margin-left: 5px" data-toggle="modal"
-            data-target="#findlabelModal" value="---" *ngIf="boardId"><i class="fas fa-info"></i></button>
   </div>
   <div class="navbar-nav nav-item dropdown">
-    <button type="button" class="btn btn-outline-primary" id="accessoriesDropdown" role="button" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false" style="margin-left: 5px">
-      <i class="far fa-bell"></i><span class="badge badge-light">{{cardsNotification.length}}</span>
+    <button type="button" class="nav-link dropdown-toggle btn btn-outline-primary" id="accessoriesDropdown" role="button" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+      <i class="far fa-bell"></i><span *ngIf="cardsNotification.length > 0" class="badge badge-light">{{cardsNotification.length}}</span>
     </button>
     <div *ngIf="cardsNotification !== null" class="dropdown-menu dropdown-menu-right" aria-labelledby="accessoriesDropdown">
       <a (click)="deleteAllCardNoti()">Marked all read</a>
@@ -60,6 +57,9 @@
       <div class="dropdown-divider"></div>
     </div>
   </div>
+  <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+          data-target="#findlabelModal" value="---" *ngIf="boardId"><i class="fas fa-info"></i></button>
+  <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Logout</button>
 </nav>
 
 
@@ -83,6 +83,7 @@
   </div>
 </div>
 
+<!-------------------------------------------find card by color or find by name----------------------->
 <div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -96,10 +97,6 @@
         <label for="recipient-id" class="sr-only">Find member:</label>
         <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="searchText"
                (keydown.enter)="searchUserByName(searchText)">
-      </div>
-      <label for="recipient-id" class="sr-only">Board member:</label>
-      <div *ngFor="let user of users">
-        <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
       </div>
       <form [formGroup]="colorForm">
         <div class="modal-body">
@@ -134,6 +131,10 @@
               <div class="color-box" [style.background]="color5"></div>
             </div>
           </div>
+        </div>
+        <label for="recipient-id" class="sr-only">Board member:</label>
+        <div *ngFor="let user of users">
+          <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
