@@ -77,6 +77,8 @@ export class BoardComponent implements OnInit {
 
   notificationForm: FormGroup;
 
+  listNullId: number[] = [];
+
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -181,6 +183,11 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('fail to fetch board');
     });
+  }
+
+  pushId(id: number) {
+    this.listNullId.push(id);
+    console.log(this.listNullId);
   }
 
 // -----------------------------List----------------------------------------

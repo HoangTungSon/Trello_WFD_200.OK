@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ListCardService} from './service/list-card.service';
 import {IListCard} from './ilist-card';
 import {CdkDragDrop, CdkDragEnd, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -25,6 +25,8 @@ export class ListCardComponent implements OnInit {
   @Input() users: IUser[];
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
+  @Output() arrays = new EventEmitter<number>();
+  @Input() listIdArrays: number[];
 
   listId: number;
 
@@ -100,6 +102,7 @@ export class ListCardComponent implements OnInit {
       }, error => {
         console.log(error);
         console.log('error');
+        this.pushListId(this.id);
       }
     );
 
@@ -163,16 +166,27 @@ export class ListCardComponent implements OnInit {
     });
   }
 
+  pushListId(id: number) {
+    this.arrays.emit(id);
+  }
+
   // -------------------change card detail when moving----------------------------------
   drop(event: CdkDragDrop<ICard[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.updateAllCardList(event.container.data);
       console.log('stay the same');
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      console.log('change container');
     }
   }
 
   sendNotification(eventSend: CdkDragEnd<ICard>, card: ICard) {
+    console.log(eventSend.source.dropContainer.data);
     this.userService.getListUserByCard(1000, card.cardId).subscribe(next => {
       this.userCard = next;
       console.log('success to get user of dragged card');
@@ -201,35 +215,20 @@ export class ListCardComponent implements OnInit {
   }
 
   changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
-    transferArrayItem(event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex);
-    console.log('change container');
+    console.log(event.container.id);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
-          console.log(this.card);
-          this.getListId(event.container.data, this.card);
+          this.card.listSet.listId = +event.container.id;
+          this.updateCard(this.card);
           console.log('success drop');
         }, error => {
           console.log('fail to get cardId');
         });
+      this.updateAllCardList(event.container.data);
+      // this.refreshPage();
     }
-    this.updateAllCardList(event.container.data);
-    this.refreshPage();
-  }
-
-  getListId(list: ICard[], card: ICard) {
-    console.log(list);
-    for (const li of list) {
-      if (card.listSet.listId !== li.listSet.listId) {
-        this.listId = li.listSet.listId;
-      }
-    }
-    card.listSet.listId = this.listId;
-    this.updateCard(this.card);
   }
 
   createCard(id) {
@@ -240,35 +239,35 @@ export class ListCardComponent implements OnInit {
     });
     const {value} = this.cardForm;
     this.cardService.createCard(value).subscribe(
-        next => {
-          this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
-            this.userList = listUser;
-            for (const user of this.userList) {
-              if (user.email !== this.tokenStorage.getEmail()) {
-                this.notification = this.notificationForm.value;
-                this.notification.type = 'create new card';
-                this.notification.cardNoti = next;
-                this.notification.userCardNoti = user;
-                this.notificationService.createNotification(this.notification).subscribe(success => {
-                  console.log('success create notification for user');
-                }, error => {
-                  console.log('fail to create notification');
-                });
-              }
-              this.userService.updateUser(user).subscribe(userNoti => {
-                console.log('success update userNoti');
+      next => {
+        this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
+          this.userList = listUser;
+          for (const user of this.userList) {
+            if (user.email !== this.tokenStorage.getEmail()) {
+              this.notification = this.notificationForm.value;
+              this.notification.type = 'create new card';
+              this.notification.cardNoti = next;
+              this.notification.userCardNoti = user;
+              this.notificationService.createNotification(this.notification).subscribe(success => {
+                console.log('success create notification for user');
               }, error => {
-                console.log('fail to update userNoti');
+                console.log('fail to create notification');
               });
             }
-            console.log('cardNoti update');
-          }, error => {
-            console.log('cannot add cardNoti');
-          });
-          console.log('success to create a card');
+            this.userService.updateUser(user).subscribe(userNoti => {
+              console.log('success update userNoti');
+            }, error => {
+              console.log('fail to update userNoti');
+            });
+          }
+          console.log('cardNoti update');
         }, error => {
-          console.log('fail to create card');
+          console.log('cannot add cardNoti');
         });
+        console.log('success to create a card');
+      }, error => {
+        console.log('fail to create card');
+      });
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
@@ -301,7 +300,7 @@ export class ListCardComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       setTimeout(function () {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
-      }.bind(this), 500);
+      }.bind(this), 200);
     });
   }
 }
