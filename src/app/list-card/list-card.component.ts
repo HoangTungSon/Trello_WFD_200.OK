@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ListCardService} from './service/list-card.service';
 import {IListCard} from './ilist-card';
 import {CdkDragDrop, CdkDragEnd, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -215,33 +215,20 @@ export class ListCardComponent implements OnInit {
   }
 
   changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
-    console.log(event);
+    console.log(event.container.id);
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
           this.card = next;
-          console.log(this.card);
-          this.getListId(event.container.data, this.card);
+          this.card.listSet.listId = +event.container.id;
+          this.updateCard(this.card);
           console.log('success drop');
         }, error => {
           console.log('fail to get cardId');
         });
       this.updateAllCardList(event.container.data);
-      this.refreshPage();
+      // this.refreshPage();
     }
-  }
-
-  getListId(list: ICard[], card: ICard) {
-    console.log(this.listIdArrays);
-    console.log(list);
-    this.listId = this.listIdArrays[0];
-    for (const li of list) {
-      if (card.listSet.listId !== li.listSet.listId) {
-        this.listId = li.listSet.listId;
-      }
-    }
-    card.listSet.listId = this.listId;
-    this.updateCard(this.card);
   }
 
   createCard(id) {

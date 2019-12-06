@@ -14,11 +14,11 @@
   <div class="invite">
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#invite">invite</button>
   </div>
-
 </div>
 
 <!---------------------------------lists--------------------------------->
 <form [formGroup]="listForm" class="formList">
+  <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
 
     <div class="example-container">
       <div cdkDropListGroup>
@@ -41,9 +41,7 @@
       <div cdkDropListGroup>
         <div class="example-list">
           <div class="example-box" *ngFor="let list of listCards">
-            <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
             <app-list-card [users]="this.users" (arrays)="pushId($event)" [id]="list.listId" (selectCard)="openCard($event)" [listIdArrays]="listNullId"></app-list-card>
-            </cdk-virtual-scroll-viewport>
           </div>
         </div>
       </div>
@@ -51,6 +49,8 @@
         list
       </button>
     </div>
+  </cdk-virtual-scroll-viewport>
+
 </form>
 </div>
 
