@@ -1,6 +1,6 @@
 .image {
   background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
-  height:38.2em;
+  height:880px;
   background-size:cover;
   width:auto;
   background-position:50% 50%;
@@ -10,7 +10,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  padding: 230px;
+  padding: 350px;
   text-align: center;
 }
 

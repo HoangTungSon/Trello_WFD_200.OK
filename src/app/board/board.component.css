@@ -63,8 +63,8 @@
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
-  background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");
-
+  /*background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");*/
+  background: none;
 }
 
 #createListButton {
@@ -127,7 +127,7 @@
   border: none;
   font-weight: bold;
   font-size: 26px;
-  width: 200px;
+  width: 500px;
   background: none;
   color: white;
 }
@@ -221,7 +221,6 @@ a.commentFile::before{
 .container1 {
   background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");
   height: 100%;
-
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;

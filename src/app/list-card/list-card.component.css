@@ -1,11 +1,12 @@
 .example-list-card {
   border: solid 1px #ccc;
   min-height: 100px;
-  background: #f0f0f0;
+  /*background: #f0f0f0;*/
   border-radius: 10px;
   overflow: hidden;
   display: block;
   margin: 5px;
+  background: none;
 }
 
 .example-box-card {
@@ -24,6 +25,8 @@
   max-height: 100%;
   margin: 15px;
   border-radius: 10px;
+  box-shadow: 2px 2px 2px gray;
+
 }
 
 .cdk-drag-preview {
