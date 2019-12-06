@@ -1,22 +1,17 @@
 <app-login-taskbar></app-login-taskbar>
 
-<div class="container">
+<div class="container-fluid">
   <div class="board-page-recently">
     <h6 class="board-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</h6>
     <div class="board-page-recently-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoardByTime">
-        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')"
+        <div class="card-body" style="background-image: url('../../assets/img/anh-nen-4k_105908115.jpg')"
              [routerLink]="['/board',board.boardId,'list']"
              (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
         </div>
-        <input type="button" value="delete" (click)="deleteBoard(board.boardId)">
+<!--        <input type="button" value="delete" (click)="deleteBoard(board.boardId)">-->
       </div>
-<!--      <div class="card col-3 mo" style="width: 17rem;" data-toggle="modal" data-target="#exampleModal">-->
-<!--        <div class="card-body create">-->
-<!--          <h6 style="color: #e3f2fd">+</h6>-->
-<!--        </div>-->
-<!--      </div>-->
     </div>
   </div>
 
@@ -24,12 +19,12 @@
     <h6 class="board-page-header-personal"><i class="fas fa-user"></i> Personal Boards</h6>
     <div class="board-page-personal-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoard">
-        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')"
+        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')"
              [routerLink]="['/board',board.boardId,'list']"
              (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
         </div>
-        <input type="button" value="delete" (click)="deleteBoard(board.boardId)">
+<!--        <input type="button" value="delete" (click)="deleteBoard(board.boardId)">-->
       </div>
       <div class="card col-3" style="width: 17rem;" data-toggle="modal" data-target="#createBoard">
         <div class="card-body create">
@@ -49,33 +44,8 @@
               *ngIf="board.userSet.length > 1">
           <h6>Name: {{board.boardName}}</h6>
         </div>
-        <input type="button" value="delete" (click)="deleteBoard(board.boardId)" *ngIf="board.userSet.length > 1">
+<!--        <input type="button" value="delete" (click)="deleteBoard(board.boardId)" *ngIf="board.userSet.length > 1">-->
       </div>
-<!--      <div class="card co" style="width: 17rem;" data-toggle="modal" data-target="#exampleModal">-->
-<!--        <div class="card-body create">-->
-<!--          <h6 style="color: #e3f2fd">+</h6>-->
-<!--        </div>-->
-<!--      </div>-->
     </div>
   </div>
 </div>
-
-<!--<div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--  <div class="modal-dialog" role="document">-->
-<!--    <div class="modal-content">-->
-<!--      <div class="modal-header">-->
-<!--        <h5 class="modal-title" id="exampleModalLabel">Create board</h5>-->
-<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--          <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div class="modal-body">-->
-<!--        <input type="text" [formControl]="inputBoard" placeholder="Board name">-->
-<!--      </div>-->
-<!--      <div class="modal-footer">-->
-<!--        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createBoard()">Create</button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
