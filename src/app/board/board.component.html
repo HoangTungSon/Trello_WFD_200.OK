@@ -41,7 +41,7 @@
       <div cdkDropListGroup>
         <div class="example-list">
           <div class="example-box" *ngFor="let list of listCards">
-            <app-list-card [users]="this.users" (arrays)="pushId($event)" [id]="list.listId" (selectCard)="openCard($event)" [listIdArrays]="listNullId"></app-list-card>
+            <app-list-card [users]="this.users" (arrays)="pushId($event)" [id]="list.listId" (selectCard)="openCard($event)" [listIdArrays]="listNullId" ></app-list-card>
           </div>
         </div>
       </div>
