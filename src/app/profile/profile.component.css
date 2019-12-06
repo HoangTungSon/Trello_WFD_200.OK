@@ -1,0 +1,19 @@
+.panel-title {
+  margin-left: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  padding-top: 2px;
+}
+.panel-info{
+  margin: 1em;
+  border-collapse: collapse;
+}
+
+.panel-body{
+  margin: 1em;
+}
+
+/*.panel-heading{*/
+/*  border: solid 1px lightseagreen;*/
+/*}*/
+
