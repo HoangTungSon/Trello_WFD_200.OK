@@ -42,7 +42,7 @@
         <div class="example-list">
           <div class="example-box" *ngFor="let list of listCards">
             <cdk-virtual-scroll-viewport itemSize="50" orientation="vertical" class="example-viewport">
-            <app-list-card [users]="this.users" [id]="list.listId" (selectCard)="openCard($event)"></app-list-card>
+            <app-list-card [users]="this.users" (arrays)="pushId($event)" [id]="list.listId" (selectCard)="openCard($event)" [listIdArrays]="listNullId"></app-list-card>
             </cdk-virtual-scroll-viewport>
           </div>
         </div>
@@ -51,7 +51,6 @@
         list
       </button>
     </div>
-
 </form>
 </div>
 

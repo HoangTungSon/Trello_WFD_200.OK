@@ -1,10 +1,7 @@
 <div cdkDropList [cdkDropListData]="searchDisplay" class="example-list-card" (cdkDropListDropped)="drop($event)">
-  <div class="example-box-card" *ngFor="let item of searchDisplay" (cdkDragEnded)="sendNotification($event, item.cardId)" cdkDrag (cdkDragDropped)="changeCardListSet($event, item.cardId)">
+  <div class="example-box-card" *ngFor="let item of searchDisplay" (cdkDragEnded)="sendNotification($event, item)" cdkDrag (cdkDragDropped)="changeCardListSet($event, item.cardId)">
 
     <button type="button" class="button1" data-toggle="modal" data-target="#exampleModal" (click)="setOpenCart(item)">
-<!--   <div class="example-box-card" *ngFor="let item of searchDisplay" (cdkDragEnded)="sendNotification($event, item.cardId)"
-       cdkDrag (cdkDragDropped)="changeCardListSet($event, item.cardId)">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" -->
       <div *ngFor="let c of item.colors">
         <div class="color-box1" [style.background]=c ></div>
       </div>
