@@ -155,4 +155,15 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  // -------------------------- Logout -----------------------------
+  onLogout() {
+      this.tokenStorage.signOut();
+      this.router.navigate(['/']);
+      console.log(this.tokenStorage.getUsername());
+    }
+
+  onTranPageBoard() {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.router.navigate(['/user/' + id + '/board']);
+  }
 }
