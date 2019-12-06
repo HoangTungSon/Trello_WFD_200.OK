@@ -1,6 +1,11 @@
-.container{
-  margin-top: 10px;
-  margin-bottom: 5px;
+.container-fluid{
+  background-color: whitesmoke;
+  background-image: url("../../assets/img/wallpaper-4k-hinh-nen-4k-nhung-chiec-coi-xay-gio-dep_100012653.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-left: 130px;
+  padding-bottom: 10px;
 }
 
 .right-body{
@@ -10,7 +15,7 @@
 
 .board-page-recently{
   margin-left: 50px;
-  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .board-page-personal{
@@ -28,6 +33,7 @@
   margin-left: 5px;
   height: 100px;
   border: none;
+  background: none;
 }
 
 .card-body{
@@ -46,4 +52,7 @@ mat-sidenav{
   width: 200px;
 }
 
-
+.card-body.create{
+  background: none;
+  border: 1px dotted white;
+}
