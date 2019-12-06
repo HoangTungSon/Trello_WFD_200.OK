@@ -168,6 +168,18 @@ export class BoardComponent implements OnInit {
       console.log('fail to get board');
     });
 
+    this.getList(id);
+
+
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.boardSet = next;
+      console.log('success fetch the board');
+    }, error => {
+      console.log('fail to fetch board');
+    });
+  }
+
+  getList(id: number){
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -176,13 +188,6 @@ export class BoardComponent implements OnInit {
         console.log('error');
       }
     );
-
-    this.boardService.getBoardById(id).subscribe(next => {
-      this.boardSet = next;
-      console.log('success fetch the board');
-    }, error => {
-      console.log('fail to fetch board');
-    });
   }
 
   pushId(id: number) {
@@ -201,16 +206,17 @@ export class BoardComponent implements OnInit {
     this.listCardService.createListCard(value)
       .subscribe(
         next => {
+          this.getList(this.boardId);
           console.log('success to create a list card');
         }, error => {
           console.log('fail to create list card');
         });
-    this.refreshPage();
   }
 
   deleteList(id: number) {
     this.listCardService.deleteListCard(id).subscribe(right => {
       console.log('success delete list card');
+      this.getList(this.boardId);
     }, wrong => {
       console.log('fail to delete list card');
     });
@@ -229,12 +235,6 @@ export class BoardComponent implements OnInit {
       this.deleteList(id);
       console.log('fail to delete cards from this list');
     });
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
-        this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
-      }.bind(this), 3000);
-    });
-    this.refreshPage();
   }
 
   changeNameList(id: number) {

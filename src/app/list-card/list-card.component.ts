@@ -92,17 +92,7 @@ export class ListCardComponent implements OnInit {
       });
     });
 
-    // --------------------------find card by list -----------------------------------
-    this.cardService.getCardByList(10, this.id).subscribe(
-      next => {
-        this.searchDisplay = next;
-        console.log('card success');
-      }, error => {
-        console.log(error);
-        console.log('error');
-        this.pushListId(this.id);
-      }
-    );
+this.getList();
 
     // ---------------------------find card by color ----------------------------------
     this.searchCardService.listenLabel().subscribe(searchLabel => {
@@ -162,6 +152,20 @@ export class ListCardComponent implements OnInit {
       this.listSet = next;
       console.log('success fetch the list');
     });
+  }
+
+  getList(){
+    // --------------------------find card by list -----------------------------------
+    this.cardService.getCardByList(10, this.id).subscribe(
+      next => {
+        this.searchDisplay = next;
+        console.log('card success');
+      }, error => {
+        console.log(error);
+        console.log('error');
+        this.pushListId(this.id);
+      }
+    );
   }
 
   pushListId(id: number) {
@@ -238,6 +242,7 @@ export class ListCardComponent implements OnInit {
     const {value} = this.cardForm;
     this.cardService.createCard(value).subscribe(
       next => {
+        this.getList();
         this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
           this.userList = listUser;
           for (const user of this.userList) {
@@ -266,11 +271,6 @@ export class ListCardComponent implements OnInit {
       }, error => {
         console.log('fail to create card');
       });
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
-      }.bind(this), 500);
-    });
   }
 
   updateAllCardList(cards: ICard[]) {
@@ -290,15 +290,6 @@ export class ListCardComponent implements OnInit {
       console.log(next);
     }, error => {
       console.log('fail to update after drop card');
-    });
-  }
-
-  refreshPage() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
-        this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
-      }.bind(this), 200);
     });
   }
 }

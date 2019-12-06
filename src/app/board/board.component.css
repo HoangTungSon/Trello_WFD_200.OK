@@ -32,7 +32,7 @@
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
-  width: 300px;
+  width: 330px;
   max-height: 100%;
   background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
   border-radius: 10px;
@@ -127,7 +127,7 @@
   border: none;
   font-weight: bold;
   font-size: 26px;
-  width: 500px;
+  width: auto;
   background: none;
   color: white;
 }
