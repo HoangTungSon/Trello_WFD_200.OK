@@ -11,22 +11,23 @@
 
 .example-box-card {
   padding: 10px;
-  border-right: solid 1px #e3e3e3;
+  /*border-right: solid 1px #e3e3e3;*/
   color: rgba(0, 0, 0, 0.87);
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: #ffffff;
+  /*background: #ffffff;*/
   font-size: 14px;
   flex-grow: 1;
   flex-basis: 0;
   max-height: 100%;
   margin: 15px;
   border-radius: 10px;
-  box-shadow: 2px 2px 2px gray;
-
+  /*box-shadow: 2px 2px 2px gray;*/
+  background: white;
+  border: none;
 }
 
 .cdk-drag-preview {
@@ -95,9 +96,8 @@ width: 250px;
   /*  inset 0 -3em 3em rgba(0,0,0,0.1),*/
   /*  0 0  0 2px rgb(255,255,255),*/
   /*  0.3em 0.3em 1em rgba(0,0,0,0.3);*/
-  background-color: white;
-  border-radius: 10px;
-  border: 0px;
+  background: none;
+  border: none;
 
 }
 
