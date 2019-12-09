@@ -10,7 +10,6 @@
       <i class="fas fa-clipboard-list"></i> Boards
     </a>
     <div class="dropdown-menu" style="background-color: #e3f2fd">
-<!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
       <p class="user-page-header-recently" style="font-weight: bold"><i class="far fa-clock"></i> Recently Viewed</p>
         <p *ngFor="let board of listBoardByTime">
           <a [routerLink]="['/board',board.boardId,'list']"
@@ -84,61 +83,47 @@
 </div>
 
 <!-------------------------------------------find card by color or find by name----------------------->
-<div class="modal fade" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+<div class="modal fade bd-example-modal-sm" id="findlabelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="background-color: #e3f2fd">
       <div class="modal-header">
         <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div>
-        <label for="recipient-id" class="sr-only">Find member:</label>
-        <input type="text" class="form-control" id="recipient-id" placeholder="Enter to find name" [(ngModel)]="searchText"
-               (keydown.enter)="searchUserByName(searchText)">
-      </div>
       <form [formGroup]="colorForm">
         <div class="modal-body">
           <div class="row" style="height: 320px">
             <div class="form-check">
-              <input class="form-check-input" formControlName="input1" type="checkbox" [value]="this.color1"
-                     id="defaultCheck1.1">
-              <div class="color-box" [style.background]="color1"></div>
+              <button class="check-color-1" (click)="onSearchLabel(this.color1)"  formControlName="input1">Blue label</button>
 
             </div>
             <div class="form-check">
-              <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2"
-                     id="defaultCheck1.2">
-              <div class="color-box" [style.background]="color2"></div>
+              <button class="check-color-2" (click)="onSearchLabel(this.color2)"  formControlName="input1">Pink label</button>
 
             </div>
             <div class="form-check">
-              <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3"
-                     id="defaultCheck1.3">
-              <div class="color-box" [style.background]="color3"></div>
+              <button class="check-color-3" (click)="onSearchLabel(this.color3)"  formControlName="input1">Yellow label</button>
 
             </div>
             <div class="form-check">
-              <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4"
-                     id="defaultCheck1.4">
-              <div class="color-box" [style.background]="color4"></div>
+              <button class="check-color-4" (click)="onSearchLabel(this.color4)"  formControlName="input1">Red label</button>
 
             </div>
             <div class="form-check">
-              <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5"
-                     id="defaultCheck1.5">
-              <div class="color-box" [style.background]="color5"></div>
+              <button class="check-color-5" (click)="onSearchLabel(this.color5)"  formControlName="input1">Green label</button>
             </div>
           </div>
         </div>
-        <label for="recipient-id" class="sr-only">Board member:</label>
+        <label class="sr-only">Board member:</label>
         <div *ngFor="let user of users">
-          <button type="button" class="btn btn-secondary userNameButton" (click)="sendMember(user)">{{user.username}}</button>
+          <button type="button" class="btn btn-primary userNameButton" (click)="sendMember(user)"
+          style="margin-top: 5px; margin-left: 5px">{{user.username}}</button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" (click)="onSearchLabel()">Save</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="resetSearch()">Reset</button>
         </div>
       </form>
     </div>

@@ -129,7 +129,7 @@ export class LoginTaskbarComponent implements OnInit {
   updateBoard(board, id) {
     this.boardService.updateBoard(board, id).subscribe();
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -153,31 +153,30 @@ export class LoginTaskbarComponent implements OnInit {
       });
 
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
   }
 
-  onSearchLabel() {
-    this.colors = [];
-    if (this.colorForm.value.input1) {
+  onSearchLabel(color) {
+    if (this.color1 === color) {
       this.colors.push(this.color1);
     }
 
-    if (this.colorForm.value.input2) {
+    if (this.color2 === color) {
       this.colors.push(this.color2);
     }
 
-    if (this.colorForm.value.input3) {
+    if (this.color3 === color) {
       this.colors.push(this.color3);
     }
 
-    if (this.colorForm.value.input4) {
+    if (this.color4 === color) {
       this.colors.push(this.color4);
     }
 
-    if (this.colorForm.value.input5) {
+    if (this.color5 === color) {
       this.colors.push(this.color5);
     }
 
@@ -224,6 +223,16 @@ export class LoginTaskbarComponent implements OnInit {
       console.log('success get noti by user');
     }, error => {
       console.log('fail to get noti by user');
+    });
+  }
+
+  resetSearch() {
+    this.colors = [];
+    this.searchCardService.sendLabel(this.colors);
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/board/' + this.boardId + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 100);
     });
   }
 }
