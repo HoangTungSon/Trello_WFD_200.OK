@@ -49,3 +49,58 @@ a.listBoard:hover {
   height: 38px;
   width: auto;
 }
+
+.check-color-1 {
+  background-color: #2883e9;
+  color: white;
+  width: 250px;
+  height: 30px;
+}
+
+.check-color-1:focus {
+  border: 3px solid black;
+}
+
+.check-color-2 {
+  background-color: #e920e9;
+  color: white;
+  width: 250px;
+  height: 30px;
+}
+
+.check-color-2:focus {
+  border: 3px solid black;
+}
+
+.check-color-3 {
+  background-color: #e4E925;
+  color: white;
+  width: 250px;
+  height: 30px;
+}
+
+.check-color-3:focus {
+  border: 3px solid black;
+}
+
+.check-color-4 {
+   background-color: #eC4040;
+   color: white;
+   width: 250px;
+   height: 30px;
+ }
+
+.check-color-4:focus {
+  border: 3px solid black;
+}
+
+.check-color-5 {
+  background-color: #2DD02D;
+  color: white;
+  width: 250px;
+  height: 30px;
+}
+
+.check-color-5:focus {
+  border: 3px solid black;
+}
