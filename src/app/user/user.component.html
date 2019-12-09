@@ -5,7 +5,7 @@
     <h6 class="board-page-header-recently"><i class="far fa-clock"></i> Recently Viewed</h6>
     <div class="board-page-recently-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoardByTime">
-        <div class="card-body" style="background-image: url('../../assets/img/anh-nen-4k_105908115.jpg')"
+        <div class="card-body" style="background-image: url('https://firebasestorage.googleapis.com/v0/b/trello-200ok.appspot.com/o/Image-frontend%2Fanh-nen-4k_105908115.jpg?alt=media&token=f42d80fe-b0bf-47d9-9f6b-40c89e540f0a')"
              [routerLink]="['/board',board.boardId,'list']"
              (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
@@ -19,7 +19,7 @@
     <h6 class="board-page-header-personal"><i class="fas fa-user"></i> Personal Boards</h6>
     <div class="board-page-personal-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoard">
-        <div class="card-body" style="background-image: url('../../assets/img/sea-1337565_960_720.jpg')"
+        <div class="card-body" style="background-image: url('https://firebasestorage.googleapis.com/v0/b/trello-200ok.appspot.com/o/Image-frontend%2Fsea-1337565_960_720.jpg?alt=media&token=40577235-8b91-4c7e-9504-809b64788bec')"
              [routerLink]="['/board',board.boardId,'list']"
              (click)="updateBoard(board, board.boardId)">
           <h6>Name: {{board.boardName}}</h6>
@@ -38,7 +38,7 @@
     <h6 class="board-page-header-personal"><i class="fas fa-user-friends"></i> Group Boards</h6>
     <div class="board-page-personal-body row">
       <div class="card col-3" style="width: 17rem;" *ngFor="let board of listBoardGroup">
-        <div class="card-body" style="background-image: url('../../assets/img/pexels-photo-355465.jpeg')"
+        <div class="card-body" style="background-image: url('https://firebasestorage.googleapis.com/v0/b/trello-200ok.appspot.com/o/Image-frontend%2Fpexels-photo-355465.jpeg?alt=media&token=58a13edc-c46c-4e73-923b-3588ae20446c')"
              [routerLink]="['/board',board.boardId,'list']"
              (click)="updateBoard(board, board.boardId)"
               *ngIf="board.userSet.length > 1">
