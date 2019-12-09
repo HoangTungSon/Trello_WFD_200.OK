@@ -3,11 +3,11 @@ const path = require('path');
 const app = express();
 
 // Serve static files....
-app.use(express.static(__dirname + '/dist/Trello_WFD_200.OK'));
+app.use(express.static(__dirname + '/dist/trello-frontend'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/Trello_WFD_200.OK/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/trello-frontend/index.html'));
 });
 
 // default Heroku PORT
