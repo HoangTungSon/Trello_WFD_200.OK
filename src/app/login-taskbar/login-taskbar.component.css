@@ -58,7 +58,7 @@ a.listBoard:hover {
 }
 
 .check-color-1:focus {
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 .check-color-2 {
@@ -69,7 +69,7 @@ a.listBoard:hover {
 }
 
 .check-color-2:focus {
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 .check-color-3 {
@@ -80,7 +80,7 @@ a.listBoard:hover {
 }
 
 .check-color-3:focus {
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 .check-color-4 {
@@ -91,7 +91,7 @@ a.listBoard:hover {
  }
 
 .check-color-4:focus {
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 .check-color-5 {
@@ -102,5 +102,5 @@ a.listBoard:hover {
 }
 
 .check-color-5:focus {
-  border: 3px solid black;
+  border: 1px solid black;
 }
