@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CardService} from './service/card.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ICard} from './icard';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../user/service/user.service';
@@ -9,6 +9,8 @@ import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {NotificationService} from '../otherService/notification/notification.service';
+import {IColor} from "../otherInterface/iColor";
+import {ColorService} from "../otherService/color/color.service";
 
 @Component({
   selector: 'app-card',
@@ -42,6 +44,24 @@ export class CardComponent implements OnInit {
   memberCheck = false;
 
   notificationForm: FormGroup;
+  colors: string  [] = [];
+  colorsPick: IColor[] = [];
+
+  cardColor: IColor[] = [];
+
+  color1 = '#2883e9';
+  color2 = '#e920e9';
+  color3 = '#fffe11';
+  color4 = '#eC4040';
+  color5 = '#2DD02D';
+
+  colorForm: FormGroup = new FormGroup({
+    input1: new FormControl(''),
+    input2: new FormControl(''),
+    input3: new FormControl(''),
+    input4: new FormControl(''),
+    input5: new FormControl(''),
+  });
 
   constructor(
     private boardService: BoardService,
@@ -52,11 +72,23 @@ export class CardComponent implements OnInit {
     private router: Router,
     private tokenStorage: TokenStorageService,
     private notificationService: NotificationService,
+    private colorService: ColorService,
   ) {
   }
 
   ngOnInit() {
     this.getUser();
+
+    this.findColorByCard();
+
+    this.colorService.getColors(1000).subscribe(next => {
+      this.colorsPick = next;
+      console.log(this.colorsPick);
+      console.log('success get colors');
+    }, error => {
+      console.log('fail to get colors');
+    });
+
   }
 
   getUser() {
@@ -142,4 +174,83 @@ export class CardComponent implements OnInit {
       const file = files.item(i).name.split('.');
     }
   }
+// ------------------------------save label-----------------------------
+  checkColor(color: string) {
+    if (this.card.colors === null) {
+      this.colors.push(color);
+      this.card.colors = this.colors;
+    } else if (this.card.colors.indexOf(color) === -1) {
+      this.card.colors.push(color);
+    } else {
+      alert('Màu đã tồn tại!');
+    }
+    this.checkLabel(color);
+  }
+
+  checkLabel(color: string) {
+    for (const colorPick of this.colorsPick) {
+      if (color === colorPick.colorType) {
+        colorPick.cardColorSet.push(this.card);
+        console.log(colorPick.cardColorSet);
+      }
+    }
+  }
+
+  saveColor(idCard: any) {
+    this.colors = [];
+    if (this.colorForm.value.input1) {
+      this.checkColor(this.color1);
+    }
+
+    if (this.colorForm.value.input2) {
+      this.checkColor(this.color2);
+    }
+
+    if (this.colorForm.value.input3) {
+      this.checkColor(this.color3);
+    }
+
+    if (this.colorForm.value.input4) {
+      this.checkColor(this.color4);
+    }
+
+    if (this.colorForm.value.input5) {
+      this.checkColor(this.color5);
+    }
+    console.log(this.colors);
+
+    this.cardService.updateColor(this.card).subscribe(
+      result => {
+        console.log(result);
+      }, error => {
+        console.log('loi');
+      }
+    );
+
+    for (const color of this.colorsPick) {
+      this.colorService.updateColor(color).subscribe(next => {
+        console.log(color);
+        console.log('success update color');
+      }, error => {
+        console.log('fail to update color');
+      });
+    }
+  }
+
+  // reset label's card
+  reset(idCard: any) {
+    this.card.colors = [];
+  }
+
+  findColorByCard() {
+    if (this.card !== undefined) {
+      this.colorService.getListColorByCard(1000, this.card.cardId).subscribe(next => {
+        this.cardColor = next;
+        console.log('success to get card');
+      }, error => {
+        console.log('fail to get card');
+      });
+    }
+  }
+
 }

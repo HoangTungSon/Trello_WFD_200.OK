@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {IUser} from '../../user/iuser';
+import {IColor} from "../../otherInterface/iColor";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class SearchCardService {
 
   onSearchEnter = new Subject<string>();
 
-  onSearchByLabel = new Subject<string[]>();
+  onSearchByLabel = new Subject<IColor[]>();
 
   onSearchByUser = new Subject<IUser[]>();
 
@@ -24,7 +25,7 @@ export class SearchCardService {
     return this.onSearchEnter.asObservable();
   }
 
-  sendLabel(label: string[]) {
+  sendLabel(label: IColor[]) {
     this.onSearchByLabel.next(label);
     console.log(label);
   }

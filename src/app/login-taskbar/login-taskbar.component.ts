@@ -12,6 +12,8 @@ import {BoardService} from '../board/service/board.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NotificationService} from '../otherService/notification/notification.service';
 import {INotification} from '../otherInterface/iNotification';
+import {IColor} from "../otherInterface/iColor";
+import {ColorService} from "../otherService/color/color.service";
 
 @Component({
   selector: 'app-login-taskbar',
@@ -27,9 +29,10 @@ export class LoginTaskbarComponent implements OnInit {
   inputBoard = new FormControl();
   iUsers: IUser[] = [];
   userId: number;
-  colors: string[] = [];
+  colors: IColor[] = [];
   users: IUser[] = [];
   userFind: IUser[] = [];
+  colorList: IColor[] = [];
 
   @Input() boardId: number;
 
@@ -61,6 +64,7 @@ export class LoginTaskbarComponent implements OnInit {
               private userService: UserService,
               private boardService: BoardService,
               private notificationService: NotificationService,
+              private colorService: ColorService,
   ) {
   }
 
@@ -68,6 +72,13 @@ export class LoginTaskbarComponent implements OnInit {
     const id = +this.tokenStorage.getId();
     this.userId = +this.tokenStorage.getId();
     this.clickNoti();
+
+    this.colorService.getColors(1000).subscribe(next => {
+      this.colorList = next;
+      console.log('success get color');
+    }, error => {
+      console.log('fail to get color');
+    });
 
     this.boardService.getListBoardByUser(10, id).subscribe(
       next => {
@@ -169,23 +180,23 @@ export class LoginTaskbarComponent implements OnInit {
   onSearchLabel() {
     this.colors = [];
     if (this.colorForm.value.input1) {
-      this.colors.push(this.color1);
+      this.colors.push(this.colorList[0]);
     }
 
     if (this.colorForm.value.input2) {
-      this.colors.push(this.color2);
+      this.colors.push(this.colorList[1]);
     }
 
     if (this.colorForm.value.input3) {
-      this.colors.push(this.color3);
+      this.colors.push(this.colorList[2]);
     }
 
     if (this.colorForm.value.input4) {
-      this.colors.push(this.color4);
+      this.colors.push(this.colorList[3]);
     }
 
     if (this.colorForm.value.input5) {
-      this.colors.push(this.color5);
+      this.colors.push(this.colorList[4]);
     }
 
     console.log(this.colors);
@@ -194,15 +205,15 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   searchUserByName(name: string) {
-      this.userService.getUserByNameAndBoard(1000, name, this.boardId).subscribe(next => {
-        console.log(next);
-        this.userFind = next;
-        console.log('get user by name');
-        console.log(this.userFind);
-        this.searchCardService.sendUser(this.userFind);
-      }, error => {
-        console.log('cannot get user by name');
-      });
+    this.userService.getUserByNameAndBoard(1000, name, this.boardId).subscribe(next => {
+      console.log(next);
+      this.userFind = next;
+      console.log('get user by name');
+      console.log(this.userFind);
+      this.searchCardService.sendUser(this.userFind);
+    }, error => {
+      console.log('cannot get user by name');
+    });
   }
 
   sendMember(user: IUser) {

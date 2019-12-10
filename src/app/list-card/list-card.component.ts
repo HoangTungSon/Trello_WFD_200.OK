@@ -14,6 +14,8 @@ import {TokenStorageService} from '../auth/token-storage.service';
 import {INotification} from '../otherInterface/iNotification';
 import {OrderChangeService} from '../otherService/orderChange/order-change.service';
 import {NotificationService} from '../otherService/notification/notification.service';
+import {ColorService} from '../otherService/color/color.service';
+import {IColor} from '../otherInterface/iColor';
 
 @Component({
   selector: 'app-list-card',
@@ -44,7 +46,7 @@ export class ListCardComponent implements OnInit {
 
   userCard: IUser[] = [];
 
-  labels: string[] = [];
+  labels: IColor[] = [];
 
   notificationForm: FormGroup;
 
@@ -62,6 +64,7 @@ export class ListCardComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     private orderChangeService: OrderChangeService,
     private notificationService: NotificationService,
+    private colorService: ColorService,
   ) {
   }
 
@@ -76,17 +79,17 @@ export class ListCardComponent implements OnInit {
     this.searchCardService.listen().subscribe(searchText => {
       this.cardSearch = [];
       this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
-        this.searchCard = next;
-        for (const card of this.searchCard) {
-          if (card.listSet.listId === this.id) {
-            this.cardSearch.push(card);
-            console.log('run');
-          }
-          console.log(this.searchDisplay);
-        }
-        console.log(next);
-        console.log('find card by id');
-        this.searchDisplay = this.cardSearch;
+        this.searchDisplay = next;
+        // for (const card of this.searchCard) {
+        //   if (card.listSet.listId === this.id) {
+        //     this.cardSearch.push(card);
+        //     console.log('run');
+        //   }
+        //   console.log(this.searchDisplay);
+        // }
+        // console.log(next);
+        // console.log('find card by id');
+        // this.searchDisplay = this.cardSearch;
       }, error => {
         console.log('cannot find');
       });
@@ -96,50 +99,26 @@ export class ListCardComponent implements OnInit {
 
     // ---------------------------find card by color ----------------------------------
     this.searchCardService.listenLabel().subscribe(searchLabel => {
-      this.labels = [];
       console.log(searchLabel);
-      if (searchLabel.length > 0) {
-        this.searchDisplay = [];
-        console.log('search card');
-      }
-      console.log('run');
-      if (searchLabel.length > 0) {
-        console.log('run 2');
-        this.labels = searchLabel;
-        this.cardService.searchCardByColor(this.labels).subscribe(next => {
-          this.cardSearch = [];
-          for (const card of next) {
-            if (card.listSet.listId === this.id) {
-              this.cardSearch.push(card);
-              console.log('run 3');
-            }
-          }
-          this.searchDisplay = this.cardSearch;
+      for (const label of searchLabel) {
+        this.cardService.searchCardByColor(label, this.id).subscribe(success => {
+          this.searchDisplay = success;
         }, error => {
-          console.log('dont have any card');
+          console.log('fail to get card by color');
         });
       }
     }, error => {
-      console.log('cannot send the label');
+      console.log('fail to get search label');
     });
 
     // ------------------ find card by user -------------------------------
     this.searchCardService.listenUser().subscribe(searchUser => {
-      this.searchDisplay = [];
       console.log(searchUser);
       console.log('success listen');
       for (const user of searchUser) {
-        this.cardService.searchCardByUser(user).subscribe(success => {
+        this.cardService.searchCardByUser(user, this.id).subscribe(success => {
           this.searchDisplay = [];
-          this.cardSearch = [];
-          console.log('success get card by user');
-          for (const card of success) {
-            if (card.listSet.listId === this.id) {
-              this.cardSearch.push(card);
-              console.log('success find card');
-            }
-          }
-          this.searchDisplay = this.cardSearch;
+          this.searchDisplay = success;
         }, error => {
           console.log('fail to get card by user');
         });

@@ -60,8 +60,67 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>
 </div>
+
+<!----------------------------------------------------------------modal label----------------------------------------------------------->
+<div class="modal fade" id="labelModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Your Label's card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="colorForm" (ngSubmit)="saveColor(card.cardId)">
+        <div class="modal-body">
+          <div class="row" style="height: 320px">
+            <div class="col-md-2">
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input1" type="checkbox" [value]="color1"
+                       id="defaultCheck1">
+                <div class="color-box" [style.background]="color1"></div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input2" type="checkbox" [value]="this.color2"
+                       id="defaultCheck12">
+                <div class="color-box" [style.background]="color2"></div>
+
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input3" type="checkbox" [value]="this.color3"
+                       id="defaultCheck13">
+                <div class="color-box" [style.background]="color3"></div>
+
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input4" type="checkbox" [value]="this.color4"
+                       id="defaultCheck14">
+                <div class="color-box" [style.background]="color4"></div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" formControlName="input5" type="checkbox" [value]="this.color5"
+                       id="defaultCheck15">
+                <div class="color-box" [style.background]="color5"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let c of colors">
+          <div class="color-box1" [style.background]=c></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="reset(card.cardId)">Reset</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

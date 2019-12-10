@@ -18,6 +18,8 @@ import {FileService} from '../upload-task/service/file.service';
 import {IFile} from '../upload-task/IFile';
 import {OrderChangeService} from '../otherService/orderChange/order-change.service';
 import {NotificationService} from '../otherService/notification/notification.service';
+import {ColorService} from '../otherService/color/color.service';
+import {IColor} from '../otherInterface/iColor';
 
 
 @Component({
@@ -92,26 +94,11 @@ export class BoardComponent implements OnInit {
     private fileService: FileService,
     private orderChangeService: OrderChangeService,
     private notificationService: NotificationService,
+    private colorService: ColorService,
   ) {
   }
 
-  colors: string  [] = [];
-
   card: ICard;
-
-  color1 = '#2883e9';
-  color2 = '#e920e9';
-  color3 = '#fffe11';
-  color4 = '#eC4040';
-  color5 = '#2DD02D';
-
-  colorForm: FormGroup = new FormGroup({
-    input1: new FormControl(''),
-    input2: new FormControl(''),
-    input3: new FormControl(''),
-    input4: new FormControl(''),
-    input5: new FormControl(''),
-  });
 
   ngOnInit() {
 
@@ -142,6 +129,7 @@ export class BoardComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       orderNumber: [''],
       listSet: [''],
+      colors: [''],
     });
 
     this.listForm = this.fb.group({
@@ -176,6 +164,7 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('fail to fetch board');
     });
+
   }
 
   getList(id: number) {
@@ -193,6 +182,7 @@ export class BoardComponent implements OnInit {
     this.listNullId.push(id);
     console.log(this.listNullId);
   }
+
 
 // -----------------------------List----------------------------------------
 
@@ -344,7 +334,9 @@ export class BoardComponent implements OnInit {
       description: [this.currentCard.description, [Validators.required, Validators.minLength(10)]],
       listSet: [this.currentCard.listSet],
       orderNumber: [this.currentCard.orderNumber],
-    });
+      colors: [this.currentCard.colors],
+  })
+    ;
     this.cardForm.patchValue(this.currentCard);
     this.commentService.getListCommentByCard(1000, this.currentCard.cardId).subscribe(next => {
       this.commentCard = next;
@@ -363,6 +355,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  // -------------save card form----------------
   submit() {
     const {value} = this.cardForm;
     if (this.members.length > 0) {
@@ -374,7 +367,7 @@ export class BoardComponent implements OnInit {
     }
     this.cardService.updateCard(value).subscribe(next => {
       console.log(next);
-      this.refreshPage();
+      this.getList(this.boardId);
     }, error => {
       console.log('error update');
     });
@@ -393,6 +386,7 @@ export class BoardComponent implements OnInit {
       this.commentService.createComment(value).subscribe(success => {
         console.log(success);
         console.log('success create comment');
+        this.getList(this.boardId);
       }, error => {
         console.log('fail to create comment');
       });
@@ -435,65 +429,6 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('fail to get file');
     });
-  }
-
-  // -------------------- label ----------------------
-
-  check() {
-    console.log(this.colorForm.value.input1);
-    if (this.colorForm.value.input1) {
-      this.colors.push(this.colorForm.value.input1);
-    }
-    console.log(this.colors);
-  }
-
-  checkColor(color) {
-    if (this.currentCard.colors === null) {
-      this.colors.push(color);
-      this.currentCard.colors = this.colors;
-    } else if (this.currentCard.colors.indexOf(color) === -1) {
-      this.currentCard.colors.push(color);
-    } else {
-      alert('Màu đã tồn tại!');
-    }
-  }
-
-  // reset label's card
-  reset(idCard: any) {
-    this.currentCard.colors = [];
-  }
-
-  saveColor(idCard: any) {
-    this.colors = [];
-
-    if (this.colorForm.value.input1) {
-      this.checkColor(this.color1);
-    }
-
-    if (this.colorForm.value.input2) {
-      this.checkColor(this.color2);
-    }
-
-    if (this.colorForm.value.input3) {
-      this.checkColor(this.color3);
-    }
-
-    if (this.colorForm.value.input4) {
-      this.checkColor(this.color4);
-    }
-
-    if (this.colorForm.value.input5) {
-      this.checkColor(this.color5);
-    }
-    console.log(this.colors);
-
-    this.cardService.updateColor(this.currentCard).subscribe(
-      result => {
-        console.log(result);
-      }, error => {
-        console.log('loi');
-      }
-    );
   }
 
   // ---------------------refresh page---------------------------
