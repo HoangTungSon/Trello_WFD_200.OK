@@ -33,11 +33,11 @@ export class LoginTaskbarComponent implements OnInit {
 
   @Input() boardId: number;
 
-  input1 = true;
-  input2 = true;
-  input3 = true;
-  input4 = true;
-  input5 = true;
+  // input1 = true;
+  // input2 = true;
+  // input3 = true;
+  // input4 = true;
+  // input5 = true;
 
   color1 = '#2883e9';
   color2 = '#e920e9';
@@ -45,13 +45,13 @@ export class LoginTaskbarComponent implements OnInit {
   color4 = '#eC4040';
   color5 = '#2DD02D';
 
-  colorForm: FormGroup = new FormGroup({
-    input1: new FormControl(''),
-    input2: new FormControl(''),
-    input3: new FormControl(''),
-    input4: new FormControl(''),
-    input5: new FormControl(''),
-  });
+  // colorForm: FormGroup = new FormGroup({
+  //   input1: new FormControl(''),
+  //   input2: new FormControl(''),
+  //   input3: new FormControl(''),
+  //   input4: new FormControl(''),
+  //   input5: new FormControl(''),
+  // });
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,

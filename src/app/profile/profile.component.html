@@ -18,13 +18,13 @@
       </div>
       <div class="card-body">
         <!--Name-->
-        <h4 class="font-weight-bold mb-4" style="text-align: center">{{info.username}}</h4>
+        <h4 class="font-weight-bold mb-4" style="text-align: center">{{userInfo.username}}</h4>
         <hr>
         <!--Quotation-->
         <p class="dark-grey-text mt-4"><i class="fa fa-quote-left pr-2"></i>Lorem ipsum dolor sit amet eos
           adipisci, consectetur adipisicing elit.</p>
       </div>
-      <button id="fileSelect"><i class="fas fa-camera-retro"></i> Change avatar</button>
+      <button id="fileSelect" ><i class="fas fa-camera-retro"></i> Change avatar</button>
     </div>
     <!--Card-->
   </div>
@@ -35,9 +35,11 @@
         <a class="nav-link active  btn-outline-info" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
            aria-controls="v-pills-profile" aria-selected="true"><i class="fa fa-user"></i>  Profile</a>
         <a class="nav-link  btn-outline-info" id="v-pills-changePassword-tab" data-toggle="pill" href="#v-pills-changePassword" role="tab"
-           aria-controls="v-pills-changePassword" aria-selected="false"><i class="fa fa-lock"></i> Change Password</a>
+           aria-controls="v-pills-changePassword" aria-selected="false" *ngIf="userInfo.userId == info.userId">
+          <i class="fa fa-lock"></i> Change Password</a>
         <a class="nav-link  btn-outline-info" id="v-pills-logout-tab" data-toggle="pill" href="#v-pills-logout" role="tab"
-           aria-controls="v-pills-logout" aria-selected="false"><i class="fas fa-sign-out-alt"></i> Logout</a>
+           aria-controls="v-pills-logout" aria-selected="false" *ngIf="userInfo.userId == info.userId">
+          <i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
     <div class="col-9 col-lg-9 col-md-6 mb-lg-0">
@@ -49,7 +51,7 @@
               <h3 class="panel-title">Name</h3>
             </div>
             <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
-              {{info.username}}
+              {{userInfo.username}}
             </div>
           </div>
           <div class="card panel-info" style="margin: 1em;">
@@ -57,7 +59,7 @@
               <h3 class="panel-title">Email</h3>
             </div>
             <div class="panel-body" style="margin-top: 5px; margin-bottom: 5px">
-              {{info.email}}
+              {{userInfo.email}}
             </div>
           </div>
           <div class="card panel-info" style="margin: 1em;">

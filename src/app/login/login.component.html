@@ -17,7 +17,7 @@
     <div class="form-group row">
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" formControlName="password" class="form-control" placeholder="Password" required>
-      <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+      <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" >
         Invalid password!
       </div>
     </div>
@@ -28,7 +28,7 @@
       </label>
     </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="button" (click)="onSubmit()" [disabled]="loginForm.invalid">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onSubmit()" [disabled]="loginForm.invalid">Sign in</button>
     <div class="alert alert-danger" role="alert" *ngIf="display">
         {{isNotLogin}}
     </div>
