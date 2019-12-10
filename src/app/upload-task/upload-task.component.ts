@@ -80,7 +80,6 @@ export class UploadTaskComponent implements OnInit {
         value.type = fileType[1];
         value.fileName = fileType[0];
         console.log(value);
-
         this.fileService.createFile(value).subscribe(next => {
           console.log(next);
           console.log('success upload file');

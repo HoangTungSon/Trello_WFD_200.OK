@@ -52,7 +52,7 @@
     <div *ngIf="cardsNotification !== null" class="dropdown-menu dropdown-menu-right" aria-labelledby="accessoriesDropdown">
       <a (click)="deleteAllCardNoti()">Marked all read</a>
       <a class="dropdown-item" href="#"
-         *ngFor=" let notification of cardsNotification">{{'Card: ' + notification.cardNoti.title + ' have been ' + notification.type}}</a>
+         *ngFor=" let notification of cardsNotification">{{notification.cardNoti.title + ' have been ' + notification.type}}</a>
       <div class="dropdown-divider"></div>
     </div>
   </div>

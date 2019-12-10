@@ -34,7 +34,7 @@
   flex-basis: 0;
   width: 330px;
   max-height: 100%;
-  background-image: url("../../assets/img/polyscape-wallpaper-full-hd-449103.jpg");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/trello-200ok.appspot.com/o/Image-frontend%2Fpolyscape-wallpaper-full-hd-449103.jpg?alt=media&token=bac4d4f3-73a3-4a14-8594-8febc61711a4");
   border-radius: 10px;
   margin-left: 10px;
   margin-bottom: 5px;
@@ -63,7 +63,6 @@
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
-  /*background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");*/
   background: none;
 }
 
@@ -223,7 +222,7 @@ a.commentFile::before{
   margin-bottom: 100px;
 }
 .container1 {
-  background-image: url("../../assets/img/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/trello-200ok.appspot.com/o/Image-frontend%2FMc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?alt=media&token=88a8b452-9e7d-46a5-8722-4d143dfbe828");
   height: 100%;
   /* Center and scale the image nicely */
   background-position: center;

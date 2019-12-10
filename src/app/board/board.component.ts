@@ -11,7 +11,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IUser} from '../user/iuser';
 import {UserService} from '../user/service/user.service';
 import {Cmyk, ColorPickerService} from 'ngx-color-picker';
-import {any} from 'codelyzer/util/function';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {CommentService} from '../comment/service/comment.service';
 import {IComment} from '../comment/icomment';
@@ -141,6 +140,7 @@ export class BoardComponent implements OnInit {
       cardId: [''],
       title: ['', [Validators.required, Validators.minLength(10)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
+      orderNumber: [''],
       listSet: [''],
     });
 
@@ -170,7 +170,6 @@ export class BoardComponent implements OnInit {
 
     this.getList(id);
 
-
     this.boardService.getBoardById(id).subscribe(next => {
       this.boardSet = next;
       console.log('success fetch the board');
@@ -179,7 +178,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getList(id: number){
+  getList(id: number) {
     this.listCardService.getListCardByBoard(10, id).subscribe(
       next => {
         this.listCards = next;
@@ -344,6 +343,7 @@ export class BoardComponent implements OnInit {
       title: [this.currentCard.title, [Validators.required, Validators.minLength(10)]],
       description: [this.currentCard.description, [Validators.required, Validators.minLength(10)]],
       listSet: [this.currentCard.listSet],
+      orderNumber: [this.currentCard.orderNumber],
     });
     this.cardForm.patchValue(this.currentCard);
     this.commentService.getListCommentByCard(1000, this.currentCard.cardId).subscribe(next => {

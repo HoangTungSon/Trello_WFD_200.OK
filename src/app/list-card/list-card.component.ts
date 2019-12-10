@@ -92,7 +92,7 @@ export class ListCardComponent implements OnInit {
       });
     });
 
-this.getList();
+    this.getListCard(this.id);
 
     // ---------------------------find card by color ----------------------------------
     this.searchCardService.listenLabel().subscribe(searchLabel => {
@@ -154,9 +154,9 @@ this.getList();
     });
   }
 
-  getList(){
-    // --------------------------find card by list -----------------------------------
-    this.cardService.getCardByList(10, this.id).subscribe(
+  // --------------------------find card by list -----------------------------------
+  getListCard(id: number) {
+    this.cardService.getCardByList(10, id).subscribe(
       next => {
         this.searchDisplay = next;
         console.log('card success');
@@ -187,6 +187,7 @@ this.getList();
     }
   }
 
+  // -------------------------------- noti after drag card -----------------------------------
   sendNotification(eventSend: CdkDragEnd<ICard>, card: ICard) {
     console.log(eventSend.source.dropContainer.data);
     this.userService.getListUserByCard(1000, card.cardId).subscribe(next => {
@@ -221,16 +222,29 @@ this.getList();
     if (event.previousContainer !== event.container) {
       this.cardService.getCardById(id).subscribe(
         next => {
+          this.updateAllCardList(event.container.data);
           this.card = next;
+          for (const card of event.container.data) {
+            if (card.title === this.card.title) {
+              this.card.orderNumber = card.orderNumber;
+            }
+          }
           this.card.listSet.listId = +event.container.id;
           this.updateCard(this.card);
           console.log('success drop');
         }, error => {
           console.log('fail to get cardId');
         });
-      this.updateAllCardList(event.container.data);
-      // this.refreshPage();
     }
+  }
+
+  updateListCard(id: number) {
+    this.cardService.getCardByList(1000, id).subscribe(next => {
+      console.log(next);
+      console.log('update after drag');
+    }, error => {
+      console.log('fail after drag');
+    });
   }
 
   createCard(id) {
@@ -242,35 +256,39 @@ this.getList();
     const {value} = this.cardForm;
     this.cardService.createCard(value).subscribe(
       next => {
-        this.getList();
-        this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
-          this.userList = listUser;
-          for (const user of this.userList) {
-            if (user.email !== this.tokenStorage.getEmail()) {
-              this.notification = this.notificationForm.value;
-              this.notification.type = 'create new card';
-              this.notification.cardNoti = next;
-              this.notification.userCardNoti = user;
-              this.notificationService.createNotification(this.notification).subscribe(success => {
-                console.log('success create notification for user');
-              }, error => {
-                console.log('fail to create notification');
-              });
-            }
-            this.userService.updateUser(user).subscribe(userNoti => {
-              console.log('success update userNoti');
-            }, error => {
-              console.log('fail to update userNoti');
-            });
-          }
-          console.log('cardNoti update');
-        }, error => {
-          console.log('cannot add cardNoti');
-        });
+        this.getListCard(this.id);
+        this.updateNotiUser(next);
         console.log('success to create a card');
       }, error => {
         console.log('fail to create card');
       });
+  }
+
+  updateNotiUser(next) {
+    this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
+      this.userList = listUser;
+      for (const user of this.userList) {
+        if (user.email !== this.tokenStorage.getEmail()) {
+          this.notification = this.notificationForm.value;
+          this.notification.type = 'create new card';
+          this.notification.cardNoti = next;
+          this.notification.userCardNoti = user;
+          this.notificationService.createNotification(this.notification).subscribe(success => {
+            console.log('success create notification for user');
+          }, error => {
+            console.log('fail to create notification');
+          });
+        }
+        this.userService.updateUser(user).subscribe(userNoti => {
+          console.log('success update userNoti');
+        }, error => {
+          console.log('fail to update userNoti');
+        });
+      }
+      console.log('cardNoti update');
+    }, error => {
+      console.log('cannot add cardNoti');
+    });
   }
 
   updateAllCardList(cards: ICard[]) {
@@ -288,6 +306,7 @@ this.getList();
     this.cardService.updateCard(card).subscribe(next => {
       console.log('success to update card after drop');
       console.log(next);
+      this.getListCard(this.id);
     }, error => {
       console.log('fail to update after drop card');
     });

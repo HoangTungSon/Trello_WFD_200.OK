@@ -128,6 +128,8 @@ export class CardComponent implements OnInit {
     });
   }
 
+
+
   // ----------------------------drag and drop file------------------------
 
   toggleHover(event: boolean) {
@@ -138,7 +140,6 @@ export class CardComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i));
       const file = files.item(i).name.split('.');
-      console.log(file[1]);
     }
   }
 }
