@@ -1,12 +1,12 @@
 <app-login-taskbar [boardId]="boardId"></app-login-taskbar>
 <div class="container1">
 <div class="menubar" *ngFor="let board of boards">
-  <div class="boardName" [formGroup]="boardForm">
+  <div class="boardName" [formGroup]="boardForm" style="margin-top: 5px">
     <input id="boardName" formControlName="boardName" type="text" value="{{board.boardName}}"
            (change)="changeNameBoard(board.boardId)">
   </div>
   <div class="user" style="margin-top: 5px" *ngFor="let user of users">
-    <button type="button" class="btn btn-outline-primary userNameButton avatarImage">
+    <button type="button" class="btn btn-info userNameButton avatarImage" [routerLink]="['/profile',user.userId]">
       <img *ngIf="user.avatarLink !== null" class="imageAvatar rounded-circle img-fluid" src="{{user.avatarLink}}" alt="imageAvatar">
       {{user.username}}</button>
   </div>

@@ -44,7 +44,8 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit() {
-    const id = +this.tokenStorage.getId();
+    // const id = +this.tokenStorage.getId();
+    const id = +this.route.snapshot.paramMap.get('id');
     this.userService.getUserById(id).subscribe(next => {
       this.userInfo = next;
       console.log('success to get user');

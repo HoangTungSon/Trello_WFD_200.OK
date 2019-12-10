@@ -136,6 +136,10 @@
   margin-left: 5px;
 }
 
+.user button {
+  width:auto;
+  height: 40px;
+}
 /*-----------------------------card css----------------------------*/
 .form-control{
   width: 500px;

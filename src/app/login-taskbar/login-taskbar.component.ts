@@ -147,7 +147,7 @@ export class LoginTaskbarComponent implements OnInit {
   updateBoard(board, id) {
     this.boardService.updateBoard(board, id).subscribe();
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/board/' + id + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -171,7 +171,7 @@ export class LoginTaskbarComponent implements OnInit {
       });
 
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      setTimeout(function () {
+      setTimeout(function() {
         this.router.navigate(['/user/' + this.userId + '/board']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
@@ -237,6 +237,16 @@ export class LoginTaskbarComponent implements OnInit {
     }, error => {
       this.cardsNotification = [];
       console.log('fail to get noti by user');
+    });
+  }
+
+  resetSearch() {
+    this.colors = [];
+    this.searchCardService.sendLabel(this.colors);
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      setTimeout(function() {
+        this.router.navigate(['/board/' + this.boardId + '/list']).then(r => console.log('success navigate'));
+      }.bind(this), 100);
     });
   }
 }
