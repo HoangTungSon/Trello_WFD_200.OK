@@ -166,27 +166,12 @@ input {
   text-shadow: 1px 1px 2px #bbb;
 }
 
-.color-box {
-  width: 200px;
-  height: 25px;
-  margin: 16px auto;
-
-  cursor: pointer;
-}
-
 .change-me {
   cursor: pointer;
   font-size: 30px;
   font-weight: bolder;
 }
-.color-box1 {
-  float: left;
-  width: 30px;
-  height:10px;
-  margin: 1px;
-  cursor: pointer;
-  border-radius: 5px;
-}
+
 .circle {
   width: 30px;
   height: 30px;

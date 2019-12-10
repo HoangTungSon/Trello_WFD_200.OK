@@ -6,6 +6,7 @@ import {finalize, tap} from 'rxjs/operators';
 import {FileService} from './service/file.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ICard} from '../card/icard';
+import {ListCardService} from "../list-card/service/list-card.service";
 
 @Component({
   selector: 'app-upload-task',
@@ -29,7 +30,8 @@ export class UploadTaskComponent implements OnInit {
     private fb: FormBuilder,
     private storage: AngularFireStorage,
     private db: AngularFirestore,
-    private fileService: FileService
+    private fileService: FileService,
+    private listCardService: ListCardService
   ) {
   }
 
@@ -83,6 +85,7 @@ export class UploadTaskComponent implements OnInit {
         this.fileService.createFile(value).subscribe(next => {
           console.log(next);
           console.log('success upload file');
+
         }, error => {
           console.log('fail to upload file');
         });
@@ -93,5 +96,6 @@ export class UploadTaskComponent implements OnInit {
   isActive(snapshot) {
     return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
   }
+
 
 }

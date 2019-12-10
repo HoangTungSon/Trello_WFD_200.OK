@@ -1,4 +1,5 @@
 import {IUser} from '../user/iuser';
+import {IColor} from '../otherInterface/iColor';
 
 export interface ICard {
   cardId: number;
