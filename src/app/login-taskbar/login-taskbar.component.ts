@@ -66,6 +66,7 @@ export class LoginTaskbarComponent implements OnInit {
 
   ngOnInit() {
     const id = +this.tokenStorage.getId();
+    this.userId = +this.tokenStorage.getId();
     this.clickNoti();
 
     this.boardService.getListBoardByUser(10, id).subscribe(
@@ -92,14 +93,19 @@ export class LoginTaskbarComponent implements OnInit {
       }
     );
     if (this.boardId !== undefined) {
-      this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
-        this.users = next;
-        console.log(this.users);
-        console.log('success get user');
-      }, error => {
-        console.log('fail to get user');
-      });
+      this.getUsersByBoard();
     }
+  }
+
+  getUsersByBoard() {
+    this.userService.getListUserByBoard(1000, this.boardId).subscribe(next => {
+      this.users = next;
+      console.log(this.users);
+      console.log('success get user');
+    }, error => {
+      console.log('fail to get user');
+    });
+
   }
 
   onSubmit() {
@@ -120,6 +126,7 @@ export class LoginTaskbarComponent implements OnInit {
     for (const noti of this.cardsNotification) {
       this.notificationService.deleteNotification(noti.id).subscribe(next => {
         console.log('success get delete all noti');
+        this.clickNoti();
       }, error => {
         console.log('fail to delete all noti');
       });
@@ -187,21 +194,15 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   searchUserByName(name: string) {
-    this.userService.getUserByName(1000, name).subscribe(next => {
-      for (const user of next) {
-        for (const user2 of this.users) {
-          if (user.email === user2.email) {
-            this.userFind.push(user);
-          }
-        }
-      }
-      this.users = this.userFind;
-      console.log('get user by name');
-      console.log(this.users);
-      this.searchCardService.sendUser(this.users);
-    }, error => {
-      console.log('cannot get user by name');
-    });
+      this.userService.getUserByNameAndBoard(1000, name, this.boardId).subscribe(next => {
+        console.log(next);
+        this.userFind = next;
+        console.log('get user by name');
+        console.log(this.userFind);
+        this.searchCardService.sendUser(this.userFind);
+      }, error => {
+        console.log('cannot get user by name');
+      });
   }
 
   sendMember(user: IUser) {
@@ -218,11 +219,12 @@ export class LoginTaskbarComponent implements OnInit {
   }
 
   clickNoti() {
-    this.userId = +this.tokenStorage.getId();
+    console.log(this.userId);
     this.notificationService.getListNotificationByUser(1000, this.userId).subscribe(next => {
       this.cardsNotification = next;
       console.log('success get noti by user');
     }, error => {
+      this.cardsNotification = [];
       console.log('fail to get noti by user');
     });
   }

@@ -56,4 +56,10 @@ export class UserService {
       map(data => data.filter((todo, i) => i < count))
     );
   }
+
+  getUserByNameAndBoard(count = 10, name: string, id): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(this.URL + '/boardAndName/' + id + '?name=' + name).pipe(
+      map(data => data.filter((todo, i) => i < count))
+    );
+  }
 }
