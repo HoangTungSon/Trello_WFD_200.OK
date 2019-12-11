@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  // apiUrl: 'https://arcane-shelf-46327.herokuapp.com',
-  apiUrl: 'http://localhost:5000',
+  apiUrl: 'https://arcane-shelf-46327.herokuapp.com',
+  // apiUrl: 'http://localhost:5000',
   firebaseConfig: {
     apiKey: 'AIzaSyC5aZyFAlOc8E9BGnqIub06MYicKiXbAKs',
     authDomain: 'trello-200ok.firebaseapp.com',
