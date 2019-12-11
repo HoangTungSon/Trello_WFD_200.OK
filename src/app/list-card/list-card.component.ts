@@ -79,7 +79,17 @@ export class ListCardComponent implements OnInit {
     this.searchCardService.listen().subscribe(searchText => {
       this.cardSearch = [];
       this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
-        this.searchDisplay = next;
+        this.searchCard = next;
+        for (const card of this.searchCard) {
+          if (card.listSet.listId === this.id) {
+            this.cardSearch.push(card);
+            console.log('run');
+          }
+          console.log(this.searchDisplay);
+        }
+        console.log(next);
+        console.log('find card by id');
+        this.searchDisplay = this.cardSearch;
       }, error => {
         console.log('cannot find');
       });
