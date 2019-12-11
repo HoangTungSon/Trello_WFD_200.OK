@@ -146,15 +146,7 @@ export class BoardComponent implements OnInit {
 
     const id = +this.route.snapshot.paramMap.get('id');
     this.boardId = id;
-    this.boardService.getBoardById(id).subscribe(next => {
-      this.board = next;
-      this.users = this.board.userSet;
-      this.newUser = this.board.userSet;
-      this.boards.push(next);
-      console.log('success to get board');
-    }, error => {
-      console.log('fail to get board');
-    });
+    this.displayUser(this.boardId);
 
     this.getList(id);
 
@@ -181,6 +173,19 @@ export class BoardComponent implements OnInit {
   pushId(id: number) {
     this.listNullId.push(id);
     console.log(this.listNullId);
+  }
+
+  // ---------------------display user -----------------------------------
+  displayUser(id: number) {
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.board = next;
+      this.users = this.board.userSet;
+      this.newUser = this.board.userSet;
+      this.boards.push(next);
+      console.log('success to get board');
+    }, error => {
+      console.log('fail to get board');
+    });
   }
 
 
@@ -444,6 +449,10 @@ export class BoardComponent implements OnInit {
         this.router.navigate(['/board/' + this.boardSet.boardId + '/list']).then(r => console.log('success navigate'));
       }.bind(this), 500);
     });
+  }
+
+  fileDisplayAttach(display: boolean) {
+    this.displayFile(this.currentCard);
   }
 
 }

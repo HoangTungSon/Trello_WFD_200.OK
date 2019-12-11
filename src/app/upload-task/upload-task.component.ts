@@ -6,7 +6,7 @@ import {finalize, tap} from 'rxjs/operators';
 import {FileService} from './service/file.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ICard} from '../card/icard';
-import {ListCardService} from "../list-card/service/list-card.service";
+import {ListCardService} from '../list-card/service/list-card.service';
 
 @Component({
   selector: 'app-upload-task',
@@ -85,7 +85,6 @@ export class UploadTaskComponent implements OnInit {
         this.fileService.createFile(value).subscribe(next => {
           console.log(next);
           console.log('success upload file');
-
         }, error => {
           console.log('fail to upload file');
         });

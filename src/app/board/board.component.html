@@ -93,9 +93,9 @@
               <div *ngFor="let file of files" class="imageFile">
                 <div class="imageFileCards float-left">
                   <a href="{{file.url}}"><img class="imageFileCard float-left"
-                                              *ngIf="file.type === 'png' || file.type === 'jpg'" src="{{file.url}}"
+                                              *ngIf="file.type === 'png' || file.type === 'jpg' || file.type === 'jpeg'" src="{{file.url}}"
                                               alt="image"></a>
-                  <a class="imageFileCard" *ngIf="file.type !=='png' && file.type !=='jpg'" href="{{file.url}}">
+                  <a class="imageFileCard float-left" *ngIf="file.type !=='png' && file.type !=='jpg'" href="{{file.url}}">
                     <img class="imageFileCard"
                          src="https://store-images.s-microsoft.com/image/apps.34961.13510798887621962.47b62c4c-a0c6-4e3c-87bb-509317d9c364.a6354b48-c68a-47fa-b69e-4cb592d42ffc?mode=scale&q=90&h=300&w=300"
                          alt="image2">
@@ -156,7 +156,7 @@
   </div>
 </form>
 
-<app-card [card]="currentCard" (member)="addMember($event)"></app-card>
+<app-card [card]="currentCard" (member)="addMember($event)" (display)="fileDisplayAttach($event)"></app-card>
 
 
 <!---------------------------- modal invite ------------------------------>

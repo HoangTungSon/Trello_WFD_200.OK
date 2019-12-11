@@ -35,9 +35,13 @@ export class CardComponent implements OnInit {
 
   files: File[] = [];
 
+  displayfile: true;
+
   @Output() member = new EventEmitter<IUser[]>();
 
   @Input() card: ICard;
+
+  @Output() display = new EventEmitter<boolean>();
 
   id: number;
 
@@ -161,7 +165,6 @@ export class CardComponent implements OnInit {
   }
 
 
-
   // ----------------------------drag and drop file------------------------
 
   toggleHover(event: boolean) {
@@ -174,6 +177,7 @@ export class CardComponent implements OnInit {
       const file = files.item(i).name.split('.');
     }
   }
+
 // ------------------------------save label-----------------------------
   checkColor(color: string) {
     if (this.card.colors === null) {
@@ -251,6 +255,12 @@ export class CardComponent implements OnInit {
         console.log('fail to get card');
       });
     }
+  }
+
+  // ---------------- send file display -------------------------
+  displayFile() {
+    this.display.emit(this.displayfile);
+    console.log('send code');
   }
 
 }
