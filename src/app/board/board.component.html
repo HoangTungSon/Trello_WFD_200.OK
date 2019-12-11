@@ -25,7 +25,7 @@
              (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let list of listCards" cdkDrag>
             <div class="example-box-list">
-              <input id="listName" type="text" formControlName="listName" value="{{list.listName + ' ' + list.listId}}"
+              <input id="listName" type="text" formControlName="listName" value="{{list.listName}}"
                      style="float: left;"
                      (change)="changeNameList(list.listId)">
               <button id="listDeleteButton" type="button" class="btn btn-outline-dark" style="float: right; "
@@ -115,7 +115,7 @@
                 </div>
               </div>
               <br>
-              <div class="commentForm float-left">
+              <div class="commentForm">
                 <form [formGroup]="commentForm">
                   <div>
                     <label for="comment" class="col-form-label"><i class="fas fa-list"></i> Comment:</label>
