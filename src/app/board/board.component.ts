@@ -335,17 +335,23 @@ export class BoardComponent implements OnInit {
       listSet: [this.currentCard.listSet],
       orderNumber: [this.currentCard.orderNumber],
       colors: [this.currentCard.colors],
-  })
-    ;
+    });
     this.cardForm.patchValue(this.currentCard);
+    this.commentDisplay(this.currentCard);
+    this.displayFile(this.currentCard);
+  }
+
+  // ---------------------------display comment-----------------------------
+  commentDisplay(card: ICard) {
     this.commentService.getListCommentByCard(1000, this.currentCard.cardId).subscribe(next => {
       this.commentCard = next;
       console.log('success get comment');
     }, error => {
       console.log('cannot get comment');
     });
-    this.displayFile(this.currentCard);
+
   }
+
 
   // -----------------------change listId of card----------------------------
   changeListId(lists: IListCard[]) {
@@ -386,7 +392,7 @@ export class BoardComponent implements OnInit {
       this.commentService.createComment(value).subscribe(success => {
         console.log(success);
         console.log('success create comment');
-        this.getList(this.boardId);
+        this.commentDisplay(this.currentCard);
       }, error => {
         console.log('fail to create comment');
       });

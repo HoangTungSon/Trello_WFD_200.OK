@@ -1,6 +1,6 @@
 <app-login-taskbar></app-login-taskbar>
 
-<div class="container-fluid" *ngIf="userInfo">
+<div class="container-fluid" >
   <!--Grid column-->
   <div class="col-lg-4 col-md-6 mb-lg-0 mb-4 float-right">
     <!--Card-->
@@ -9,7 +9,7 @@
       <div class="card-up info-color"></div>
       <!--Avatar-->
       <div class="avatar mx-auto white">
-        <a >
+        <a *ngIf="userInfo">
           <img *ngIf="userInfo.avatarLink !== null" src="{{userInfo.avatarLink}}" class="rounded-circle img-fluid" alt="image">
           <img *ngIf="userInfo.avatarLink === null" src="https://www.pnglot.com/pngfile/detail/173-1734978_unknown-profile-black-and-white-unknown-profile.png"
                class="rounded-circle img-fluid" alt="image">
@@ -18,7 +18,7 @@
       </div>
       <div class="card-body">
         <!--Name-->
-        <h4 class="font-weight-bold mb-4" style="text-align: center">{{userInfo.username}}</h4>
+        <h4 *ngIf="userInfo" class="font-weight-bold mb-4" style="text-align: center">{{userInfo.username}}</h4>
         <hr>
         <!--Quotation-->
         <p class="dark-grey-text mt-4"><i class="fa fa-quote-left pr-2"></i>Lorem ipsum dolor sit amet eos

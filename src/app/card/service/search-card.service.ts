@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {IUser} from '../../user/iuser';
-import {IColor} from "../../otherInterface/iColor";
+import {IColor} from '../../otherInterface/iColor';
 
 @Injectable({
   providedIn: 'root'
