@@ -177,25 +177,52 @@ export class LoginTaskbarComponent implements OnInit {
     });
   }
 
-  onSearchLabel() {
+  // onSearchLabel() {
+  //   this.colors = [];
+  //   if (this.colorForm.value.input1) {
+  //     this.colors.push(this.colorList[0]);
+  //   }
+  //
+  //   if (this.colorForm.value.input2) {
+  //     this.colors.push(this.colorList[1]);
+  //   }
+  //
+  //   if (this.colorForm.value.input3) {
+  //     this.colors.push(this.colorList[2]);
+  //   }
+  //
+  //   if (this.colorForm.value.input4) {
+  //     this.colors.push(this.colorList[3]);
+  //   }
+  //
+  //   if (this.colorForm.value.input5) {
+  //     this.colors.push(this.colorList[4]);
+  //   }
+  //
+  //   console.log(this.colors);
+  //
+  //   this.searchCardService.sendLabel(this.colors);
+  // }
+
+  onSearchLabel(color) {
     this.colors = [];
-    if (this.colorForm.value.input1) {
+    if (this.color1 === color) {
       this.colors.push(this.colorList[0]);
     }
 
-    if (this.colorForm.value.input2) {
+    if (this.color2 === color) {
       this.colors.push(this.colorList[1]);
     }
 
-    if (this.colorForm.value.input3) {
+    if (this.color3 === color) {
       this.colors.push(this.colorList[2]);
     }
 
-    if (this.colorForm.value.input4) {
+    if (this.color4 === color) {
       this.colors.push(this.colorList[3]);
     }
 
-    if (this.colorForm.value.input5) {
+    if (this.color5 === color) {
       this.colors.push(this.colorList[4]);
     }
 
