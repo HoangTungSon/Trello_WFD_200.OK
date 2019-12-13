@@ -30,7 +30,6 @@ import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {PortalModule} from '@angular/cdk/portal';
 import {CommentComponent} from './comment/comment.component';
-import {TestfileComponent} from './testfile/testfile.component';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
@@ -54,7 +53,6 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
     HomePageComponent,
     LoginTaskbarComponent,
     CommentComponent,
-    TestfileComponent,
     UploadTaskComponent,
     DropzoneDirective,
   ],

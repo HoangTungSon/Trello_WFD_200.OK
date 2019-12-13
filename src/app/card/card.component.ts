@@ -9,8 +9,8 @@ import {IUser} from '../user/iuser';
 import {IBoard} from '../board/iboard';
 import {TokenStorageService} from '../auth/token-storage.service';
 import {NotificationService} from '../otherService/notification/notification.service';
-import {IColor} from "../otherInterface/iColor";
-import {ColorService} from "../otherService/color/color.service";
+import {IColor} from '../otherInterface/iColor';
+import {ColorService} from '../otherService/color/color.service';
 
 @Component({
   selector: 'app-card',
@@ -85,6 +85,11 @@ export class CardComponent implements OnInit {
 
     this.findColorByCard();
 
+    this.getColor();
+  }
+
+  // -----------------------get colors---------------------------
+  getColor() {
     this.colorService.getColors(1000).subscribe(next => {
       this.colorsPick = next;
       console.log(this.colorsPick);
@@ -92,9 +97,9 @@ export class CardComponent implements OnInit {
     }, error => {
       console.log('fail to get colors');
     });
-
   }
 
+  // -------------------------- get user -------------------------------
   getUser() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.boardService.getBoardById(id).subscribe(next => {
@@ -244,6 +249,7 @@ export class CardComponent implements OnInit {
   // reset label's card
   reset(idCard: any) {
     this.card.colors = [];
+
   }
 
   findColorByCard() {

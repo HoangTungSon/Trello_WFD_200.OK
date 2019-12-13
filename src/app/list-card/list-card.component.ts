@@ -27,8 +27,6 @@ export class ListCardComponent implements OnInit {
   @Input() users: IUser[];
   @Input() id: number;
   @Output() selectCard = new EventEmitter<ICard>();
-  @Output() arrays = new EventEmitter<number>();
-  @Input() listIdArrays: number[];
 
   card: ICard;
 
@@ -45,8 +43,6 @@ export class ListCardComponent implements OnInit {
   userList: IUser[] = [];
 
   userCard: IUser[] = [];
-
-  labels: IColor[] = [];
 
   notificationForm: FormGroup;
 
@@ -75,7 +71,23 @@ export class ListCardComponent implements OnInit {
       cardNoti: [''],
       userCardNoti: [''],
     });
-    // ---------------------find card by searchText ----------------------------
+
+    this.getListCard(this.id);
+
+    this.getListById();
+
+    this.findCardBySearch();
+
+    this.findCardByColor();
+
+    this.findCardByUser();
+
+  }
+
+  // ------------------------- find card ----------------------------------------------------------
+
+  // ---------------------find card by searchText ----------------------------
+  findCardBySearch() {
     this.searchCardService.listen().subscribe(searchText => {
       this.cardSearch = [];
       this.cardService.getSearchByTitleOrDescription(searchText, this.id).subscribe(next => {
@@ -94,10 +106,11 @@ export class ListCardComponent implements OnInit {
         console.log('cannot find');
       });
     });
+  }
 
-    this.getListCard(this.id);
+  // --------------------- find card by color---------------------------------
 
-    // ---------------------------find card by color ----------------------------------
+  findCardByColor() {
     this.searchCardService.listenLabel().subscribe(searchLabel => {
       console.log(searchLabel);
       for (const label of searchLabel) {
@@ -110,8 +123,10 @@ export class ListCardComponent implements OnInit {
     }, error => {
       console.log('fail to get search label');
     });
+  }
 
-    // ------------------ find card by user -------------------------------
+  // ------------------- find card by user ---------------------------------
+  findCardByUser() {
     this.searchCardService.listenUser().subscribe(searchUser => {
       console.log(searchUser);
       console.log('success listen');
@@ -126,10 +141,16 @@ export class ListCardComponent implements OnInit {
     }, error => {
       console.log('cannot listen');
     });
+  }
 
+  // -------------------------- get list by Id ------------------------
+
+  getListById() {
     this.listService.getListCardById(this.id).subscribe(next => {
       this.listSet = next;
       console.log('success fetch the list');
+    }, error => {
+      console.log('fail to get list');
     });
   }
 
@@ -142,13 +163,8 @@ export class ListCardComponent implements OnInit {
       }, error => {
         console.log(error);
         console.log('error');
-        this.pushListId(this.id);
       }
     );
-  }
-
-  pushListId(id: number) {
-    this.arrays.emit(id);
   }
 
   // -------------------change card detail when moving----------------------------------
@@ -196,6 +212,7 @@ export class ListCardComponent implements OnInit {
     console.log(eventSend.source.data);
   }
 
+  // -------------------------change card listId after moving-------------------------
   changeCardListSet(event: CdkDragDrop<ICard[]>, id: number) {
     console.log(event.container.id);
     if (event.previousContainer !== event.container) {
@@ -217,15 +234,7 @@ export class ListCardComponent implements OnInit {
     }
   }
 
-  updateListCard(id: number) {
-    this.cardService.getCardByList(1000, id).subscribe(next => {
-      console.log(next);
-      console.log('update after drag');
-    }, error => {
-      console.log('fail after drag');
-    });
-  }
-
+  // ----------------------- create card -------------------------------------------
   createCard(id) {
     this.cardForm = this.fb.group({
       title: ['new card', [Validators.required, Validators.minLength(10)]],
@@ -243,6 +252,7 @@ export class ListCardComponent implements OnInit {
       });
   }
 
+  // ------------------------------- update noti of user ---------------------------------------
   updateNotiUser(next) {
     this.userService.getListUserByBoard(1000, this.listSet.boardSet.boardId).subscribe(listUser => {
       this.userList = listUser;

@@ -146,10 +146,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  isActive(snapshot) {
-    return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
-  }
-
   onFileSelect(event) {
     console.log(event.target.files[0].name);
     this.startUpload(event.target.files[0]);

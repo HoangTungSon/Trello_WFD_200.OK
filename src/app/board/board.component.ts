@@ -78,8 +78,6 @@ export class BoardComponent implements OnInit {
 
   notificationForm: FormGroup;
 
-  listNullId: number[] = [];
-
   constructor(
     private userService: UserService,
     private boardService: BoardService,
@@ -98,17 +96,8 @@ export class BoardComponent implements OnInit {
   ) {
   }
 
-  card: ICard;
-
   ngOnInit() {
-
-    this.userService.getUser(10).subscribe(
-      next => {
-        this.listUser = next;
-        console.log('success fetch the board');
-      }, error => {
-        console.log('fail to get all user');
-      });
+    this.getAllUser();
 
     this.commentForm = this.fb.group({
       id: [''],
@@ -150,29 +139,19 @@ export class BoardComponent implements OnInit {
 
     this.getList(id);
 
-    this.boardService.getBoardById(id).subscribe(next => {
-      this.boardSet = next;
-      console.log('success fetch the board');
-    }, error => {
-      console.log('fail to fetch board');
-    });
+    this.getBoardByID(id);
 
   }
 
-  getList(id: number) {
-    this.listCardService.getListCardByBoard(10, id).subscribe(
+  // ------------------get user ----------------------------------
+  getAllUser() {
+    this.userService.getUser(10).subscribe(
       next => {
-        this.listCards = next;
-        console.log('list success');
+        this.listUser = next;
+        console.log('success fetch the board');
       }, error => {
-        console.log('error');
-      }
-    );
-  }
-
-  pushId(id: number) {
-    this.listNullId.push(id);
-    console.log(this.listNullId);
+        console.log('fail to get all user');
+      });
   }
 
   // ---------------------display user -----------------------------------
@@ -188,8 +167,39 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  // ------------------------board-----------------------------------------
+  getBoardByID(id: number) {
+    this.boardService.getBoardById(id).subscribe(next => {
+      this.boardSet = next;
+      console.log('success fetch the board');
+    }, error => {
+      console.log('fail to fetch board');
+    });
+  }
+
+  changeNameBoard(id) {
+    const {value} = this.boardForm;
+    value.boardId = id;
+    value.userSet = this.boardSet.userSet;
+    console.log(value);
+    this.boardService.updateBoard(value, id).subscribe(next => {
+      console.log('success update board name');
+    }, error => {
+      console.log('fail to change board name');
+    });
+  }
 
 // -----------------------------List----------------------------------------
+  getList(id: number) {
+    this.listCardService.getListCardByBoard(10, id).subscribe(
+      next => {
+        this.listCards = next;
+        console.log('list success');
+      }, error => {
+        console.log('error');
+      }
+    );
+  }
 
   createList() {
     this.listForm = this.fb.group({
@@ -246,18 +256,6 @@ export class BoardComponent implements OnInit {
     this.changeListId(this.listCards);
   }
 
-  changeNameBoard(id) {
-    const {value} = this.boardForm;
-    value.boardId = id;
-    value.userSet = this.boardSet.userSet;
-    console.log(value);
-    this.boardService.updateBoard(value, id).subscribe(next => {
-      console.log('success update board name');
-    }, error => {
-      console.log('fail to change board name');
-    });
-  }
-
   updateList(list: IListCard) {
     this.listCardService.updateListCard(list).subscribe(next => {
       console.log('success to update list after drop');
@@ -308,11 +306,6 @@ export class BoardComponent implements OnInit {
     console.log(newUser);
   }
 
-  userMember(user: IUser) {
-    this.user = user;
-    console.log(this.user);
-  }
-
   addMember(users: IUser[]) {
     console.log(users);
     this.members = users;
@@ -323,13 +316,6 @@ export class BoardComponent implements OnInit {
 
 
 //  --------------------------- Card --------------------------------
-  updateCard(card) {
-    this.cardService.updateCard(card).subscribe(next => {
-      console.log('update card');
-    }, error => {
-      console.log('fail to update card');
-    });
-  }
 
   openCard(card: ICard) {
     this.currentCard = card;
@@ -354,7 +340,6 @@ export class BoardComponent implements OnInit {
     }, error => {
       console.log('cannot get comment');
     });
-
   }
 
 
@@ -384,7 +369,6 @@ export class BoardComponent implements OnInit {
     });
   }
 
-
   // ----------------------comment-------------------------------
 
   createComment() {
@@ -406,6 +390,10 @@ export class BoardComponent implements OnInit {
       console.log('cannot get user');
     });
 
+    this.sendNotification();
+  }
+
+  sendNotification() {
     this.userService.getListUserByCard(1000, this.currentCard.cardId).subscribe(next => {
       this.userCard = next;
       for (const user of this.userCard) {
@@ -451,6 +439,7 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  // ----------------display file after add----------------------
   fileDisplayAttach(display: boolean) {
     this.displayFile(this.currentCard);
   }
